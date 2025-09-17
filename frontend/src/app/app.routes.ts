@@ -27,6 +27,7 @@ import { ViewReviewsComponent } from './dashboards/student-dashboard/view-review
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
 import { StudentLayoutComponent } from './layout/student-layout/student-layout.component';
 import { CompanyLayoutComponent } from './layout/company-layout/company-layout.component';
+import { ApplyComponent } from './pages/apply/apply-page.component';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -42,6 +43,7 @@ export const routes: Routes = [
     { path: 'company-dashboard', component: CompanyDashboardComponent },
     { path: 'student-dashboard', component: StudentDashboardComponent },
     { path: 'admin-dashboard', component: AdminDashboardComponent },
+    { path: 'apply/:id', component: ApplyComponent },
 
     // Admin layout with children
     {

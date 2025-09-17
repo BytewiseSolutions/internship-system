@@ -1,0 +1,18 @@
+<div class="apply-container">
+    <h2>Apply for Internship</h2>
+    <form (ngSubmit)="submitApplication()">
+        <div>
+            <label>Upload CV</label>
+            <input type="file" (change)="onFileChange($event, 'cv')" />
+        </div>
+        <div>
+            <label>Upload Transcript</label>
+            <input type="file" (change)="onFileChange($event, 'transcript')" />
+        </div>
+        <div>
+            <label>Upload Application Letter</label>
+            <input type="file" (change)="onFileChange($event, 'letter')" />
+        </div>
+        <button type="submit" [disabled]="loading">Submit Application</button>
+    </form>
+</div>

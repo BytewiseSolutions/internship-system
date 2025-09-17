@@ -13,6 +13,17 @@ export interface Internship {
     description: string;
     status: string;
 }
+export interface AvailableInternship {
+    id: number;
+    title: string;
+    company: string;
+    location: string;
+    postedDate: string;
+    deadline: string;
+    description: string;
+    status: string;
+}
+
 export interface Company {
     id: number;
     name: string;
@@ -27,7 +38,9 @@ export class InternshipService {
     getInternships(): Observable<Internship[]> {
         return this.http.get<Internship[]>(`${this.apiUrl}/get_internships.php`);
     }
-
+    getAvailableInternships(): Observable<AvailableInternship[]> {
+        return this.http.get<AvailableInternship[]>(`${this.apiUrl}/get_available_internships.php`);
+    }
     addInternship(internship: Internship): Observable<Internship> {
         return this.http.post<Internship>(`${this.apiUrl}/add_internship.php`, internship);
     }
@@ -44,4 +57,8 @@ export class InternshipService {
     getCompanies(): Observable<Company[]> {
         return this.http.get<Company[]>(`${this.apiUrl}/get_companies.php`);
     }
+    apply(formData: FormData) {
+        return this.http.post(`${this.apiUrl}/apply_internship.php`, formData);
+    }
+
 }

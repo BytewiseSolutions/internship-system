@@ -6,6 +6,18 @@ require '../utils.php';
 $student_id = isset($_POST['student_id']) ? $_POST['student_id'] : null;
 $internship_id = isset($_POST['internship_id']) ? $_POST['internship_id'] : null;
 
+$checkStmt = $conn->prepare("SELECT id FROM applications WHERE student_id = ? AND internship_id = ?");
+$checkStmt->bind_param("ii", $student_id, $internship_id);
+$checkStmt->execute();
+$checkStmt->store_result();
+
+if ($checkStmt->num_rows > 0) {
+    http_response_code(400);
+    echo json_encode(['message' => 'You have already applied for this internship']);
+    exit;
+}
+$checkStmt->close();
+
 if (!$student_id || !$internship_id) {
     die(json_encode(['status' => 'error', 'message' => 'Student ID or Internship ID missing']));
 }

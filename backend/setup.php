@@ -4,22 +4,17 @@ $username = "root";
 $password = "password1";
 $dbname = "internshipdb";
 
-// Connect to MySQL
 $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Create database if not exists
 $sqlCreateDB = "CREATE DATABASE IF NOT EXISTS $dbname";
 if (!$conn->query($sqlCreateDB)) {
     die("Error creating database: " . $conn->error);
 }
 $conn->select_db($dbname);
 
-// ===================== TABLES =====================
-
-// Users table
 $sqlCreateUsersTable = "
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,7 +29,6 @@ CREATE TABLE IF NOT EXISTS users (
 if (!$conn->query($sqlCreateUsersTable))
     die("Error creating users table: " . $conn->error);
 
-// Companies table
 $sqlCreateCompaniesTable = "
 CREATE TABLE IF NOT EXISTS companies (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,12 +36,11 @@ CREATE TABLE IF NOT EXISTS companies (
     email VARCHAR(255) UNIQUE NOT NULL,
     industry VARCHAR(255) NOT NULL,
     created_at DATE NOT NULL,
-    status ENUM('Active','Inactive','Blocked') DEFAULT 'Active'
+    status ENUM('Active','Inactive','Blocked') DEFAULT 'ACTIVE'
 )";
 if (!$conn->query($sqlCreateCompaniesTable))
     die("Error creating companies table: " . $conn->error);
 
-// Internships table
 $sqlCreateInternshipsTable = "
 CREATE TABLE IF NOT EXISTS internships (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,19 +50,18 @@ CREATE TABLE IF NOT EXISTS internships (
     postedDate DATE NOT NULL,
     deadline DATE NOT NULL,
     description TEXT,
-    status VARCHAR(50) DEFAULT 'Active',
+    status VARCHAR(50) DEFAULT 'ACTIVE',
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
 )";
 if (!$conn->query($sqlCreateInternshipsTable))
     die("Error creating internships table: " . $conn->error);
 
-// Applications table
 $sqlCreateApplicationsTable = "
 CREATE TABLE IF NOT EXISTS applications (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     internship_id INT NOT NULL,
-    status VARCHAR(50) DEFAULT 'Pending',
+    status VARCHAR(50) DEFAULT 'PENDING',
     cvPath VARCHAR(255),
     transcriptPath VARCHAR(255),
     applicationLetterPath VARCHAR(255),
@@ -80,7 +72,6 @@ CREATE TABLE IF NOT EXISTS applications (
 if (!$conn->query($sqlCreateApplicationsTable))
     die("Error creating applications table: " . $conn->error);
 
-// Reviews table
 $sqlCreateReviewsTable = "
 CREATE TABLE IF NOT EXISTS reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -99,16 +90,13 @@ CREATE TABLE IF NOT EXISTS reviews (
 if (!$conn->query($sqlCreateReviewsTable))
     die("Error creating reviews table: " . $conn->error);
 
-// ===================== SEED DATA =====================
-
-// Companies
 $companies = [
     [
         'name' => 'Example Company',
         'email' => 'company@example.com',
         'industry' => 'Tech',
         'created_at' => date('Y-m-d'),
-        'status' => 'Active'
+        'status' => 'ACTIVE'
     ]
 ];
 
@@ -119,7 +107,6 @@ foreach ($companies as $company) {
 }
 $stmtCompany->close();
 
-// Users
 $users = [
     [
         'name' => 'Lebohang Monamane',
