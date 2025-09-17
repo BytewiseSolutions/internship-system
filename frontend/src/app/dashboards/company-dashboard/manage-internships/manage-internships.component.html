@@ -1,0 +1,102 @@
+<div class="internship-section">
+    <div class="header">
+        <h2>Manage Internships</h2>
+
+        <button (click)="openAddModal()" class="add-btn">
+            <i class="fas fa-plus"></i>Add Internship
+        </button>
+    </div>
+
+    <div class="controls">
+        <input type="text" placeholder="Search by internship by company or Location" [(ngModel)]="searchTerm" />
+    </div>
+
+    <div *ngIf="loading" class="spinner">
+        <i class="fas fa-spinner fa-spin"></i> Loading internships...
+    </div>
+    <div class="table-wrapper" *ngIf="!loading">
+        <table class="table-container">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Company Name</th>
+                    <th>Location</th>
+                    <th>Post Date</th>
+                    <th>Deadline</th>
+                    <th>Brief Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let internship of internships">
+                    <td>{{internship.title}}</td>
+                    <td>{{internship.company_name}}</td>
+                    <td>{{internship.location}}</td>
+                    <td>{{internship.postedDate}}</td>
+                    <td>{{internship.deadline}}</td>
+                    <td>{{internship.description}}</td>
+                    <td>{{internship.status}}</td>
+                    <td class="action-buttons">
+                        <button class="edit" (click)="openEditModal(internship)"><i class="fas fa-edit"></i></button>
+                        <button class="delete" (click)="deleteInternship(internship.id!)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="!loading && internships.length === 0" class="empty-state">
+            No Internships found.
+        </div>
+    </div>
+
+    <div class="modal" *ngIf="showAddModal">
+        <div class="modal-content">
+            <h3>Add Internship</h3>
+
+            <form (submit)="addInternship()">
+                <input type="text" placeholder="Internship Title" [(ngModel)]="newInternship.title" name="title">
+                <select id="company" [(ngModel)]="newInternship.company_id" name="company_id" required>
+                    <option [ngValue]="null" disabled>Select a company</option>
+                    <option *ngFor="let company of companies" [ngValue]="company.id">{{ company.name }}</option>
+                </select>
+                <input type="text" placeholder="Location" [(ngModel)]="newInternship.location" name="location">
+                <input type="date" [(ngModel)]="newInternship.postedDate" name="postedDate">
+                <input type="date" [(ngModel)]="newInternship.deadline" name="deadline">
+                <textarea [(ngModel)]="newInternship.description" name="description">
+                    Please add the brief description...
+                </textarea>
+
+                <div class="modal-actions">
+                    <button type="submit">Add</button>
+                    <button type="button" (click)="closeAddModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" *ngIf="showEditModal">
+        <div class="modal-content">
+            <h3>Edit Company</h3>
+
+            <form (submit)="updateInternship()">
+                <input type="text" placeholder="Internship Title" [(ngModel)]="selectedInternship!.title" name="title">
+                <select id="edit-company" [(ngModel)]="selectedInternship!.company_id" name="company_id" required>
+                    <option [ngValue]="null" disabled>Select a company</option>
+                    <option *ngFor="let company of companies" [ngValue]="company.id">{{ company.name }}</option>
+                </select>
+                <input type="text" placeholder="Location..." [(ngModel)]="selectedInternship!.location" name="location">
+                <input type="date" [(ngModel)]="selectedInternship!.postedDate" name="postedDate
+                    required=">
+                <input type="date" [(ngModel)]="selectedInternship!.deadline" name="deadline" required>
+                <textarea name="description" [(ngModel)]="selectedInternship!.description"></textarea>
+                <div class="modal-actions">
+                    <button type="submit">Edit</button>
+                    <button type="button" (click)="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

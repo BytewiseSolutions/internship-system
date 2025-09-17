@@ -1,0 +1,55 @@
+<div class="admin-section">
+    <div class="header">
+        <h2>Manage Companies</h2>
+        <button (click)="openAddModal()" class="add-btn">
+            <i class="fas fa-plus"></i>Add Company
+        </button>
+    </div>
+
+    <div class="controls">
+        <input type="text" placeholder="Search by Company name or email" [(ngModel)]="searchTerm" />
+    </div>
+
+    <div *ngIf="loading" class="spinner">
+        <i class="fas fa-spinner fa-spin"></i> Loading Companies..
+    </div>
+
+    <div class="table-wrapper" *ngIf="!loading">
+        <table class="company-table">
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Email</th>
+                    <th>Industry</th>
+                    <th>Registered</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let company of filteredCompanies()">
+                    <td>{{company.name}}</td>
+                    <td>{{company.email}}</td>
+                    <td>{{company.industry}}</td>
+                    <td>{{company.createdAt | date:'mediumDate'}}</td>
+                    <td><span class="status" [ngClass]="company.status">{{company.status}}</span></td>
+                    <td class="action-buttons">
+                        <button class="view" (click)="viewCompany(company)"><i class="fas fa-eye"></i></button>
+                        <button class="edit" (click)="openEditModal(company)"><i class="fas fa-edit"></i></button>
+                        <button class="block" [ngClass]="{'blocked': company.status === 'Blocked'}"
+                            (click)="toggleCompanyStatus(company)">
+                            <i class="fas" [ngClass]="company.status==='Blocked' ? 'fa-unlock' : 'fa-ban'"></i>
+                        </button>
+                        <button class="delete" (click)="deleteCompany(company)"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="!loading && companies.length === 0" class="empty-state">No Companies found.</div>
+    </div>
+
+    <!-- Reusable Modal -->
+    <app-company-modal *ngIf="showModal" [mode]="modalMode" [company]="modalCompany" (close)="handleModalClose()"
+        (save)="handleModalSave($event)">
+    </app-company-modal>
+</div>

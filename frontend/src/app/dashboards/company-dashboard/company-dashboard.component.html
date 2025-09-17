@@ -1,0 +1,12 @@
+<div class="company-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-company-sidebar (collapsedChange)="onSidebarCollapseChanged($event)">
+    </app-company-sidebar>
+
+    <main class="main-content">
+        <app-company-header [isSidebarCollapsed]="isSidebarCollapsed"></app-company-header>
+
+        <div class="dashboard-cards">
+            <h1>Company Cards here ....</h1>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+
+<section class="faqs">
+    <div class="container">
+        <h1 class="title">Frequently Asked Questions</h1>
+
+        <div class="faq-item" *ngFor="let faq of faqs; let i = index" [class.open]="faq.open">
+            <div class="faq-header" (click)="toggleFAQ(i)">
+                <h3>{{ faq.question }}</h3>
+                <i class="fas" [ngClass]="faq.open ? 'fa-minus rotate' : 'fa-plus'"></i>
+            </div>
+            <div class="faq-body" [class.show]="faq.open">
+                <p>{{ faq.answer }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-footer></app-footer>

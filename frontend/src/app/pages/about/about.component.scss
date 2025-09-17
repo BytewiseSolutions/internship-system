@@ -1,0 +1,73 @@
+.about-us {
+    font-family: 'Segoe', sans-serif;
+
+    .container {
+        max-width: 100%;
+        margin: 1rem;
+        padding: 1.5rem;
+        border-radius: 8px;
+        color: #222;
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #003366;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #004080;
+        }
+
+        .info-cards {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+            .card {
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 1rem;
+                background-color: #fff;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                display: flex;
+                align-items: flex-start;
+                gap: 0.75rem;
+
+                .icon {
+                    font-size: 1.5rem;
+                    color: #004080;
+                    margin-top: 4px;
+                }
+
+                p {
+                    line-height: 1.6;
+                    margin: 0;
+                }
+            }
+
+        }
+
+
+        ul {
+            padding-left: 1.5rem;
+           
+      
+
+            li {
+                margin-bottom: 0.5rem;
+                display: flex;
+                list-style: none;
+                align-items: center;
+
+                .icon{
+                    margin-right: 0.5rem;
+                    color: #0077cc;
+                }
+            }
+        }
+    }
+}

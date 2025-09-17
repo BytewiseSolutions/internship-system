@@ -1,0 +1,24 @@
+<div class="auth-container">
+    <h2>Student Registration</h2>
+
+    <div *ngIf="showMessage" [ngClass]="{ 'success-msg': isSuccess, 'error-msg': !isSuccess }">
+        {{ message }}
+    </div>
+
+    <form (ngSubmit)="register()">
+        <input type="text" placeholder="Full Name" [(ngModel)]="student.name" name="name" required />
+        <input type="email" placeholder="Email" [(ngModel)]="student.email" name="email" required />
+        <input type="text" placeholder="Contact Number" [(ngModel)]="student.contact" name="contact" required />
+        <input type="password" placeholder="Password" [(ngModel)]="student.password" name="password" required />
+
+        <button type="submit" [disabled]="loading">
+            <span *ngIf="!loading">Register</span>
+            <span *ngIf="loading" class="spinner"></span>
+        </button>
+    </form>
+
+    <p class="register-link">
+        Already have an account?
+        <a routerLink="/login">Login here</a>
+    </p>
+</div>

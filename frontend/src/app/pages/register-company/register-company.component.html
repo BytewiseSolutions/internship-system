@@ -1,0 +1,20 @@
+<div class="auth-container">
+    <h2>Register as Company</h2>
+
+    <form (ngSubmit)="registerCompany()">
+        <input type="text" placeholder="Company Name" [(ngModel)]="companyData.name" name="name" required />
+        <input type="email" placeholder="Email" [(ngModel)]="companyData.email" name="email" required />
+        <input type="text" placeholder="Contact" [(ngModel)]="companyData.contact" name="contact" />
+        <input type="password" placeholder="Password" [(ngModel)]="companyData.password" name="password" required />
+
+        <button type="submit" [disabled]="loading">
+            <span *ngIf="!loading">Register</span>
+            <span *ngIf="loading" class="spinner"></span>
+        </button>
+    </form>
+
+    <p class="register-link">
+        Already have an account?
+        <a routerLink="/login">Login here</a>
+    </p>
+</div>

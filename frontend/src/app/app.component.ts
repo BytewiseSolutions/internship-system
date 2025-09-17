@@ -1,0 +1,13 @@
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { ToastComponent } from './shared/toast.component';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, ToastComponent],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  title = 'internship-management-system';
+}

@@ -1,0 +1,59 @@
+<div class="container">
+    <h2 class="title">Browse Internships</h2>
+    <div class="filters">
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterInternships()" placeholder="Search internships..."
+            class="search">
+
+        <label>Posted From:</label>
+        <input type="date" [(ngModel)]="filterPostedFrom" (change)="filterInternships()">
+
+        <label>Posted To:</label>
+        <input type="date" [(ngModel)]="filterPostedTo" (change)="filterInternships()">
+
+        <label>Status:</label>
+        <select [(ngModel)]="filterStatus" (change)="filterInternships()">
+            <option value="">All</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+    </div>
+
+    <div class="internship-grid">
+        <div *ngFor="let internship of paginatedInternships" class="internship-card">
+            <h3>{{ internship.title }}</h3>
+            <p><strong>Company:</strong> {{ internship.company_name }}</p>
+            <p><strong>Location:</strong> {{ internship.location }}</p>
+            <p><strong>Posted:</strong> {{ internship.postedDate | date }}</p>
+            <p><strong>Deadline:</strong> {{ internship.deadline | date }}</p>
+            <p>{{ internship.description }}</p>
+            <button (click)="openApplyModal(internship)">Apply Now</button>
+        </div>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+
+    <div class="modal" *ngIf="showApplyModal">
+        <div class="modal-content">
+            <h3>Apply for {{ selectedInternship?.title }}</h3>
+            <form (submit)="submitApplication()">
+                <label>Upload CV:</label>
+                <input type="file" (change)="onFileSelected($event, 'cv')">
+
+                <label>Upload Transcript:</label>
+                <input type="file" (change)="onFileSelected($event, 'transcript')">
+
+                <label>Upload Application Letter:</label>
+                <input type="file" (change)="onFileSelected($event, 'letter')">
+
+                <div class="modal-actions">
+                    <button type="submit">Submit Application</button>
+                    <button type="button" (click)="closeApplyModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

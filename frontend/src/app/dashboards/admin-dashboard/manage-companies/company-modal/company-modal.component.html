@@ -1,0 +1,33 @@
+<div class="modal">
+    <div class="modal-content">
+        <h3 *ngIf="mode==='add'">Add Company</h3>
+        <h3 *ngIf="mode==='edit'">Edit Company</h3>
+        <h3 *ngIf="mode==='view'">Company Details</h3>
+
+        <!-- Add/Edit Form -->
+        <form *ngIf="mode==='add' || mode==='edit'" (ngSubmit)="onSubmit()">
+            <input type="text" placeholder="Company Name" [(ngModel)]="company!.name" name="name" required>
+            <input type="email" placeholder="Company Email" [(ngModel)]="company!.email" name="email" required>
+            <input type="text" placeholder="Industry" [(ngModel)]="company!.industry" name="industry" required>
+            <input type="date" placeholder="Registered On" [(ngModel)]="company!.createdAt" name="createdAt" required>
+
+            <div class="modal-actions">
+                <button type="submit">{{ mode === 'add' ? 'Add' : 'Save' }}</button>
+                <button type="button" (click)="onClose()">Cancel</button>
+            </div>
+        </form>
+
+        <!-- View Mode -->
+        <div *ngIf="mode==='view'">
+            <p><strong>Name:</strong> {{company?.name}}</p>
+            <p><strong>Email:</strong> {{company?.email}}</p>
+            <p><strong>Industry:</strong> {{company?.industry}}</p>
+            <p><strong>Registered:</strong> {{company?.createdAt | date:'mediumDate'}}</p>
+            <p><strong>Status:</strong> {{company?.status}}</p>
+
+            <div class="modal-actions">
+                <button type="button" (click)="onClose()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

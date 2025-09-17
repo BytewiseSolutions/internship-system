@@ -1,0 +1,39 @@
+<nav class="sidebar" [class.collapsed]="!isMobile && isCollapsed" [class.expanded]="isMobile && isMobileExpanded"
+    [class.mobile]="isMobile">
+    <div class="sidebar-header">
+        <h3 *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">
+            Student Panel
+        </h3>
+
+        <button class="toggle-btn" (click)="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li routerLinkActive="active" [routerLink]="['/student-dashboard']">
+            <i class="fas fa-tachometer-alt"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Dashboard</span>
+        </li>
+        <li routerLinkActive="active" [routerLink]="['/browse-internships']">
+            <i class="fas fa-users"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Browse Internships</span>
+        </li>
+        <li routerLinkActive="active" [routerLink]="['/track-application']">
+            <i class="fas fa-building"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Application Status</span>
+        </li>
+        <li routerLinkActive="active" [routerLink]="['/create-reviews']">
+            <i class="fas fa-clipboard-list"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Create Review</span>
+        </li>
+        <li routerLinkActive="active" [routerLink]="['/view-reviews']">
+            <i class="fas fa-briefcase"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">My Reviews</span>
+        </li>
+        <li (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Logout</span>
+        </li>
+    </ul>
+</nav>

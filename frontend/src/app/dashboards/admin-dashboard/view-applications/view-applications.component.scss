@@ -1,0 +1,66 @@
+.applications-container {
+padding: 0.5rem;
+
+    h2 {
+        color: #003366;
+        margin-bottom: 1rem;
+    }
+}
+.filters {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    input,
+    select {
+        padding: 0.4rem 0.6rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+}
+.table-wrapper {
+    overflow-x: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.applications-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+
+    thead {
+        background: linear-gradient(to right, #007acc, #00c6ff);
+        color: white;
+
+        th {
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+    }
+
+    tbody {
+        tr {
+            &:hover {
+                background: #f4faff;
+                transition: background 0.2s ease-in-out;
+            }
+
+            td {
+                padding: 10px;
+                text-align: center;
+            }
+        }
+    }
+}
+
+.empty-state {
+    text-align: center;
+    margin-top: 2rem;
+    color: #888;
+    font-size: 1.1rem;
+}

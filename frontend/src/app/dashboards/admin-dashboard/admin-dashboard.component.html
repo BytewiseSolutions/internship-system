@@ -1,0 +1,51 @@
+<div class="admin-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-admin-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-admin-sidebar>
+
+
+    <main class="main-content">
+        <app-admin-header [isSidebarCollapsed]="isSidebarCollapsed"></app-admin-header>
+
+        <div class="dashboard-cards">
+            <div class="card card-users">
+                <div class="icon-container">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="card-text">
+                    <h3>Total Users</h3>
+                    <p>{{ totalUsers }}</p>
+                </div>
+            </div>
+
+            <div class="card card-pending">
+                <div class="icon-container">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+                <div class="card-text">
+                    <h3>Pending Approvals</h3>
+                    <p>{{ pendingUsers }}</p>
+                </div>
+            </div>
+
+            <div class="card card-active">
+                <div class="icon-container">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="card-text">
+                    <h3>Active Users</h3>
+                    <p>{{ activeUsers }}</p>
+                </div>
+            </div>
+
+            <div class="card card-companies">
+                <div class="icon-container">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="card-text">
+                    <h3>Total Companies</h3>
+                    <p>{{ totalCompanies }}</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>

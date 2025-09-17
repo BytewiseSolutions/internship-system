@@ -1,0 +1,94 @@
+<h2>Manage Users</h2>
+
+<div class="toolbar">
+    <div class="filters">
+        <button [class.active]="filter === 'all'" (click)="setFilter('all')">All</button>
+        <button [class.active]="filter === 'pending'" (click)="setFilter('pending')">Pending</button>
+        <button [class.active]="filter === 'active'" (click)="setFilter('active')">Active</button>
+    </div>
+
+    <div class="controls">
+        <label>
+            Users per page:
+            <select [(ngModel)]="usersPerPage" (change)="currentPage = 1">
+                <option *ngFor="let option of perPageOptions" [value]="option">{{ option }}</option>
+            </select>
+        </label>
+
+        <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search by name or email"
+            class="search-input" />
+    </div>
+</div>
+
+<div *ngIf="loading" class="spinner">
+    <i class="fas fa-spinner fa-spin"></i> Loading users..
+</div>
+
+<div *ngIf="!loading && paginatedUsers.length === 0" class="empty-state">
+    No users found.
+</div>
+
+<div class="table-container" *ngIf="!loading && paginatedUsers.length > 0">
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of paginatedUsers; let i = index">
+                <td>{{ (currentPage - 1) * usersPerPage + i + 1 }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>
+                    <span [ngClass]="{
+              'status-pending': user.status === 'PENDING',
+              'status-active': user.status === 'ACTIVE',
+              'status-suspended': user.status === 'SUSPENDED',
+              'status-rejected': user.status === 'REJECTED'
+            }">{{ user.status }}</span>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <ng-container [ngSwitch]="user.status">
+                            <ng-container *ngSwitchCase="'PENDING'">
+                                <button class="btn btn-approve" (click)="approve(user)"> <i
+                                        class="fas fa-check-circle text-success"></i> Approve
+                                </button>
+                                <button class="btn btn-reject" (click)="reject(user)">
+                                    <i class="fas fa-times-circle text-danger"></i> Reject</button>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'ACTIVE'">
+                                <button class="btn btn-suspend" (click)="suspend(user)">
+                                    <i class="fas fa-ban text-warning"></i> Suspend</button>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'REJECTED'">
+                                <i class="fas fa-times-circle text-danger"></i> Rejected</ng-container>
+                            <ng-container *ngSwitchCase="'SUSPENDED'">
+                                <button class="btn btn-unsuspend" (click)="unsuspend(user)"><i
+                                        class="fas fa-unlock"></i> Unsuspend</button>
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>—</ng-container>
+                        </ng-container>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+        <ng-container *ngFor="let page of [].constructor(totalPages); let pageIndex = index">
+            <button [class.active]="pageIndex + 1 === currentPage" (click)="changePage(pageIndex + 1)">
+                {{ pageIndex + 1 }}
+            </button>
+        </ng-container>
+        <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+</div>

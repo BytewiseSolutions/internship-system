@@ -1,0 +1,47 @@
+<div class="applications-section">
+    <h2>Manage Applications</h2>
+    <div class="table-wrapper">
+        <table class="table-container">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Email</th>
+                    <th>Internship</th>
+                    <th>CV</th>
+                    <th>Transcript</th>
+                    <th>Application Letter</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let app of applications">
+                    <td>{{ app.student_name }}</td>
+                    <td>{{ app.student_email }}</td>
+                    <td>{{ app.internship_title }}</td>
+                    <td>
+                        <button class="cv" *ngIf="app.cvPath" (click)="downloadFile(app.cvPath)">
+                            Download CV
+                        </button>
+                    </td>
+                    <td>
+                        <button class="transcript" *ngIf="app.transcriptPath"
+                            (click)="downloadFile(app.transcriptPath)">
+                            Download Transcript
+                        </button>
+                    </td>
+                    <td>
+                        <button class="letter" *ngIf="app.applicationLetterPath"
+                            (click)="downloadFile(app.applicationLetterPath)">
+                            Download Letter
+                        </button>
+                    </td>
+                    <td>
+                        <select [(ngModel)]="app.status" (change)="updateStatus(app, app.status)">
+                            <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

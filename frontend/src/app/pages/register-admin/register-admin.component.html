@@ -1,0 +1,20 @@
+<div class="auth-container">
+    <h2>Register as Admin</h2>
+
+    <form (ngSubmit)="registerAdmin()">
+        <input type="text" placeholder="Full Name" [(ngModel)]="adminData.name" name="name" required />
+        <input type="email" placeholder="Email" [(ngModel)]="adminData.email" name="email" required />
+        <input type="text" placeholder="Contact" [(ngModel)]="adminData.contact" name="contact" />
+        <input type="password" placeholder="Password" [(ngModel)]="adminData.password" name="password" required />
+
+        <button type="submit" [disabled]="loading">
+            <span *ngIf="!loading">Register</span>
+            <span *ngIf="loading" class="spinner"></span>
+        </button>
+    </form>
+
+    <p class="register-link">
+        Already have an account?
+        <a routerLink="/login">Login here</a>
+    </p>
+</div>

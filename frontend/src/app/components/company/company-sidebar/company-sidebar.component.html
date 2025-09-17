@@ -1,0 +1,35 @@
+<nav class="sidebar" [class.collapsed]="!isMobile && isCollapsed" [class.expanded]="isMobile && isMobileExpanded"
+    [class.mobile]="isMobile">
+    <div class="sidebar-header">
+        <h3 *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">
+            Company Panel
+        </h3>
+
+        <button class="toggle-btn" (click)="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li routerLinkActive="active" [routerLink]="['/company-dashboard']">
+            <i class="fas fa-tachometer-alt"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Dashboard</span>
+        </li>
+        <li routerLinkActive="active" [routerLink]="['/manage-internships']">
+            <i class="fas fa-users"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Manage Internships</span>
+        </li>
+        <li routerLinkActive="active" [routerLink]="['/manage-applications']">
+            <i class="fas fa-building"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Students Applications</span>
+        </li>
+        <li routerLinkActive="active" [routerLink]="['/manage-reviews']">
+            <i class="fas fa-clipboard-list"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Reviews</span>
+        </li>
+        <li (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Logout</span>
+        </li>
+    </ul>
+</nav>

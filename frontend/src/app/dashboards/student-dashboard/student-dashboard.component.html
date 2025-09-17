@@ -1,0 +1,29 @@
+<div class="company-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-student-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-student-sidebar>
+
+    <main class="main-content">
+        <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
+
+
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>My Applications</h3>
+                <p>{{ studentStats.applications || 0 }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Approved Reviews</h3>
+                <p>{{ studentStats.reviews || 0 }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Notifications</h3>
+                <p>{{ studentStats.notifications || 0 }}</p>
+            </div>
+            <div class="card">
+                <h3>Internships</h3>
+                <p>{{ studentStats.internships || 0 }}</p>
+            </div>
+        </div>
+    </main>
+</div>

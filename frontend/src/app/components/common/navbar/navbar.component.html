@@ -1,0 +1,14 @@
+<nav class="navbar">
+    <div class="logo">IMS</div>
+    <div class="menu-toggle" (click)="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <ul class="nav-links" [class.active]="mobileMenuOpen">
+        <li><a routerLink="/about">About Us</a></li>
+        <li><a routerLink="/faqs">FAQs</a></li>
+        <li><a routerLink="/contact">Contact</a></li>
+    </ul>
+    <div class="auth-buttons" [class.active]="mobileMenuOpen">
+        <a routerLink="/login" class="btn btn-login">Sign In</a>
+    </div>
+</nav>

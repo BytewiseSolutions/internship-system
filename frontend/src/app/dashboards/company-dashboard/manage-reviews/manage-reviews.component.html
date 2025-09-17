@@ -1,0 +1,30 @@
+<div class="reviews-container">
+    <h2>Manage Reviews</h2>
+
+    <div *ngIf="loading">Loading reviews...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div *ngIf="!loading && reviews.length === 0" class="empty-state">
+        No reviews found.
+    </div>
+
+    <div class="review-list" *ngIf="!loading && reviews.length > 0">
+        <div class="review-card" *ngFor="let review of reviews">
+            <h3>{{ review.internship_title }}</h3>
+            <p><strong>Rating:</strong> {{ review.rating }} / 5</p>
+            <p><strong>Comment:</strong> {{ review.comment }}</p>
+            <p><strong>Submitted by:</strong> {{ review.student_name }}</p>
+            <p><strong>Date:</strong> {{ review.created_at | date:'medium' }}</p>
+
+            <div>
+                <label>Reply:</label>
+                <textarea [(ngModel)]="companyReply[review.id]" rows="2"></textarea>
+                <button (click)="submitReply(review.id)">Submit Reply</button>
+            </div>
+
+            <div *ngIf="review.employer_reply" class="employer-reply">
+                <strong>Existing Reply:</strong> {{ review.employer_reply }}
+            </div>
+        </div>
+    </div>
+</div>

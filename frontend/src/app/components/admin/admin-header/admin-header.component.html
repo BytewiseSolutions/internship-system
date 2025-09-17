@@ -1,0 +1,13 @@
+<header class="main-header" [class.collapsed]="isSidebarCollapsed">
+    <div class="header-title">
+        <h2>Admin Dashboard</h2>
+    </div>
+
+    <div class="header-right">
+        <span class="admin-info">Welcome, Admin</span>
+        <i class="fas fa-user-circle admin-avatar"></i>
+        <button class="logout-btn" (click)="logout()" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+    </div>
+</header>

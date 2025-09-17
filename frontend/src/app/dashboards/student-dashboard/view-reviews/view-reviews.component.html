@@ -1,0 +1,23 @@
+<div class="reviews-container">
+    <h2>My Reviews</h2>
+
+    <div *ngIf="loading">Loading reviews...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div *ngIf="!loading && reviews.length === 0" class="empty-state">
+        No reviews found.
+    </div>
+
+    <div class="review-list" *ngIf="!loading && reviews.length > 0">
+        <div class="review-card" *ngFor="let review of reviews">
+            <h3>{{ review.internship_title }}</h3>
+            <p><strong>Rating:</strong> {{ review.rating }} / 5</p>
+            <p><strong>Comment:</strong> {{ review.comment }}</p>
+            <p><strong>Date:</strong> {{ review.created_at | date:'medium' }}</p>
+
+            <div *ngIf="review.employer_reply" class="employer-reply">
+                <p><strong>Employer Reply:</strong> {{ review.employer_reply }}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="review-container">
+    <h2>Submit Internship Review</h2>
+
+    <div *ngIf="internships.length === 0">
+        You have no completed internships to review.
+    </div>
+
+    <div *ngIf="internships.length > 0">
+        <label>Select Internship:</label>
+        <select [(ngModel)]="selectedInternshipId">
+            <option value="">--Select--</option>
+            <option *ngFor="let i of internships" [value]="i.internship_id">{{ i.internship_title }}</option>
+        </select>
+
+        <label>Rating:</label>
+        <select [(ngModel)]="rating">
+            <option value="">--Select--</option>
+            <option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }} Stars</option>
+        </select>
+
+        <label>Comment:</label>
+        <textarea [(ngModel)]="comment" rows="4"></textarea>
+
+        <button (click)="submitReview()">Submit Review</button>
+    </div>
+</div>
