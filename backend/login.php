@@ -28,7 +28,6 @@ if ($row = $result->fetch_assoc()) {
 
     $token = generateToken($row['email'], $row['role']);
 
-    // If user is a company, try to find corresponding companies.id
     $companyId = null;
     if ($row['role'] === 'COMPANY') {
         $stmt2 = $conn->prepare("SELECT id FROM companies WHERE email = ? LIMIT 1");

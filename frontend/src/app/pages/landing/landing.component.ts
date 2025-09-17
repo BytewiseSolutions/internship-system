@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FooterComponent } from '../../components/common/footer/footer.component';
 import { NavbarComponent } from '../../components/common/navbar/navbar.component';
+import { AvailableInternship, InternshipService } from '../../services/internship.service';
 
 @Component({
   selector: 'app-landing',
@@ -16,46 +17,30 @@ import { NavbarComponent } from '../../components/common/navbar/navbar.component
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
-export class LandingComponent {
+export class LandingComponent implements OnInit {
+  internships: AvailableInternship[] = [];
+  mobileMenuOpen = false;
 
-   mobileMenuOpen = false;
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private internshipService: InternshipService
+  ) { }
 
-
-   toggleMobileMenu() {
+  toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }
-  
- internships = [
-    {
-      title: 'Frontend Developer Intern',
-      company: 'Tech Solutions',
-      location: 'Maseru',
-      postedDate: '2025-07-20',
-      description: 'Assist in building Angular-based user interfaces.'
-    },
-    {
-      title: 'Marketing Assistant',
-      company: 'Lesotho Brands',
-      location: 'Mafeteng',
-      postedDate: '2025-07-18',
-      description: 'Support campaign management and social media strategies.'
-    },
-    {
-      title: 'Data Analyst Intern',
-      company: 'AgriTech Lesotho',
-      location: 'Teyateyaneng',
-      postedDate: '2025-07-19',
-      description: 'Work with agri-data to provide insights and reports.'
-    }
-  ];
-
- applyNow() {
-    const loggedIn = localStorage.getItem('user'); 
+  ngOnInit() {
+    this.internshipService.getAvailableInternships().subscribe({
+      next: (data) => this.internships = data,
+      error: (err) => console.error('Error fetching internships', err)
+    });
+  }
+  applyNow(internshipId: number) {
+    const loggedIn = localStorage.getItem('user');
     if (loggedIn) {
-      alert('You are logged in, redirect to application form.');
+      this.router.navigate(['/apply', internshipId]);
     } else {
-      this.router.navigate(['/login'], { queryParams: { redirect: 'register' } });
+      this.router.navigate(['/login'], { queryParams: { redirect: `/apply/${internshipId}` } });
     }
   }
 }

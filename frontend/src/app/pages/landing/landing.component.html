@@ -1,6 +1,5 @@
 <div class="landing-container">
     <app-navbar></app-navbar>
-    <!-- Hero Section -->
     <header class="hero-section">
         <div class="hero-text">
             <h1>Welcome to Internship Management System</h1>
@@ -11,21 +10,20 @@
             </div>
         </div>
         <div class="hero-image">
-            <img src="assets/hero_students.jpg" alt="Students" />
+            <img src="assets/images.jpeg" alt="Students" />
         </div>
     </header>
 
-    <!-- Internship Listings -->
     <section class="internship-section">
         <h2 class="section-title">Available Internships</h2>
         <div class="internship-grid">
             <div class="internship-card" *ngFor="let internship of internships">
                 <h3 class="title">{{ internship.title }}</h3>
-                <p class="company"><i class="fas fa-building"></i> {{ internship.company }}</p>
+            <p class="company"><i class="fas fa-building"></i> {{ internship.company }}</p>
                 <p class="location"><i class="fas fa-map-marker-alt"></i> {{ internship.location }}</p>
                 <p class="posted-date"><i class="fas fa-calendar-alt"></i> Posted on {{ internship.postedDate }}</p>
                 <p class="description">{{ internship.description }}</p>
-                <button class="apply-btn">Apply Now</button>
+                <button class="apply-btn" (click)="applyNow(internship.id)">Apply Now</button>
             </div>
         </div>
     </section>

@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Application, ApplicationService } from '../../../services/application.service';
+import { Router } from '@angular/router';
+import { ToastService } from '../../../services/toast.service';
 
 interface Internship {
   id: number;
@@ -25,6 +28,7 @@ interface Internship {
 export class BrowseInternshipsComponent implements OnInit {
   internships: Internship[] = [];
   filteredInternships: Internship[] = [];
+  appliedInternshipIds: number[] = [];
 
   searchTerm: string = '';
   filterPostedFrom: string = '';
@@ -41,16 +45,21 @@ export class BrowseInternshipsComponent implements OnInit {
   selectedInternship: Internship | null = null;
   files: { cv?: File; transcript?: File; letter?: File } = {};
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private applicationService: ApplicationService,
+    private toast: ToastService,
+    private router: Router,
+    private http: HttpClient) { }
 
   ngOnInit() {
     this.loadInternships();
+    this.loadAppliedInternships();
   }
 
   loadInternships() {
     this.http.get<Internship[]>('http://localhost:8081/internships/get_internships.php')
       .pipe(
-        map(data => data.filter(item => item.status === 'Active')) // optional: only show active internships
+        map(data => data.filter(item => item.status === 'Active'))
       )
       .subscribe({
         next: (data) => {
@@ -63,7 +72,20 @@ export class BrowseInternshipsComponent implements OnInit {
         }
       });
   }
+  loadAppliedInternships() {
+    const student = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!student?.id) return;
 
+    this.applicationService.getApplications()
+      .subscribe({
+        next: (applications: Application[]) => {
+          this.appliedInternshipIds = applications
+            .filter(a => a.student_id === student.id)
+            .map(a => a.internship_id);
+        },
+        error: (err) => console.error('Failed to load student applications:', err)
+      });
+  }
   filterInternships() {
     this.filteredInternships = this.internships.filter(internship => {
       const search = this.searchTerm.toLowerCase();
@@ -89,6 +111,7 @@ export class BrowseInternshipsComponent implements OnInit {
     this.currentPage = 1;
     this.totalPages = Math.ceil(this.filteredInternships.length / this.itemsPerPage);
   }
+
   get paginatedInternships(): Internship[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredInternships.slice(start, start + this.itemsPerPage);
@@ -120,31 +143,7 @@ export class BrowseInternshipsComponent implements OnInit {
     }
   }
 
-  // submitApplication() {
-  //   if (!this.selectedInternship) return;
 
-  //   const student = JSON.parse(localStorage.getItem('user') || '{}');
-  //   const studentId = student.id || student.user_id;
-  //   if (!studentId || student.role !== 'STUDENT') {
-  //     alert('You must be logged in as a student to apply.');
-  //     return;
-  //   }
-  //   const formData = new FormData();
-  //   formData.append('student_id', studentId.toString());
-  //   formData.append('internship_id', this.selectedInternship.id.toString());
-  //   if (this.files.cv) formData.append('cv', this.files.cv);
-  //   if (this.files.transcript) formData.append('transcript', this.files.transcript);
-  //   if (this.files.letter) formData.append('letter', this.files.letter);
-
-  //   this.http.post('http://localhost:8081/applications/add_application.php', formData)
-  //     .subscribe({
-  //       next: (res) => {
-  //         console.log('Application submitted', res);
-  //         this.closeApplyModal();
-  //       },
-  //       error: (err) => console.error('Error submitting application', err)
-  //     });
-  // }
   submitApplication() {
     if (!this.selectedInternship) {
       console.log('No internship selected.');
@@ -206,5 +205,4 @@ export class BrowseInternshipsComponent implements OnInit {
         }
       });
   }
-
 }
