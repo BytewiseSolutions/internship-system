@@ -26,7 +26,6 @@
     </p>
 </div>
 
-<!-- Role Selection Modal -->
 <div class="modal fade" tabindex="-1" [ngClass]="{'show': showModal}" [style.display]="showModal ? 'block' : 'none'">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -34,12 +33,11 @@
                 <h5 class="modal-title">Register As</h5>
                 <button type="button" class="btn-close" (click)="closeModal()"></button>
             </div>
-                <p>Select your role:</p>
+            <p>Select your role:</p>
             <div class="modal-body text-center">
-          
-                <button class="btn btn-primary m-2" (click)="selectRole('STUDENT')">Student</button>
-                <button class="btn btn-warning m-2" (click)="selectRole('COMPANY')">Company</button>
-                <button class="btn btn-danger m-2" (click)="selectRole('ADMIN')">Admin</button>
+                <button type="button" class="btn btn-primary m-2" (click)="selectRole('STUDENT')">Student</button>
+                <button type="button" class="btn btn-warning m-2" (click)="selectRole('COMPANY')">Company</button>
+                <button type="button" class="btn btn-danger m-2" (click)="selectRole('ADMIN')">Admin</button>
             </div>
         </div>
     </div>

@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
-
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -41,50 +39,9 @@ export class LoginComponent {
     } else if (role === 'COMPANY') {
       this.router.navigate(['/register-company']);
     } else if (role === 'ADMIN') {
-      this.router.navigate(['/register-admin']);
+      this.toast.show('Please contact our system administrator if you want to join internship management system as a staff...', 'error');
     }
   }
-  // login() {
-  //   this.loading = true;
-  //   this.authService.login(this.credentials).subscribe({
-  //     next: (response: any) => {
-  //       this.toast.show('Login successful! Redirecting...', 'success');
-
-  //       const userObj = {
-  //         id: response.id,
-  //         name: response.name ?? '',
-  //         email: response.email,
-  //         role: response.role,
-  //         token: response.token ?? null,
-  //         companyId: response.company_id ?? null
-  //       };
-
-  //       localStorage.setItem('user', JSON.stringify(userObj));
-
-  //       if (this.credentials.rememberMe) {
-  //         localStorage.setItem('email', this.credentials.email);
-  //       } else {
-  //         localStorage.removeItem('email');
-  //       }
-
-  //       setTimeout(() => {
-  //         if (response.role === 'ADMIN') {
-  //           this.router.navigate(['/admin-dashboard']);
-  //         } else if (response.role === 'COMPANY') {
-  //           this.router.navigate(['/company-dashboard']);
-  //         } else if (response.role === 'STUDENT') {
-  //           this.router.navigate(['/student-dashboard']);
-  //         }
-  //       }, 3000);
-  //     },
-
-  //     error: err => {
-  //       const errorMsg = err.error?.message || 'Invalid email or password.';
-  //       this.toast.show(errorMsg, 'error');
-  //       this.loading = false;
-  //     }
-  //   });
-  // }
 
   login() {
     this.loading = true;
@@ -110,7 +67,6 @@ export class LoginComponent {
         }
 
         setTimeout(() => {
-          // If redirect query param exists, navigate there
           if (this.redirectUrl) {
             this.router.navigateByUrl(this.redirectUrl);
           } else {
