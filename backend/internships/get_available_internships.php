@@ -3,10 +3,10 @@ require '../config.php';
 require '../cors.php';
 require '../utils.php';
 
-$sql = "SELECT i.id, i.title, c.name AS company_name, i.location, i.postedDate, i.description 
+$sql = "SELECT i.id, i.title, c.name AS name, i.location, i.postedDate, i.deadline, i.description 
         FROM internships i
         JOIN companies c ON i.company_id = c.id
-        WHERE i.status = 'Active'
+        WHERE i.status = 'ACTIVE'
         ORDER BY i.postedDate DESC";
 
 $result = $conn->query($sql);

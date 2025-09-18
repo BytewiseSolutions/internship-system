@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Company, CompanyService } from '../../../services/company.service';
+import { AddCompanyPayload, Company, CompanyService } from '../../../services/company.service';
 import { ToastService } from '../../../services/toast.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -50,13 +50,23 @@ export class ManageCompaniesComponent implements OnInit {
   }
 
   openAddModal() {
-    this.modalCompany = { name: '', email: '', industry: '', createdAt: new Date(), status: 'ACTIVE' };
+    this.modalCompany = {
+      name: '',
+      email: '',
+      industry: '',
+      createdAt: new Date(),
+      status: 'ACTIVE',
+      user: { name: '', email: '', contact: '', password: '' }
+    };
     this.modalMode = 'add';
     this.showModal = true;
   }
 
   openEditModal(company: Company) {
-    this.modalCompany = { ...company };
+    this.modalCompany = {
+      ...company,
+      user: company.user ?? { name: '', email: '', contact: '', password: '' }
+    };
     this.modalMode = 'edit';
     this.showModal = true;
   }
@@ -72,24 +82,49 @@ export class ManageCompaniesComponent implements OnInit {
     this.modalCompany = null;
   }
 
-  handleModalSave(company: Company) {
-    if (this.modalMode === 'add') this.addCompany(company);
-    else if (this.modalMode === 'edit') this.updateCompany(company);
+  handleModalSave(added: Company) {
+    if (this.modalMode === 'add') {
+      this.companies.push(added);
+    } else if (this.modalMode === 'edit') {
+      const index = this.companies.findIndex(c => c.id === added.id);
+      if (index !== -1) this.companies[index] = added;
+    }
+    this.handleModalClose();
   }
 
   addCompany(company: Company) {
-    this.companyService.addCompany(company).subscribe({
-      next: added => {
-        this.companies.push(added);
-        this.handleModalClose();
-        this.toast.show('Company added successfully', 'success');
+    if (!company.user) {
+      this.toast.show('User info is required', 'error');
+      return;
+    }
+
+    this.companyService.addUser(company.user).subscribe({
+      next: (user: any) => {
+        const payload: AddCompanyPayload = {
+          user: company.user!,
+          company: {
+            name: company.name,
+            email: company.email,
+            industry: company.industry,
+            status: company.status,
+            createdAt: company.createdAt
+          }
+        };
+
+        this.companyService.addCompany(payload).subscribe({
+          next: added => {
+            this.companies.push(added);
+            this.handleModalClose();
+            this.toast.show('Company added successfully', 'success');
+          },
+          error: err => this.toast.show('Failed to add company', 'error')
+        });
       },
-      error: err => {
-        this.toast.show('Failed to add company', 'error');
-        console.error('Add error:', err);
-      }
+      error: err => this.toast.show('Failed to add user', 'error')
     });
   }
+
+
 
   updateCompany(company: Company) {
     if (!company.id) return;

@@ -48,7 +48,6 @@
         <div *ngIf="!loading && companies.length === 0" class="empty-state">No Companies found.</div>
     </div>
 
-    <!-- Reusable Modal -->
     <app-company-modal *ngIf="showModal" [mode]="modalMode" [company]="modalCompany" (close)="handleModalClose()"
         (save)="handleModalSave($event)">
     </app-company-modal>

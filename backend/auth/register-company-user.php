@@ -2,7 +2,6 @@
 require '../config.php';
 require '../cors.php';
 require '../utils.php';
-require_once __DIR__ . "/notify_admin.php";
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -30,11 +29,11 @@ if (!$stmt) {
 $stmt->bind_param("ssss", $name, $email, $contact, $hashedPassword);
 
 if (!$stmt->execute()) {
-    send_json(["message" => "Registration failed: " . $stmt->error], 500);
+    send_json(["message" => "User registration failed: " . $stmt->error], 500);
     exit;
 }
 
-$result = notifyAdmins("COMPANY");
-error_log("Notify Admin Result: " . json_encode($result));
+$userId = $stmt->insert_id;
+$stmt->close();
 
-send_json(["message" => "Company registration submitted for approval."]);
+send_json(["message" => "User account created. Proceed to company details.", "user_id" => $userId]);

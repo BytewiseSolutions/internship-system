@@ -14,14 +14,40 @@
         </div>
     </header>
 
+    <section class="filters-section">
+        <h3>Filter Internships</h3>
+        <div class="filters">
+            <select [(ngModel)]="selectedCompany">
+                <option value="">All Companies</option>
+                <option *ngFor="let c of companies" [value]="c">{{ c }}</option>
+            </select>
+
+            <input type="text" [(ngModel)]="locationFilter" placeholder="Filter by location" />
+
+            <select [(ngModel)]="deadlineFilter">
+                <option value="">All Deadlines</option>
+                <option value="upcoming">Upcoming Only</option>
+                <option value="expired">Expired</option>
+            </select>
+
+            <button class="btn btn-secondary" (click)="clearFilters()">Clear Filters</button>
+        </div>
+    </section>
     <section class="internship-section">
         <h2 class="section-title">Available Internships</h2>
         <div class="internship-grid">
-            <div class="internship-card" *ngFor="let internship of internships">
+            <div class="internship-card" *ngFor="let internship of filteredInternships()">
                 <h3 class="title">{{ internship.title }}</h3>
-            <p class="company"><i class="fas fa-building"></i> {{ internship.company }}</p>
+                <p class="company"><i class="fas fa-building"></i> {{ internship.name }}</p>
                 <p class="location"><i class="fas fa-map-marker-alt"></i> {{ internship.location }}</p>
-                <p class="posted-date"><i class="fas fa-calendar-alt"></i> Posted on {{ internship.postedDate }}</p>
+                <p class="posted-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    Posted on {{ internship.postedDate | date: 'dd MMM yyyy' }}
+                </p>
+                <p class="deadline">
+                    <i class="fas fa-hourglass-end"></i>
+                    Deadline: {{ internship.deadline | date: 'dd MMM yyyy' }}
+                </p>
                 <p class="description">{{ internship.description }}</p>
                 <button class="apply-btn" (click)="applyNow(internship.id)">Apply Now</button>
             </div>

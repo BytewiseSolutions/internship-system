@@ -1,14 +1,26 @@
 <div class="auth-container">
-    <h2>Register as Company</h2>
+    <h2 *ngIf="step === 1">Register Company User</h2>
+    <h2 *ngIf="step === 2">Enter Company Details</h2>
 
-    <form (ngSubmit)="registerCompany()">
-        <input type="text" placeholder="Company Name" [(ngModel)]="companyData.name" name="name" required />
-        <input type="email" placeholder="Email" [(ngModel)]="companyData.email" name="email" required />
-        <input type="text" placeholder="Contact" [(ngModel)]="companyData.contact" name="contact" />
-        <input type="password" placeholder="Password" [(ngModel)]="companyData.password" name="password" required />
+    <form *ngIf="step === 1" (ngSubmit)="registerUser()">
+        <input type="text" placeholder="Your Name" [(ngModel)]="userData.name" name="name" required />
+        <input type="email" placeholder="Your Email" [(ngModel)]="userData.email" name="email" required />
+        <input type="text" placeholder="Contact" [(ngModel)]="userData.contact" name="contact" />
+        <input type="password" placeholder="Password" [(ngModel)]="userData.password" name="password" required />
 
         <button type="submit" [disabled]="loading">
-            <span *ngIf="!loading">Register</span>
+            <span *ngIf="!loading">Next</span>
+            <span *ngIf="loading" class="spinner"></span>
+        </button>
+    </form>
+
+    <form *ngIf="step === 2" (ngSubmit)="registerCompany()">
+        <input type="text" placeholder="Company Name" [(ngModel)]="companyData.name" name="companyName" required />
+        <input type="email" placeholder="Company Email" [(ngModel)]="companyData.email" name="companyEmail" required />
+        <input type="text" placeholder="Industry" [(ngModel)]="companyData.industry" name="industry" required />
+
+        <button type="submit" [disabled]="loading">
+            <span *ngIf="!loading">Register Company</span>
             <span *ngIf="loading" class="spinner"></span>
         </button>
     </form>

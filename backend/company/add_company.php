@@ -5,44 +5,70 @@ require '../utils.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (!$data || !isset($data['name'], $data['email'], $data['industry'], $data['createdAt'], $data['status'])) {
+if (
+    !$data || !isset(
+    $data['user']['name'],
+    $data['user']['email'],
+    $data['user']['password'],
+    $data['company']['name'],
+    $data['company']['email'],
+    $data['company']['industry'],
+    $data['company']['status']
+)
+) {
     send_json(["message" => "Missing required fields"], 400);
+    exit;
 }
 
-$name = $data['name'];
-$email = $data['email'];
-$industry = $data['industry'];
-$createdAt = date('Y-m-d', strtotime($data['createdAt']));
-$status = $data['status'];
+$userName = trim($data['user']['name']);
+$userEmail = trim($data['user']['email']);
+$userPassword = $data['user']['password'];
+$userContact = $data['user']['contact'] ?? '';
+$companyStatus = $data['company']['status'];
 
-$stmt = $conn->prepare("INSERT INTO companies (name, email, industry, created_at, status) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("sssss", $name, $email, $industry, $createdAt, $status);
+$companyName = trim($data['company']['name']);
+$companyEmail = trim($data['company']['email']);
+$companyIndustry = $data['company']['industry'];
+$companyCreatedAt = date('Y-m-d', strtotime($data['company']['createdAt'] ?? 'now'));
 
-if ($stmt->execute()) {
-    $companyId = $stmt->insert_id;
+$hashedPassword = password_hash($userPassword, PASSWORD_BCRYPT);
 
-    $defaultPassword = password_hash('Company@123', PASSWORD_DEFAULT);
-    $userRole = 'COMPANY';
-    $contact = '';
-    $resetToken = null;
-
-    $stmtUser = $conn->prepare("INSERT INTO users (name, email, role, contact, password, reset_token, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmtUser->bind_param("sssssss", $name, $email, $userRole, $contact, $defaultPassword, $resetToken, $status);
-    $stmtUser->execute();
+$conn->begin_transaction();
+try {
+    $stmtUser = $conn->prepare("INSERT INTO users (name, email, role, contact, password, reset_token, status) VALUES (?, ?, 'COMPANY', ?, ?, NULL, ?)");
+    if (!$stmtUser)
+        throw new Exception("Prepare user failed: " . $conn->error);
+    $stmtUser->bind_param("sssss", $userName, $userEmail, $userContact, $hashedPassword, $companyStatus);
+    if (!$stmtUser->execute())
+        throw new Exception("User insert failed: " . $stmtUser->error);
+    $userId = $stmtUser->insert_id;
     $stmtUser->close();
+
+    $stmtCompany = $conn->prepare("INSERT INTO companies (name, email, industry, created_at, status, user_id) VALUES (?, ?, ?, ?, ?, ?)");
+    if (!$stmtCompany)
+        throw new Exception("Prepare company failed: " . $conn->error);
+    $stmtCompany->bind_param("sssssi", $companyName, $companyEmail, $companyIndustry, $companyCreatedAt, $companyStatus, $userId);
+    if (!$stmtCompany->execute())
+        throw new Exception("Company insert failed: " . $stmtCompany->error);
+    $companyId = $stmtCompany->insert_id;
+    $stmtCompany->close();
+
+    $conn->commit();
 
     send_json([
         "id" => $companyId,
-        "name" => $name,
-        "email" => $email,
-        "industry" => $industry,
-        "createdAt" => $createdAt,
-        "status" => $status
+        "name" => $companyName,
+        "email" => $companyEmail,
+        "industry" => $companyIndustry,
+        "createdAt" => $companyCreatedAt,
+        "status" => $companyStatus,
+        "user_id" => $userId
     ]);
-} else {
-    send_json(["message" => "Failed to add company"], 500);
+
+} catch (Exception $e) {
+    $conn->rollback();
+    send_json(["message" => "Failed to add company: " . $e->getMessage()], 500);
 }
 
-$stmt->close();
 $conn->close();
 ?>

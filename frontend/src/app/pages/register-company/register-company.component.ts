@@ -17,13 +17,22 @@ import { ToastService } from '../../services/toast.service';
   styleUrls: ['./register-company.component.scss']
 })
 export class RegisterCompanyComponent {
-  companyData = {
+  step = 1;
+  loading = false;
+
+  userData = {
     name: '',
     email: '',
     contact: '',
     password: ''
   };
-  loading = false;
+
+  companyData = {
+    name: '',
+    email: '',
+    industry: '',
+    status: 'ACTIVE'
+  };
 
   private baseUrl = 'http://localhost:8081';
 
@@ -33,27 +42,53 @@ export class RegisterCompanyComponent {
     private toast: ToastService
   ) { }
 
-  registerCompany() {
-    if (!this.companyData.name || !this.companyData.email || !this.companyData.password) {
+  registerUser() {
+    if (!this.userData.name || !this.userData.email || !this.userData.password) {
       this.toast.show('All fields are required!', 'error');
       return;
     }
 
     this.loading = true;
-    this.http.post(`${this.baseUrl}/auth/register-company.php`, this.companyData, { responseType: 'json' })
+    this.http.post(`${this.baseUrl}/auth/register-company-user.php`, this.userData, { responseType: 'json' })
       .subscribe({
         next: (res: any) => {
-          this.toast.show(res.message || 'Company registration submitted for approval.', 'success');
+          this.toast.show(res.message || 'Account created. Now enter company details.', 'success');
           this.loading = false;
-          this.http.post(`${this.baseUrl}/auth/notify_admin.php`, { role: 'COMPANY' })
-            .subscribe({
-              next: () => console.log('Admins notified successfully'),
-              error: (err) => console.error('Failed to notify Companies', err)
-            });
+
+          localStorage.setItem('newCompanyUserId', res.user_id);
+
+          this.step = 2;
+        },
+        error: (err) => {
+          const errorMsg = err.error?.message || 'User registration failed. Please try again.';
+          this.toast.show(errorMsg, 'error');
+          this.loading = false;
+        }
+      });
+  }
+  registerCompany() {
+    const userId = localStorage.getItem('newCompanyUserId');
+    if (!userId) {
+      this.toast.show('User not found. Please restart registration.', 'error');
+      return;
+    }
+
+    this.loading = true;
+    const payload = { ...this.companyData, user_id: userId };
+
+    this.http.post(`${this.baseUrl}/auth/register-company-details.php`, payload, { responseType: 'json' })
+      .subscribe({
+        next: (res: any) => {
+          this.toast.show(res.message || 'Company registered successfully.', 'success');
+          this.loading = false;
+          localStorage.removeItem('newCompanyUserId');
+
+          this.http.post(`${this.baseUrl}/auth/notify_admin.php`, { role: 'COMPANY' }).subscribe();
+
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          const errorMsg = err.error?.message || 'Registration failed. Please try again.';
+          const errorMsg = err.error?.message || 'Company registration failed.';
           this.toast.show(errorMsg, 'error');
           this.loading = false;
         }

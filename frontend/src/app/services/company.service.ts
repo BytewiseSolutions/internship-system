@@ -8,6 +8,27 @@ export interface Company {
     industry: string;
     createdAt: Date;
     status: string;
+    user?: {
+        name: string;
+        email: string;
+        contact?: string;
+        password?: string;
+    };
+}
+export interface AddCompanyPayload {
+    user: {
+        name: string;
+        email: string;
+        contact?: string;
+        password?: string;
+    };
+    company: {
+        name: string;
+        email: string;
+        industry: string;
+        status: string;
+        createdAt: Date;
+    };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,9 +40,12 @@ export class CompanyService {
     getCompanies() {
         return this.http.get<Company[]>(`${this.apiUrl}/get_companies.php`);
     }
+    addUser(user: any) {
+        return this.http.post<{ id: number }>(`${this.apiUrl}/register-company-user.php`, user);
+    }
 
-    addCompany(company: Company) {
-        return this.http.post<Company>(`${this.apiUrl}/add_company.php`, company);
+    addCompany(payload: AddCompanyPayload) {
+        return this.http.post<Company>(`${this.apiUrl}/add_company.php`, payload);
     }
 
     updateCompany(id: number, company: Company) {

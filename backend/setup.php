@@ -32,11 +32,13 @@ if (!$conn->query($sqlCreateUsersTable))
 $sqlCreateCompaniesTable = "
 CREATE TABLE IF NOT EXISTS companies (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     industry VARCHAR(255) NOT NULL,
     created_at DATE NOT NULL,
-    status ENUM('Active','Inactive','Blocked') DEFAULT 'ACTIVE'
+    status ENUM('ACTIVE','INACTIVE','BLOCKED') DEFAULT 'ACTIVE',
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 )";
 if (!$conn->query($sqlCreateCompaniesTable))
     die("Error creating companies table: " . $conn->error);
@@ -90,23 +92,6 @@ CREATE TABLE IF NOT EXISTS reviews (
 if (!$conn->query($sqlCreateReviewsTable))
     die("Error creating reviews table: " . $conn->error);
 
-$companies = [
-    [
-        'name' => 'Example Company',
-        'email' => 'company@example.com',
-        'industry' => 'Tech',
-        'created_at' => date('Y-m-d'),
-        'status' => 'ACTIVE'
-    ]
-];
-
-$stmtCompany = $conn->prepare("INSERT INTO companies (name, email, industry, created_at, status) VALUES (?, ?, ?, ?, ?)");
-foreach ($companies as $company) {
-    $stmtCompany->bind_param("sssss", $company['name'], $company['email'], $company['industry'], $company['created_at'], $company['status']);
-    $stmtCompany->execute();
-}
-$stmtCompany->close();
-
 $users = [
     [
         'name' => 'Lebohang Monamane',
@@ -128,7 +113,7 @@ $users = [
     ],
     [
         'name' => 'Company User',
-        'email' => 'company@example.com',
+        'email' => 'companyuser@example.com',
         'role' => 'COMPANY',
         'contact' => '59194870',
         'password' => password_hash('Company@123', PASSWORD_DEFAULT),
@@ -144,7 +129,27 @@ foreach ($users as $user) {
 }
 $stmt->close();
 
-echo "Database, tables, users, and companies setup complete.";
+$companyUserId = $conn->insert_id;
+
+$companies = [
+    [
+        'user_id' => $companyUserId,
+        'name' => 'Example Company',
+        'email' => 'info@examplecompany.com',
+        'industry' => 'Tech',
+        'created_at' => date('Y-m-d'),
+        'status' => 'ACTIVE'
+    ]
+];
+
+$stmtCompany = $conn->prepare("INSERT INTO companies (user_id, name, email, industry, created_at, status) VALUES (?, ?, ?, ?, ?, ?)");
+foreach ($companies as $company) {
+    $stmtCompany->bind_param("isssss", $company['user_id'], $company['name'], $company['email'], $company['industry'], $company['created_at'], $company['status']);
+    $stmtCompany->execute();
+}
+$stmtCompany->close();
+
+echo "Database, tables, users, and companies setup complete with user-company relationship.";
 
 $conn->close();
 ?>
