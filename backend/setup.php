@@ -92,6 +92,19 @@ CREATE TABLE IF NOT EXISTS reviews (
 if (!$conn->query($sqlCreateReviewsTable))
     die("Error creating reviews table: " . $conn->error);
 
+$sqlCreateNotificationsTable = "
+CREATE TABLE IF NOT EXISTS notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    message TEXT NOT NULL,
+    is_read TINYINT(1) DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)";
+if (!$conn->query($sqlCreateNotificationsTable)) {
+    die("Error creating notifications table: " . $conn->error);
+}
+
 $users = [
     [
         'name' => 'Lebohang Monamane',
@@ -103,7 +116,16 @@ $users = [
         'status' => 'ACTIVE'
     ],
     [
-        'name' => 'qenehelo Khophoche',
+        'name' => 'Neo Sello',
+        'email' => 'neosello0320@gmail.com',
+        'role' => 'ADMIN',
+        'contact' => '59194870',
+        'password' => password_hash('Neo@1234', PASSWORD_DEFAULT),
+        'reset_token' => null,
+        'status' => 'ACTIVE'
+    ],
+    [
+        'name' => 'Qenehelo Khophoche',
         'email' => 'qenehelokhophoche@gmail.com',
         'role' => 'STUDENT',
         'contact' => '57510582',

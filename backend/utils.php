@@ -6,6 +6,26 @@ require __DIR__ . '/../phpmailer/src/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+function loadEnv($path)
+{
+    if (!file_exists($path)) {
+        return;
+    }
+
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0)
+            continue;
+        list($name, $value) = explode('=', $line, 2);
+        $name = trim($name);
+        $value = trim($value);
+        $_ENV[$name] = $value;
+        putenv("$name=$value");
+    }
+}
+
+loadEnv(__DIR__ . '/.env');
+
 function send_json($data, $status = 200)
 {
     http_response_code($status);
@@ -13,6 +33,7 @@ function send_json($data, $status = 200)
     echo json_encode($data);
     exit();
 }
+
 function generateToken($email, $role)
 {
     $payload = [
@@ -38,16 +59,20 @@ function decodeToken($token)
 function sendMail($to, $subject, $body)
 {
     $mail = new PHPMailer(true);
+
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = $_ENV['MAIL_HOST'];
         $mail->SMTPAuth = true;
-        $mail->Username = 'monamane.lebohang45@gmail.com';
-        $mail->Password = 'gaxp yyhb iodh uhix';
+        $mail->Username = $_ENV['MAIL_USERNAME'];
+        $mail->Password = $_ENV['MAIL_PASSWORD'];
         $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
+        $mail->Port = (int) $_ENV['MAIL_PORT'];
 
-        $mail->setFrom('monamane.lebohang45@gmail.com', 'Internship System');
+        $mail->SMTPDebug = 2;
+        $mail->Debugoutput = 'error_log';
+
+        $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_FROM_NAME']);
         $mail->addAddress($to);
 
         $mail->isHTML(false);
@@ -61,4 +86,3 @@ function sendMail($to, $subject, $body)
         return false;
     }
 }
-?>

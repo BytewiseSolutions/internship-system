@@ -18,10 +18,9 @@ if (!$name || !$email || !$password) {
     exit;
 }
 
-// Hash password
+
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-// Prepare and execute query safely
 $stmt = $conn->prepare("INSERT INTO users (name, email, role, contact, password, reset_token, status) VALUES (?, ?, 'COMPANY', ?, ?, NULL, 'PENDING')");
 
 if (!$stmt) {
