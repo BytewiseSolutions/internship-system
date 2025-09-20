@@ -1,26 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CompanyHeaderComponent } from '../../components/company/company-header/company-header.component';
 import { CompanySidebarComponent } from '../../components/company/company-sidebar/company-sidebar.component';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { DashboardService } from '../../services/dashboard.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-company-dashboard',
   standalone: true,
-  imports: [CompanyHeaderComponent, CompanySidebarComponent],
+  imports: [CommonModule, CompanyHeaderComponent, CompanySidebarComponent],
   templateUrl: './company-dashboard.component.html',
-  styleUrl: './company-dashboard.component.scss'
+  styleUrls: ['./company-dashboard.component.scss']
 })
-export class CompanyDashboardComponent {
+export class CompanyDashboardComponent implements OnInit {
   isSidebarCollapsed = false;
+  totalInternships = 0;
+  totalApplications = 0;
+  totalReviews = 0;
+  approvedStudents = 0;
+
+  recentInternships: any[] = [];
+  recentApplications: any[] = [];
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private http: HttpClient
+    private dashboardService: DashboardService
   ) { }
+  ngOnInit(): void {
+    const companyId = this.authService.getCompanyId();
+    if (!companyId) {
+      console.error('Company ID is invalid');
+      return;
+    }
 
+    this.dashboardService.getCompanyStats(companyId).subscribe((stats: any) => {
+      this.totalInternships = stats.totalInternships;
+      this.totalApplications = stats.totalApplications;
+      this.totalReviews = stats.totalReviews;
+      this.approvedStudents = stats.approvedStudents;
+    });
+
+    this.dashboardService.getRecentInternships(companyId).subscribe(data => {
+      this.recentInternships = data;
+    });
+    this.dashboardService.getRecentApplications(companyId).subscribe(data => {
+      this.recentApplications = data;
+    
+    });
+  }
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

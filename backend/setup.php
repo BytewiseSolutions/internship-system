@@ -9,169 +9,126 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sqlCreateDB = "CREATE DATABASE IF NOT EXISTS $dbname";
+$sqlCreateDB = "CREATE DATABASE IF NOT EXISTS `$dbname`";
 if (!$conn->query($sqlCreateDB)) {
     die("Error creating database: " . $conn->error);
 }
 $conn->select_db($dbname);
 
-$sqlCreateUsersTable = "
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    role VARCHAR(20) NOT NULL,
-    contact VARCHAR(50),
-    password VARCHAR(255) NOT NULL,
-    reset_token VARCHAR(255),
-    status VARCHAR(20) DEFAULT 'PENDING'
-)";
-if (!$conn->query($sqlCreateUsersTable))
-    die("Error creating users table: " . $conn->error);
+$tableQueries = [
 
-$sqlCreateCompaniesTable = "
-CREATE TABLE IF NOT EXISTS companies (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    industry VARCHAR(255) NOT NULL,
-    created_at DATE NOT NULL,
-    status ENUM('ACTIVE','INACTIVE','BLOCKED') DEFAULT 'ACTIVE',
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-)";
-if (!$conn->query($sqlCreateCompaniesTable))
-    die("Error creating companies table: " . $conn->error);
+    "users" => "
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(100) NOT NULL,
+            email VARCHAR(100) NOT NULL UNIQUE,
+            role VARCHAR(20) NOT NULL,
+            contact VARCHAR(50),
+            password VARCHAR(255) NOT NULL,
+            reset_token VARCHAR(255),
+            status VARCHAR(20) DEFAULT 'PENDING'
+        )",
 
-$sqlCreateInternshipsTable = "
-CREATE TABLE IF NOT EXISTS internships (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    company_id INT NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    postedDate DATE NOT NULL,
-    deadline DATE NOT NULL,
-    description TEXT,
-    status VARCHAR(50) DEFAULT 'ACTIVE',
-    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
-)";
-if (!$conn->query($sqlCreateInternshipsTable))
-    die("Error creating internships table: " . $conn->error);
+    "companies" => "
+        CREATE TABLE IF NOT EXISTS companies (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) UNIQUE NOT NULL,
+            industry VARCHAR(255) NOT NULL,
+            created_at DATE NOT NULL,
+            status ENUM('ACTIVE','INACTIVE','BLOCKED') DEFAULT 'ACTIVE',
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        )",
 
-$sqlCreateApplicationsTable = "
-CREATE TABLE IF NOT EXISTS applications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    internship_id INT NOT NULL,
-    status VARCHAR(50) DEFAULT 'PENDING',
-    cvPath VARCHAR(255),
-    transcriptPath VARCHAR(255),
-    applicationLetterPath VARCHAR(255),
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (internship_id) REFERENCES internships(id) ON DELETE CASCADE
-)";
-if (!$conn->query($sqlCreateApplicationsTable))
-    die("Error creating applications table: " . $conn->error);
+    "internships" => "
+        CREATE TABLE IF NOT EXISTS internships (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            company_id INT NOT NULL,
+            location VARCHAR(255) NOT NULL,
+            postedDate DATE NOT NULL,
+            deadline DATE NOT NULL,
+            description TEXT,
+            status VARCHAR(50) DEFAULT 'ACTIVE',
+            FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+        )",
 
-$sqlCreateReviewsTable = "
-CREATE TABLE IF NOT EXISTS reviews (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    internship_id INT NOT NULL,
-    company_id INT NOT NULL,
-    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-    comment TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    employer_reply TEXT,
-    status ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING',
-    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (internship_id) REFERENCES internships(id) ON DELETE CASCADE,
-    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
-)";
-if (!$conn->query($sqlCreateReviewsTable))
-    die("Error creating reviews table: " . $conn->error);
+    "applications" => "
+        CREATE TABLE IF NOT EXISTS applications (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT NOT NULL,
+            internship_id INT NOT NULL,
+            status VARCHAR(50) DEFAULT 'PENDING',
+            cvPath VARCHAR(255),
+            transcriptPath VARCHAR(255),
+            applicationLetterPath VARCHAR(255),
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (internship_id) REFERENCES internships(id) ON DELETE CASCADE
+        )",
 
-$sqlCreateNotificationsTable = "
-CREATE TABLE IF NOT EXISTS notifications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    message TEXT NOT NULL,
-    is_read TINYINT(1) DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-)";
-if (!$conn->query($sqlCreateNotificationsTable)) {
-    die("Error creating notifications table: " . $conn->error);
+    "reviews" => "
+        CREATE TABLE IF NOT EXISTS reviews (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT NOT NULL,
+            internship_id INT NOT NULL,
+            company_id INT NOT NULL,
+            rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+            comment TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            employer_reply TEXT,
+            status ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING',
+            FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (internship_id) REFERENCES internships(id) ON DELETE CASCADE,
+            FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+        )",
+
+    "notifications" => "
+        CREATE TABLE IF NOT EXISTS notifications (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            message TEXT NOT NULL,
+            is_read TINYINT(1) DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        )"
+];
+
+foreach ($tableQueries as $table => $query) {
+    if (!$conn->query($query)) {
+        die("Error creating table $table: " . $conn->error);
+    }
 }
 
 $users = [
-    [
-        'name' => 'Lebohang Monamane',
-        'email' => 'monamane.lebohang45@gmail.com',
-        'role' => 'ADMIN',
-        'contact' => '59181664',
-        'password' => password_hash('Lebo@123', PASSWORD_DEFAULT),
-        'reset_token' => null,
-        'status' => 'ACTIVE'
-    ],
-    [
-        'name' => 'Neo Sello',
-        'email' => 'neosello0320@gmail.com',
-        'role' => 'ADMIN',
-        'contact' => '59194870',
-        'password' => password_hash('Neo@1234', PASSWORD_DEFAULT),
-        'reset_token' => null,
-        'status' => 'ACTIVE'
-    ],
-    [
-        'name' => 'Qenehelo Khophoche',
-        'email' => 'qenehelokhophoche@gmail.com',
-        'role' => 'STUDENT',
-        'contact' => '57510582',
-        'password' => password_hash('Canylee@123', PASSWORD_DEFAULT),
-        'reset_token' => null,
-        'status' => 'ACTIVE'
-    ],
-    [
-        'name' => 'Company User',
-        'email' => 'companyuser@example.com',
-        'role' => 'COMPANY',
-        'contact' => '59194870',
-        'password' => password_hash('Company@123', PASSWORD_DEFAULT),
-        'reset_token' => null,
-        'status' => 'ACTIVE'
-    ]
+    ['name' => 'Lebohang Monamane', 'email' => 'monamane.lebohang45@gmail.com', 'role' => 'ADMIN', 'contact' => '59181664', 'password' => password_hash('Lebo@123', PASSWORD_DEFAULT), 'status' => 'ACTIVE'],
+    ['name' => 'Neo Sello', 'email' => 'neosello0320@gmail.com', 'role' => 'ADMIN', 'contact' => '59194870', 'password' => password_hash('Neo@1234', PASSWORD_DEFAULT), 'status' => 'ACTIVE'],
+    ['name' => 'Company User', 'email' => 'companyuser@example.com', 'role' => 'COMPANY', 'contact' => '59194870', 'password' => password_hash('Company@123', PASSWORD_DEFAULT), 'status' => 'ACTIVE']
 ];
 
-$stmt = $conn->prepare("INSERT INTO users (name, email, role, contact, password, reset_token, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO users (name,email,role,contact,password,status) VALUES (?,?,?,?,?,?)");
+$companyUserId = null;
 foreach ($users as $user) {
-    $stmt->bind_param("sssssss", $user['name'], $user['email'], $user['role'], $user['contact'], $user['password'], $user['reset_token'], $user['status']);
+    $stmt->bind_param("ssssss", $user['name'], $user['email'], $user['role'], $user['contact'], $user['password'], $user['status']);
     $stmt->execute();
+    if ($user['role'] === 'COMPANY') {
+        $companyUserId = $conn->insert_id;
+    }
 }
 $stmt->close();
 
-$companyUserId = $conn->insert_id;
-
 $companies = [
-    [
-        'user_id' => $companyUserId,
-        'name' => 'Example Company',
-        'email' => 'info@examplecompany.com',
-        'industry' => 'Tech',
-        'created_at' => date('Y-m-d'),
-        'status' => 'ACTIVE'
-    ]
+    ['user_id' => $companyUserId, 'name' => 'Example Company', 'email' => 'companyuser@example.com', 'industry' => 'Tech', 'created_at' => date('Y-m-d'), 'status' => 'ACTIVE']
 ];
 
-$stmtCompany = $conn->prepare("INSERT INTO companies (user_id, name, email, industry, created_at, status) VALUES (?, ?, ?, ?, ?, ?)");
+$stmtC = $conn->prepare("INSERT INTO companies (user_id,name,email,industry,created_at,status) VALUES (?,?,?,?,?,?)");
 foreach ($companies as $company) {
-    $stmtCompany->bind_param("isssss", $company['user_id'], $company['name'], $company['email'], $company['industry'], $company['created_at'], $company['status']);
-    $stmtCompany->execute();
+    $stmtC->bind_param("isssss", $company['user_id'], $company['name'], $company['email'], $company['industry'], $company['created_at'], $company['status']);
+    $stmtC->execute();
 }
-$stmtCompany->close();
+$stmtC->close();
 
-echo "Database, tables, users, and companies setup complete with user-company relationship.";
-
+echo "Database setup complete: all tables created, only Admins and Company inserted.";
 $conn->close();
 ?>

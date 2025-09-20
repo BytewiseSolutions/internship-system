@@ -11,17 +11,19 @@ export class AuthService {
     register(student: any): Observable<any> {
         return this.http.post(`${this.baseUrl}/register.php`, student, { responseType: 'json' });
     }
-
     login(credentials: any): Observable<any> {
         return this.http.post(`${this.baseUrl}/login.php`, credentials).pipe(
             tap((response: any) => {
+                console.log('Login response:', response);
+
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('role', response.role);
                 localStorage.setItem('email', response.email);
+
+                localStorage.setItem('user', JSON.stringify(response));
             })
         );
     }
-
     notifyAdmin(role: string) {
         return this.http.post(
             `${this.baseUrl}/notify-admin?role=${role}`,
@@ -37,16 +39,24 @@ export class AuthService {
     resetPassword(token: string, newPassword: string) {
         return this.http.post(`${this.baseUrl}/reset-password`, { token, newPassword }, { responseType: 'json' });
     }
-
     logout() {
         localStorage.clear();
     }
-
     getToken(): string | null {
         return localStorage.getItem('token');
     }
-
     getRole(): string | null {
         return localStorage.getItem('role');
+    }
+    getCompanyId(): number {
+        const userData = localStorage.getItem('user');
+        if (!userData) {
+            console.error('No user in storage');
+            return 0;
+        }
+
+        const user = JSON.parse(userData);
+        console.log('Company ID from storage:', user.companyId);
+        return Number(user.companyId) || 0;
     }
 }

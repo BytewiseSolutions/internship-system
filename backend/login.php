@@ -28,20 +28,17 @@ if ($row = $result->fetch_assoc()) {
 
     $token = generateToken($row['email'], $row['role']);
 
-    $companyId = null;
+    $companyId = 0;
     if ($row['role'] === 'COMPANY') {
-        $stmt2 = $conn->prepare("SELECT id FROM companies WHERE email = ? LIMIT 1");
-        if ($stmt2) {
-            $stmt2->bind_param("s", $row['email']);
-            $stmt2->execute();
-            $res2 = $stmt2->get_result();
-            if ($r2 = $res2->fetch_assoc()) {
-                $companyId = (int) $r2['id'];
-            }
-            $stmt2->close();
+        $stmt2 = $conn->prepare("SELECT id FROM companies WHERE user_id = ? LIMIT 1");
+        $stmt2->bind_param("i", $row['id']);
+        $stmt2->execute();
+        $res2 = $stmt2->get_result();
+        if ($r2 = $res2->fetch_assoc()) {
+            $companyId = (int) $r2['id'];
         }
+        $stmt2->close();
     }
-
     send_json([
         "message" => "Login successful",
         "token" => $token,
@@ -51,6 +48,7 @@ if ($row = $result->fetch_assoc()) {
         "name" => $row['name'],
         "company_id" => $companyId
     ]);
+
 } else {
     send_json(["message" => "User not found"], 404);
 }
