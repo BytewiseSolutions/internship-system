@@ -1,0 +1,8 @@
+Open command Line Interface
+
+switch to:
+cd C:\Users\LEBOHANG\Downloads\My Projects\internship-system\backend  
+php -S localhost:8081
+
+cd C:\Users\LEBOHANG\Downloads\My Projects\internship-system\frontend
+ng serve --open
