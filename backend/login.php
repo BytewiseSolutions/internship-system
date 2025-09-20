@@ -28,26 +28,29 @@ if ($row = $result->fetch_assoc()) {
 
     $token = generateToken($row['email'], $row['role']);
 
-    $companyId = 0;
+    $response = [
+        "message" => "Login successful",
+        "token" => $token,
+        "role" => $row['role'],
+        "email" => $row['email'],
+        "id" => (int) $row['id'],
+        "name" => $row['name']
+    ];
+
     if ($row['role'] === 'COMPANY') {
         $stmt2 = $conn->prepare("SELECT id FROM companies WHERE user_id = ? LIMIT 1");
         $stmt2->bind_param("i", $row['id']);
         $stmt2->execute();
         $res2 = $stmt2->get_result();
         if ($r2 = $res2->fetch_assoc()) {
-            $companyId = (int) $r2['id'];
+            $response['company_id'] = (int) $r2['id'];
+        } else {
+            $response['company_id'] = 0;
         }
         $stmt2->close();
     }
-    send_json([
-        "message" => "Login successful",
-        "token" => $token,
-        "role" => $row['role'],
-        "email" => $row['email'],
-        "id" => (int) $row['id'],
-        "name" => $row['name'],
-        "company_id" => $companyId
-    ]);
+
+    send_json($response);
 
 } else {
     send_json(["message" => "User not found"], 404);
