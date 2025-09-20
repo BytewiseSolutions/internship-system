@@ -1,5 +1,12 @@
 <?php
 require 'cors.php';
+require_once __DIR__ . '/config.php';
+
+$dbExists = $conn->select_db('internshipdb');
+
+if (!$dbExists) {
+    require_once __DIR__ . '/setup.php';
+}
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
