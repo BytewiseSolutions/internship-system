@@ -1,7 +1,7 @@
 <?php
-require '../cors.php';
-require '../config.php';
-require '../utils.php';
+require_once '../cors.php';
+require_once '../utils.php';
+require './config.php';
 
 $student_id = isset($_POST['student_id']) ? $_POST['student_id'] : null;
 $internship_id = isset($_POST['internship_id']) ? $_POST['internship_id'] : null;

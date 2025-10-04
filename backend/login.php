@@ -1,7 +1,7 @@
 <?php
-require 'cors.php';
-require 'config.php';
-require 'utils.php';
+require_once './cors.php';
+require_once './utils.php';
+require './config.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -34,7 +34,8 @@ if ($row = $result->fetch_assoc()) {
         "role" => $row['role'],
         "email" => $row['email'],
         "id" => (int) $row['id'],
-        "name" => $row['name']
+        "name" => $row['name'],
+        "debug_file" => __FILE__
     ];
 
     if ($row['role'] === 'COMPANY') {
@@ -51,7 +52,7 @@ if ($row = $result->fetch_assoc()) {
         }
         $stmt2->close();
     }
-    
+
     $stmt->close();
     $conn->close();
 

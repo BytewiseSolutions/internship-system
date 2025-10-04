@@ -10,10 +10,12 @@ export class AuthService {
     constructor(private http: HttpClient) { }
 
     register(student: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/register.php`, student, { responseType: 'json' });
+        return this.http.post(`${this.baseUrl}/register`, student, { headers: { 'Content-Type': 'application/json' } });
     }
     login(credentials: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/login.php`, credentials).pipe(
+        return this.http.post(`${this.baseUrl}/login`, credentials, {
+            headers: { 'Content-Type': 'application/json' }
+        }).pipe(
             tap((response: any) => {
                 console.log('Login response:', response);
 
@@ -25,6 +27,7 @@ export class AuthService {
             })
         );
     }
+
     notifyAdmin(role: string) {
         return this.http.post(
             `${this.baseUrl}/notify-admin?role=${role}`,

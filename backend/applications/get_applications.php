@@ -1,7 +1,7 @@
 <?php
-require '../cors.php';
-require '../config.php';
-require '../utils.php';
+require_once '../cors.php';
+require_once '../utils.php';
+require './config.php';
 
 $student_id = isset($_GET['student_id']) ? intval($_GET['student_id']) : null;
 

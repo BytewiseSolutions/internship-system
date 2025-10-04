@@ -14,7 +14,7 @@ export class ManageReviewsComponent implements OnInit {
   reviews: any[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/reviews';
+  apiUrl = 'http://localhost:8081/backend/reviews';
   companyReply: { [key: number]: string } = {};
 
   constructor(private http: HttpClient) { }

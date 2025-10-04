@@ -1,7 +1,7 @@
 <?php
-require 'cors.php';
-require 'config.php';
-require 'utils.php';
+require_once '../cors.php';
+require_once '../utils.php';
+require_once '../db.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -24,7 +24,7 @@ if ($check->num_rows > 0) {
 }
 $check->close();
 
-$stmt = $conn->prepare("INSERT INTO users (name, email, role, contact, password, status) VALUES (?, ?, ?, ?, ?, 'PENDING')");
+$stmt = $conn->prepare("INSERT INTO users (name, email, role, contact, password, status) VALUES (?, ?, ?, ?, ?, 'ACTIVE')");
 $stmt->bind_param("sssss", $name, $email, $role, $contact, $password);
 
 if ($stmt->execute()) {

@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-    private apiUrl = `${environment.apiUrl}/company`;
+    private apiUrl = `${environment.apiUrl}/backend/company`;
 
     constructor(private http: HttpClient) { }
 

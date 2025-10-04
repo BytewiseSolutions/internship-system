@@ -7,7 +7,6 @@ import { Application, ApplicationService } from '../../../services/application.s
 import { Router } from '@angular/router';
 import { ToastService } from '../../../services/toast.service';
 import { environment } from '../../../../environments/environment';
-
 interface Internship {
   id: number;
   title: string;
@@ -18,7 +17,6 @@ interface Internship {
   description: string;
   status: string;
 }
-
 @Component({
   selector: 'app-browse-internships',
   standalone: true,
@@ -144,7 +142,6 @@ export class BrowseInternshipsComponent implements OnInit {
     }
   }
 
-
   submitApplication() {
     if (!this.selectedInternship) {
       console.log('No internship selected.');
@@ -195,7 +192,7 @@ export class BrowseInternshipsComponent implements OnInit {
 
     console.log('Submitting application for internship:', this.selectedInternship);
 
-    this.http.post(`${environment.apiUrl}/applications/add_application.php`, formData)
+    this.http.post(`${environment.apiUrl}/add_application.php`, formData)
       .subscribe({
         next: (res) => {
           console.log('Application submitted successfully:', res);
