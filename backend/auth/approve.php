@@ -1,6 +1,6 @@
 <?php
-require '../config.php';
 require '../cors.php';
+require '../config.php';
 require '../utils.php';
 
 $id = $_GET['id'] ?? null;

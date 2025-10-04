@@ -1,6 +1,6 @@
 <?php
-require '../config.php';
 require '../cors.php';
+require '../config.php';
 require '../utils.php';
 
 $sql = "SELECT i.id, i.title, c.name AS name, i.location, i.postedDate, i.deadline, i.description 

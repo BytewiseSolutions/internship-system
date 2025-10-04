@@ -14,7 +14,7 @@ export class ModerateReviewsComponent implements OnInit {
   reviews: any[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/reviews';
+  apiUrl = 'http://localhost:8081/backend/reviews';
 
   constructor(private http: HttpClient) { }
 

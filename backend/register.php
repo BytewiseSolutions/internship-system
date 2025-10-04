@@ -1,7 +1,7 @@
 <?php
+require 'cors.php';
 require 'config.php';
 require 'utils.php';
-require 'cors.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 

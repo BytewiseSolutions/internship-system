@@ -17,7 +17,7 @@ export interface Application {
     providedIn: 'root'
 })
 export class ApplicationService {
-    private baseUrl = environment.apiUrl;
+    private baseUrl = `${environment.apiUrl}/backend`;
 
     constructor(private http: HttpClient) { }
 

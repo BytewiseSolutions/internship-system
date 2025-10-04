@@ -1,6 +1,6 @@
 <?php
-require '../config.php';
 require '../cors.php';
+require '../config.php';
 require '../utils.php';
 
 $result = $conn->query("SELECT * FROM companies ORDER BY created_at DESC");

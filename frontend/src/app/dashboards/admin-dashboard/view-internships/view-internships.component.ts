@@ -27,7 +27,7 @@ export class ViewInternshipsComponent implements OnInit {
   filteredInternships: Internship[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/internships';
+  apiUrl = 'http://localhost:8081/backend/internships';
 
   filterTitle: string = '';
   filterStatus: string = '';

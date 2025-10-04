@@ -1,6 +1,6 @@
 <?php
-require '../config.php';
 require '../cors.php';
+require '../config.php';
 require '../utils.php';
 
 $student_id = isset($_POST['student_id']) ? $_POST['student_id'] : null;

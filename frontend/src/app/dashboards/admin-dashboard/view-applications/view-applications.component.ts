@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-view-applications',
@@ -15,7 +15,7 @@ export class ViewApplicationsComponent implements OnInit {
   filteredApplications: any[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/applications';
+  apiUrl = 'http://localhost:8081/backend/applications';
 
   filterInternship: string = '';
   filterStatus: string = '';

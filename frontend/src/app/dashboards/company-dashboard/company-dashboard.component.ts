@@ -30,24 +30,31 @@ export class CompanyDashboardComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     const companyId = this.authService.getCompanyId();
+    console.log('Company ID retrieved:', companyId);
+    
     if (!companyId) {
       console.error('Company ID is invalid');
       return;
     }
 
-    this.dashboardService.getCompanyStats(companyId).subscribe((stats: any) => {
-      this.totalInternships = stats.totalInternships;
-      this.totalApplications = stats.totalApplications;
-      this.totalReviews = stats.totalReviews;
-      this.approvedStudents = stats.approvedStudents;
+    this.dashboardService.getCompanyStats(companyId).subscribe({
+      next: (stats: any) => {
+        this.totalInternships = stats.totalInternships;
+        this.totalApplications = stats.totalApplications;
+        this.totalReviews = stats.totalReviews;
+        this.approvedStudents = stats.approvedStudents;
+      },
+      error: (err) => console.error('Error loading stats:', err)
     });
 
-    this.dashboardService.getRecentInternships(companyId).subscribe(data => {
-      this.recentInternships = data;
+    this.dashboardService.getRecentInternships(companyId).subscribe({
+      next: (data) => this.recentInternships = data,
+      error: (err) => console.error('Error loading internships:', err)
     });
-    this.dashboardService.getRecentApplications(companyId).subscribe(data => {
-      this.recentApplications = data;
     
+    this.dashboardService.getRecentApplications(companyId).subscribe({
+      next: (data) => this.recentApplications = data,
+      error: (err) => console.error('Error loading applications:', err)
     });
   }
   logout() {

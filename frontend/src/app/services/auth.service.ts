@@ -57,7 +57,7 @@ export class AuthService {
         }
 
         const user = JSON.parse(userData);
-        console.log('Company ID from storage:', user.companyId);
-        return Number(user.companyId) || 0;
+        console.log('Company ID from storage:', user.companyId || user.company_id);
+        return Number(user.companyId || user.company_id) || 0;
     }
 }

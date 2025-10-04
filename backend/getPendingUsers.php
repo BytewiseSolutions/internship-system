@@ -1,7 +1,7 @@
 <?php
+require 'cors.php';
 require 'config.php';
 require 'utils.php';
-require 'cors.php';
 
 $result = $conn->query("SELECT id, name, email, role, contact, status FROM users WHERE status='PENDING'");
 
