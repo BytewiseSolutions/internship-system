@@ -39,7 +39,7 @@ while ($row = $result->fetch_assoc()) {
         "postedDate" => $row['postedDate'] ?? null,
         "deadline" => $row['deadline'] ?? null,
         "description" => $row['description'] ?? '',
-        "status" => $row['status'] ?? 'Active'
+        "status" => $row['status'] ?? 'ACTIVE'
     ];
 }
 

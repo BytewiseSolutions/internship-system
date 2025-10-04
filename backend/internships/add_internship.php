@@ -5,13 +5,17 @@ require '../utils.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
+if (!$data || !isset($data['title'], $data['company_id'], $data['location'], $data['postedDate'], $data['deadline'])) {
+    send_json(["message" => "Missing required fields"], 400);
+}
+
 $title = $data['title'];
 $company_id = $data['company_id'];
 $location = $data['location'];
 $postedDate = $data['postedDate'];
 $deadline = $data['deadline'];
-$description = $data['description'];
-$status = $data['status'] ?? 'Active';
+$description = $data['description'] ?? '';
+$status = $data['status'] ?? 'ACTIVE';
 
 $sql = "INSERT INTO internships (title, company_id, location, postedDate, deadline, description, status)
         VALUES (?, ?, ?, ?, ?, ?, ?)";

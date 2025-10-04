@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { environment } from '../../environments/environment';
 
 export interface Company {
     id?: number;
@@ -33,7 +34,8 @@ export interface AddCompanyPayload {
 
 @Injectable({ providedIn: 'root' })
 export class CompanyService {
-    private apiUrl = 'http://localhost:8081/company';
+    private baseUrl = environment.apiUrl;
+    private apiUrl = `${this.baseUrl}/company`;
 
     constructor(private http: HttpClient) { }
 

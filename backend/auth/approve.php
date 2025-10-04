@@ -15,3 +15,5 @@ if ($stmt->execute()) {
 } else {
     send_json(["message" => "Failed to approve user"], 500);
 }
+$stmt->close();
+$conn->close();

@@ -25,4 +25,6 @@ if ($loggedInEmail) {
 }
 
 echo json_encode($users);
+$stmt->close();
+$conn->close();
 

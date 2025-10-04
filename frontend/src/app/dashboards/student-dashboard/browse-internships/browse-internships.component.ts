@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Application, ApplicationService } from '../../../services/application.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../../services/toast.service';
+import { environment } from '../../../../environments/environment';
 
 interface Internship {
   id: number;
@@ -57,9 +58,9 @@ export class BrowseInternshipsComponent implements OnInit {
   }
 
   loadInternships() {
-    this.http.get<Internship[]>('http://localhost:8081/internships/get_internships.php')
+    this.http.get<Internship[]>(`${environment.apiUrl}/internships/get_internships.php`)
       .pipe(
-        map(data => data.filter(item => item.status === 'Active'))
+        map(data => data.filter(item => item.status === 'ACTIVE'))
       )
       .subscribe({
         next: (data) => {
@@ -194,7 +195,7 @@ export class BrowseInternshipsComponent implements OnInit {
 
     console.log('Submitting application for internship:', this.selectedInternship);
 
-    this.http.post('http://localhost:8081/applications/add_application.php', formData)
+    this.http.post(`${environment.apiUrl}/applications/add_application.php`, formData)
       .subscribe({
         next: (res) => {
           console.log('Application submitted successfully:', res);

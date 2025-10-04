@@ -18,3 +18,5 @@ if ($stmt->execute()) {
 } else {
     send_json(["message" => "Failed to suspend user"], 500);
 }
+$stmt->close();
+$conn->close();

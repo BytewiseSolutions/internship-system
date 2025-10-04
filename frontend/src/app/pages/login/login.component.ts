@@ -48,7 +48,6 @@ export class LoginComponent {
       next: (response: any) => {
         this.toast.show('Login successful! Redirecting...', 'success');
 
-        // ✅ Place the userObj creation here
         const userObj: any = {
           id: response.id,
           name: response.name ?? '',
@@ -57,7 +56,6 @@ export class LoginComponent {
           token: response.token ?? null
         };
 
-        // Only add companyId if it exists
         if (response.company_id !== undefined) {
           userObj.companyId = response.company_id;
         }
@@ -91,53 +89,4 @@ export class LoginComponent {
       }
     });
   }
-
-  // login() {
-  //   this.loading = true;
-  //   this.authService.login(this.credentials).subscribe({
-  //     next: (response: any) => {
-  //       this.toast.show('Login successful! Redirecting...', 'success');
-
-  //       const userObj = {
-  //         id: response.id,
-  //         name: response.name ?? '',
-  //         email: response.email,
-  //         role: response.role,
-  //         token: response.token ?? null,
-  //         companyId: response.company_id ?? null
-  //       };
-
-  //       if (response.company_id !== undefined) {
-  //         userObj.companyId = response.company_id;
-  //       }
-
-  //       localStorage.setItem('user', JSON.stringify(userObj));
-
-  //       if (this.credentials.rememberMe) {
-  //         localStorage.setItem('email', this.credentials.email);
-  //       } else {
-  //         localStorage.removeItem('email');
-  //       }
-
-  //       setTimeout(() => {
-  //         if (this.redirectUrl) {
-  //           this.router.navigateByUrl(this.redirectUrl);
-  //         } else {
-  //           if (response.role === 'ADMIN') {
-  //             this.router.navigate(['/admin-dashboard']);
-  //           } else if (response.role === 'COMPANY') {
-  //             this.router.navigate(['/company-dashboard']);
-  //           } else if (response.role === 'STUDENT') {
-  //             this.router.navigate(['/student-dashboard']);
-  //           }
-  //         }
-  //       }, 1000);
-  //     },
-  //     error: err => {
-  //       const errorMsg = err.error?.message || 'Invalid email or password.';
-  //       this.toast.show(errorMsg, 'error');
-  //       this.loading = false;
-  //     }
-  //   });
-  // }
 }

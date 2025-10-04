@@ -12,7 +12,7 @@ $location = $data['location'] ?? '';
 $postedDate = $data['postedDate'] ?? null;
 $deadline = $data['deadline'] ?? null;
 $description = $data['description'] ?? '';
-$status = $data['status'] ?? 'Active';
+$status = $data['status'] ?? 'ACTIVE';
 
 $stmt = $conn->prepare("
     UPDATE internships 

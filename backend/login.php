@@ -43,9 +43,9 @@ if ($row = $result->fetch_assoc()) {
         $stmt2->execute();
         $res2 = $stmt2->get_result();
         if ($r2 = $res2->fetch_assoc()) {
-            $response['company_id'] = (int) $r2['id'];
+            $response['companyId'] = (int) $r2['id'];
         } else {
-            $response['company_id'] = 0;
+            $response['companyId'] = 0;
         }
         $stmt2->close();
     }

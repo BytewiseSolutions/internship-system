@@ -5,6 +5,7 @@ import { AdminSidebarComponent } from "../../components/admin/admin-sidebar/admi
 import { HttpClient } from '@angular/common/http';
 import { AdminHeaderComponent } from '../../components/admin/admin-header/admin-header.component';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -31,7 +32,7 @@ export class AdminDashboardComponent implements OnInit {
     this.fetchUserStats();
   }
   fetchUserStats() {
-    this.http.get<any[]>('http://localhost:8081/auth/all_users.php').subscribe(users => {
+    this.http.get<any[]>(`${environment.apiUrl}/auth/all_users.php`).subscribe(users => {
       this.totalUsers = users.length;
       this.pendingUsers = users.filter(user => user.status === 'PENDING').length;
       this.activeUsers = users.filter(user => user.status === 'ACTIVE').length;

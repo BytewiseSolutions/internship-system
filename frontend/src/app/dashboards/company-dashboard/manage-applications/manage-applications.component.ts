@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 interface Application {
   application_id: number;
@@ -33,7 +34,7 @@ export class ManageApplicationsComponent implements OnInit {
   }
 
   loadApplications() {
-    this.http.get<any>('http://localhost:8081/applications/get_all_applications.php')
+    this.http.get<any>(`${environment.apiUrl}/applications/get_all_applications.php`)
       .subscribe({
         next: (res) => {
           if (res.status === 'success') {
@@ -50,7 +51,7 @@ export class ManageApplicationsComponent implements OnInit {
 
   updateStatus(application: Application, newStatus: string) {
     const payload = { id: application.application_id, status: newStatus };
-    this.http.post('http://localhost:8081/applications/update_application_status.php', payload)
+    this.http.post(`${environment.apiUrl}/applications/update_application_status.php`, payload)
       .subscribe({
         next: () => {
           application.status = newStatus;
@@ -64,7 +65,7 @@ export class ManageApplicationsComponent implements OnInit {
 
   downloadFile(path: string | undefined) {
     if (!path) return;
-    window.open(`http://localhost:8081/${path}`, '_blank');
+    window.open(`${environment.apiUrl}/${path}`, '_blank');
   }
 
 }
