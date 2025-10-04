@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private baseUrl = environment.apiUrl;
+    private baseUrl = `${environment.apiUrl}/backend`;
 
     constructor(private http: HttpClient) { }
 
@@ -33,7 +33,6 @@ export class AuthService {
         );
     }
 
-
     forgotPassword(email: string): Observable<any> {
         return this.http.post(`${this.baseUrl}/forgot-password`, { email }, { responseType: 'json' });
     }
@@ -57,6 +56,7 @@ export class AuthService {
         }
 
         const user = JSON.parse(userData);
+        console.log('Full user object:', user);
         console.log('Company ID from storage:', user.companyId || user.company_id);
         return Number(user.companyId || user.company_id) || 0;
     }

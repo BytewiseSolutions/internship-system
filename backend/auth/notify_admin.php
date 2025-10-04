@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../cors.php";
+require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../utils.php";
 
 function notifyAdmins($role = "Unknown")
@@ -37,7 +37,9 @@ function notifyAdmins($role = "Unknown")
             $stmtNotify = $conn->prepare(
                 "INSERT INTO notifications (user_id, message, is_read, created_at) VALUES (?, ?, 0, NOW())"
             );
-            $stmtNotify->execute([$adminId, $notificationMessage]);
+            $stmtNotify->bind_param("is", $adminId, $notificationMessage);
+            $stmtNotify->execute();
+            $stmtNotify->close();
         }
         sendMail($_ENV['MAIL_FROM'], $subject . " (Copy)", $body);
 
