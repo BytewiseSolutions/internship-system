@@ -102,7 +102,6 @@ foreach ($tableQueries as $table => $query) {
 }
 
 $users = [
-    ['name' => 'Lebohang Monamane', 'email' => 'monamane.lebohang45@gmail.com', 'role' => 'ADMIN', 'contact' => '59181664', 'password' => password_hash('Lebo@123', PASSWORD_DEFAULT), 'status' => 'ACTIVE'],
     ['name' => 'Neo Sello', 'email' => 'neosello0320@gmail.com', 'role' => 'ADMIN', 'contact' => '59194870', 'password' => password_hash('Neo@1234', PASSWORD_DEFAULT), 'status' => 'ACTIVE'],
     ['name' => 'Company User', 'email' => 'companyuser@example.com', 'role' => 'COMPANY', 'contact' => '59194870', 'password' => password_hash('Company@123', PASSWORD_DEFAULT), 'status' => 'ACTIVE']
 ];

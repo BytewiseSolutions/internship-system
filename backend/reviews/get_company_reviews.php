@@ -1,7 +1,7 @@
 <?php
-require '../config.php';
-require '../cors.php';
-require '../utils.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
 $company_id = isset($_GET['company_id']) ? (int) $_GET['company_id'] : null;
 
@@ -24,12 +24,11 @@ SELECT
 FROM reviews r
 JOIN internships i ON r.internship_id = i.id
 JOIN users u ON r.student_id = u.id
-WHERE r.company_id = ?
 ORDER BY r.created_at DESC
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $company_id);
+// $stmt->bind_param("i", $company_id);
 $stmt->execute();
 $result = $stmt->get_result();
 

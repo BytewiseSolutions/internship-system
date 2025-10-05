@@ -1,7 +1,7 @@
 <?php
-require 'config.php';
-require 'cors.php';
-require 'utils.php';
+require_once './cors.php';
+require_once './utils.php';
+require './config.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -18,7 +18,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($row = $result->fetch_assoc()) {
-    if ($row['status'] !== "ACTIVE") {
+    if ($row['status'] !== "ACTIVE" && $row['status'] !== "PENDING") {
         send_json(["message" => "Account not active. Current status: " . $row['status']], 403);
     }
 
@@ -34,21 +34,27 @@ if ($row = $result->fetch_assoc()) {
         "role" => $row['role'],
         "email" => $row['email'],
         "id" => (int) $row['id'],
-        "name" => $row['name']
+        "name" => $row['name'],
+        "debug_file" => __FILE__
     ];
 
     if ($row['role'] === 'COMPANY') {
-        $stmt2 = $conn->prepare("SELECT id FROM companies WHERE user_id = ? LIMIT 1");
+        $stmt2 = $conn->prepare("SELECT id, name FROM companies WHERE user_id = ? LIMIT 1");
         $stmt2->bind_param("i", $row['id']);
         $stmt2->execute();
         $res2 = $stmt2->get_result();
         if ($r2 = $res2->fetch_assoc()) {
             $response['companyId'] = (int) $r2['id'];
+            $response['companyName'] = $r2['name'];
         } else {
             $response['companyId'] = 0;
+            $response['debug_user_id'] = $row['id'];
         }
         $stmt2->close();
     }
+
+    $stmt->close();
+    $conn->close();
 
     send_json($response);
 

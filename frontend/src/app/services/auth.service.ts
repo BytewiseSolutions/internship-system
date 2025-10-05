@@ -5,15 +5,17 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private baseUrl = environment.apiUrl;
+    private baseUrl = `${environment.apiUrl}/backend`;
 
     constructor(private http: HttpClient) { }
 
     register(student: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/register.php`, student, { responseType: 'json' });
+        return this.http.post(`${this.baseUrl}/register`, student, { headers: { 'Content-Type': 'application/json' } });
     }
     login(credentials: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/login.php`, credentials).pipe(
+        return this.http.post(`${this.baseUrl}/login`, credentials, {
+            headers: { 'Content-Type': 'application/json' }
+        }).pipe(
             tap((response: any) => {
                 console.log('Login response:', response);
 
@@ -25,6 +27,7 @@ export class AuthService {
             })
         );
     }
+
     notifyAdmin(role: string) {
         return this.http.post(
             `${this.baseUrl}/notify-admin?role=${role}`,
@@ -32,7 +35,6 @@ export class AuthService {
             { responseType: 'text' }
         );
     }
-
 
     forgotPassword(email: string): Observable<any> {
         return this.http.post(`${this.baseUrl}/forgot-password`, { email }, { responseType: 'json' });
@@ -57,7 +59,8 @@ export class AuthService {
         }
 
         const user = JSON.parse(userData);
-        console.log('Company ID from storage:', user.companyId);
-        return Number(user.companyId) || 0;
+        console.log('Full user object:', user);
+        console.log('Company ID from storage:', user.companyId || user.company_id);
+        return Number(user.companyId || user.company_id) || 0;
     }
 }

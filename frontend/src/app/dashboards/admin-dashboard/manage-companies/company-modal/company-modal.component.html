@@ -5,8 +5,6 @@
         <h3 *ngIf="mode==='view'">Company Details</h3>
 
         <form *ngIf="mode==='add' || mode==='edit'" (ngSubmit)="onSubmit()">
-
-
             <div *ngIf="step === 1">
                 <h4>Responsible User</h4>
                 <input type="text" placeholder="User Name" [(ngModel)]="company!.user!.name" name="userName" required>

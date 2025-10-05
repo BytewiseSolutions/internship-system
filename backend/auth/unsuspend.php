@@ -1,7 +1,7 @@
 <?php
-require '../config.php';
-require '../cors.php';
-require '../utils.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
 if (!isset($_GET['id'])) {
     send_json(["message" => "User ID is required"], 400);

@@ -7,7 +7,6 @@ import { Application, ApplicationService } from '../../../services/application.s
 import { Router } from '@angular/router';
 import { ToastService } from '../../../services/toast.service';
 import { environment } from '../../../../environments/environment';
-
 interface Internship {
   id: number;
   title: string;
@@ -18,7 +17,6 @@ interface Internship {
   description: string;
   status: string;
 }
-
 @Component({
   selector: 'app-browse-internships',
   standalone: true,
@@ -143,7 +141,6 @@ export class BrowseInternshipsComponent implements OnInit {
       this.files[type] = event.target.files[0];
     }
   }
-
 
   submitApplication() {
     if (!this.selectedInternship) {

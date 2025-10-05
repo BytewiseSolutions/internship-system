@@ -56,10 +56,12 @@ export class LoginComponent {
           token: response.token ?? null
         };
 
-        if (response.company_id !== undefined) {
-          userObj.companyId = response.company_id;
+        // if (response.company_id !== undefined) {
+        //   userObj.companyId = response.company_id;
+        // }
+        if (response.companyId !== undefined) {
+          userObj.companyId = response.companyId;
         }
-
         localStorage.setItem('user', JSON.stringify(userObj));
 
         if (this.credentials.rememberMe) {

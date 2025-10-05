@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-view-applications',
@@ -15,10 +16,18 @@ export class ViewApplicationsComponent implements OnInit {
   filteredApplications: any[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/applications';
+
+  private baseUrl = environment.apiUrl;
 
   filterInternship: string = '';
   filterStatus: string = '';
+
+  stats = {
+    total: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0
+  };
 
   constructor(private http: HttpClient) { }
 
@@ -27,19 +36,27 @@ export class ViewApplicationsComponent implements OnInit {
   }
 
   loadApplications(): void {
-    this.http.get<any>(`${this.apiUrl}/view_applications.php`)
+    this.http.get<any>(`${this.baseUrl}/applications/view_applications.php`)
       .subscribe({
         next: (res) => {
-          this.applications = res.applications;
+          this.applications = res.applications || [];
           this.filteredApplications = [...this.applications];
+          this.calculateStats();
           this.loading = false;
         },
         error: (err) => {
           console.error('Error fetching applications', err);
-          this.error = 'Could not load applications';
+          this.error = 'Could not load applications. Please try again later.';
           this.loading = false;
         }
       });
+  }
+
+  calculateStats(): void {
+    this.stats.total = this.applications.length;
+    this.stats.pending = this.applications.filter(app => app.status === 'PENDING').length;
+    this.stats.approved = this.applications.filter(app => app.status === 'APPROVED').length;
+    this.stats.rejected = this.applications.filter(app => app.status === 'REJECTED').length;
   }
 
   filterApplications(): void {
@@ -54,5 +71,9 @@ export class ViewApplicationsComponent implements OnInit {
 
       return matchesInternship && matchesStatus;
     });
+  }
+
+  getStatusClass(status: string): string {
+    return status.toLowerCase();
   }
 }

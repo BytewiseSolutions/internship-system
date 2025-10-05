@@ -84,11 +84,12 @@ export class ManageCompaniesComponent implements OnInit {
 
   handleModalSave(added: Company) {
     if (this.modalMode === 'add') {
-      this.companies.push(added);
+      this.toast.show('Company added successfully', 'success');
     } else if (this.modalMode === 'edit') {
-      const index = this.companies.findIndex(c => c.id === added.id);
-      if (index !== -1) this.companies[index] = added;
+      this.toast.show('Company updated successfully', 'success');
     }
+
+    this.loadCompanies();
     this.handleModalClose();
   }
 
@@ -116,6 +117,8 @@ export class ManageCompaniesComponent implements OnInit {
             this.companies.push(added);
             this.handleModalClose();
             this.toast.show('Company added successfully', 'success');
+            this.loadCompanies();
+            this.handleModalClose();
           },
           error: err => this.toast.show('Failed to add company', 'error')
         });
@@ -123,8 +126,6 @@ export class ManageCompaniesComponent implements OnInit {
       error: err => this.toast.show('Failed to add user', 'error')
     });
   }
-
-
 
   updateCompany(company: Company) {
     if (!company.id) return;

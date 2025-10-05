@@ -17,12 +17,12 @@ export interface Application {
     providedIn: 'root'
 })
 export class ApplicationService {
-    private baseUrl = environment.apiUrl;
+    private baseUrl = `${environment.apiUrl}`;
 
     constructor(private http: HttpClient) { }
 
     apply(formData: FormData) {
-        return this.http.post(`${this.baseUrl}/applications/add_application.php`, formData);
+        return this.http.post(`${this.baseUrl}/backend/applications/add_application.php`, formData);
     }
 
     getApplications(): Observable<Application[]> {
@@ -30,6 +30,6 @@ export class ApplicationService {
     }
 
     updateApplication(application: Application): Observable<any> {
-        return this.http.put<any>(`${this.baseUrl}/applications/update_application.php`, application);
+        return this.http.put<any>(`${this.baseUrl}/backend/applications/update_application.php`, application);
     }
 }

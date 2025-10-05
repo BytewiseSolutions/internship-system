@@ -1,43 +1,53 @@
+<div class="sidebar-backdrop" [class.mobile-visible]="isMobile && isMobileBackdropVisible"
+    (click)="closeMobileSidebar()"></div>
+
 <nav class="sidebar" [class.collapsed]="!isMobile && isCollapsed" [class.expanded]="isMobile && isMobileExpanded"
     [class.mobile]="isMobile">
+
     <div class="sidebar-header">
-        <h3 *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">
-            Admin Panel
+        <h3 *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">
+            <i class="fas fa-shield-alt"></i> Admin Panel
         </h3>
 
-        <button class="toggle-btn" (click)="toggleSidebar()">
+        <button class="toggle-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar">
             <i class="fas fa-bars"></i>
         </button>
     </div>
 
     <ul class="sidebar-menu">
-        <li routerLinkActive="active" [routerLink]="['/admin-dashboard']">
+        <li routerLinkActive="active" [routerLink]="['/admin-dashboard']" (click)="onMenuItemClick()">
             <i class="fas fa-tachometer-alt"></i>
-            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Dashboard</span>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Dashboard</span>
         </li>
-        <li routerLinkActive="active" [routerLink]="['/manage-users']">
+
+        <li routerLinkActive="active" [routerLink]="['/manage-users']" (click)="onMenuItemClick()">
             <i class="fas fa-users"></i>
-            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Manage Users</span>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Manage Users</span>
         </li>
-        <li routerLinkActive="active" [routerLink]="['/manage-companies']">
+
+        <li routerLinkActive="active" [routerLink]="['/manage-companies']" (click)="onMenuItemClick()">
             <i class="fas fa-building"></i>
-            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Companies</span>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Companies</span>
         </li>
-        <li routerLinkActive="active" [routerLink]="['/view-applications']">
+
+        <li routerLinkActive="active" [routerLink]="['/view-applications']" (click)="onMenuItemClick()">
             <i class="fas fa-clipboard-list"></i>
-            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">View Applications</span>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">View Applications</span>
         </li>
-        <li routerLinkActive="active" [routerLink]="['/view-internships']">
+
+        <li routerLinkActive="active" [routerLink]="['/view-internships']" (click)="onMenuItemClick()">
             <i class="fas fa-briefcase"></i>
-            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">View Internships</span>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">View Internships</span>
         </li>
-        <li routerLinkActive="active" [routerLink]="['/moderate-reviews']">
+
+        <li routerLinkActive="active" [routerLink]="['/moderate-reviews']" (click)="onMenuItemClick()">
             <i class="fas fa-comments"></i>
-            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Moderate Reviews</span>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Moderate Reviews</span>
         </li>
+
         <li (click)="logout()">
             <i class="fas fa-sign-out-alt"></i>
-            <span *ngIf="!isMobile && !isCollapsed || isMobile && isMobileExpanded">Logout</span>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Logout</span>
         </li>
     </ul>
 </nav>

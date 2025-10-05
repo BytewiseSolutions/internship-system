@@ -28,7 +28,7 @@ export class ManageInternshipsComponent implements OnInit {
     postedDate: new Date().toISOString().split('T')[0],
     deadline: new Date().toISOString().split('T')[0],
     description: '',
-    status: 'Active'
+    status: 'ACTIVE'
   };
 
 
@@ -58,7 +58,7 @@ export class ManageInternshipsComponent implements OnInit {
 
   openAddModal() {
     this.showAddModal = true;
-    this.newInternship = { title: '', company_id: null, location: '', postedDate: new Date().toISOString().split('T')[0], deadline: new Date().toISOString().split('T')[0], description: '', status: 'Active' };
+    this.newInternship = { title: '', company_id: null, location: '', postedDate: new Date().toISOString().split('T')[0], deadline: new Date().toISOString().split('T')[0], description: '', status: 'ACTIVE' };
   }
   closeAddModal() { this.showAddModal = false; }
 

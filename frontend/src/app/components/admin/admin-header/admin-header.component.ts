@@ -14,7 +14,6 @@ export class AdminHeaderComponent {
   @Input() isSidebarCollapsed = false;
   constructor(private authService: AuthService, private router: Router) { }
 
-
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

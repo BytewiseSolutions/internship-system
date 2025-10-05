@@ -1,57 +1,447 @@
-.review-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+.create-reviews {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-    h2 {
-        color: #003366;
-        text-align: center;
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+}
+
+// Header Section
+.header-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem 1rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin: 0 0 0.5rem 0;
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .page-subtitle {
+        font-size: 1.1rem;
+        color: #6c757d;
+        margin: 0;
+        font-weight: 500;
+    }
+}
+
+// Empty State
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+
+    .empty-icon {
         margin-bottom: 1.5rem;
-        font-size: 1.8rem;
-    }
 
-    label {
-        display: block;
-        margin-top: 1rem;
-        font-weight: 600;
-    }
-
-    select,
-    textarea,
-    input {
-        width: 100%;
-        padding: 0.6rem;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
-        margin-top: 0.3rem;
-
-        &:focus {
-            border-color: #007acc;
-            box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
+        i {
+            font-size: 4rem;
+            color: #bdc3c7;
         }
     }
 
-    button {
-        margin-top: 1.2rem;
-        padding: 0.7rem 1.5rem;
-        background: #007acc;
-        color: #fff;
+    h3 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin: 0 0 1rem 0;
+    }
+
+    p {
+        color: #6c757d;
+        font-size: 1rem;
+        margin: 0 0 1.5rem 0;
+        line-height: 1.5;
+    }
+
+    .empty-actions {
+        p {
+            font-size: 0.9rem;
+            color: #adb5bd;
+            font-style: italic;
+        }
+    }
+}
+
+// Review Form Section
+.review-form-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+// Form Card
+.form-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e9ecef;
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 0.5rem 0;
+        }
+
+        p {
+            color: #6c757d;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+    }
+}
+
+// Review Form
+.review-form {
+    .form-group {
+        margin-bottom: 2rem;
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+
+            i {
+                color: #3498db;
+                width: 16px;
+            }
+
+            .required {
+                color: #e74c3c;
+            }
+        }
+
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+            font-family: inherit;
+
+            &:focus {
+                outline: none;
+                border-color: #3498db;
+                box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            }
+
+            &::placeholder {
+                color: #adb5bd;
+            }
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.5;
+        }
+
+        .form-hint {
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+    }
+}
+
+// Star Rating
+.star-rating {
+    margin-bottom: 1rem;
+
+    .stars-container {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+
+        .star {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0.5rem;
+
+            i {
+                font-size: 2rem;
+                color: #e0e0e0;
+                transition: all 0.2s ease;
+            }
+
+            &.active i {
+                color: #ffc107;
+                text-shadow: 0 2px 8px rgba(255, 193, 7, 0.4);
+            }
+
+            &:hover i {
+                transform: scale(1.2);
+                color: #ffc107;
+            }
+        }
+    }
+
+    .rating-text {
+        font-size: 0.9rem;
+        font-weight: 600;
+
+        .rating-poor {
+            color: #e74c3c;
+        }
+
+        .rating-fair {
+            color: #e67e22;
+        }
+
+        .rating-average {
+            color: #f39c12;
+        }
+
+        .rating-good {
+            color: #27ae60;
+        }
+
+        .rating-excellent {
+            color: #2ecc71;
+        }
+    }
+}
+
+.alt-rating {
+    margin-top: 1rem;
+}
+
+// Textarea Info
+.textarea-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+
+    .char-count {
+        font-size: 0.8rem;
+        color: #6c757d;
+        font-weight: 500;
+    }
+}
+
+// Form Actions
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+
+    .btn-secondary,
+    .btn-primary {
+        padding: 0.875rem 1.5rem;
         border: none;
-        border-radius: 6px;
+        border-radius: 10px;
+        font-weight: 600;
         cursor: pointer;
-        font-size: 1rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
 
-        &:hover {
-            background: #005ea3;
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+
+        &:hover:not(:disabled) {
+            background: #5a6268;
+            transform: translateY(-2px);
         }
     }
 
-    div.message {
-        margin-top: 1rem;
-        font-weight: 600;
+    .btn-primary {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+
+        &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        &:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
     }
+}
+
+// Guidelines Card
+.guidelines-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+
+    h4 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0 0 1rem 0;
+
+        i {
+            color: #f39c12;
+        }
+    }
+
+    .guidelines-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+
+            &:hover {
+                background: #f8f9fa;
+            }
+
+            i {
+                color: #27ae60;
+                margin-top: 0.125rem;
+                flex-shrink: 0;
+            }
+
+            strong {
+                color: #2c3e50;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+    .review-form-section {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .guidelines-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .create-reviews {
+        padding: 15px;
+    }
+
+    .header-section {
+        padding: 1.5rem 1rem;
+
+        .page-title {
+            font-size: 2rem;
+        }
+    }
+
+    .form-card {
+        padding: 1.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+
+        .btn-secondary,
+        .btn-primary {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .star-rating .stars-container .star i {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-section .page-title {
+        font-size: 1.75rem;
+    }
+
+    .form-card {
+        padding: 1.25rem;
+    }
+
+    .guidelines-card {
+        padding: 1.25rem;
+    }
+
+    .empty-state {
+        padding: 3rem 1.5rem;
+    }
+}
+
+// Animations
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-card,
+.guidelines-card,
+.empty-state {
+    animation: fadeInUp 0.6s ease;
 }
