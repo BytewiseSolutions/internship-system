@@ -14,12 +14,11 @@ $stmt = $conn->prepare("
     FROM applications a
     INNER JOIN users u ON a.student_id = u.id
     INNER JOIN internships i ON a.internship_id = i.id
-    WHERE i.company_id = ?
     ORDER BY a.created_at DESC
     LIMIT 5
 ");
 
-$stmt->bind_param("i", $company_id);
+// $stmt->bind_param("i", $company_id);
 $stmt->execute();
 $result = $stmt->get_result();
 

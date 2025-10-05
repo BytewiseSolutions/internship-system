@@ -1,20 +1,6 @@
-<!-- <div *ngIf="loading" class="loading">Loading reviews...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
-
-<div *ngFor="let r of reviews" class="review-card">
-    <p><strong>{{ r.student_name }}</strong> - {{ r.internship_title }}</p>
-    <p>Rating: {{ r.rating }}/5</p>
-    <p>{{ r.comment }}</p>
-    <p>Status: {{ r.status }}</p>
-    <button *ngIf="r.status==='PENDING'" (click)="approveReview(r.id)">Accept</button>
-    <button *ngIf="r.status==='PENDING'" (click)="rejectReview(r.id)">Reject</button>
-    <button (click)="deleteReview(r.id)" class="delete-btn">Delete</button>
-</div> -->
-
 <div class="moderate-reviews-container">
     <h2>Moderate Reviews</h2>
 
-    <!-- Statistics Cards -->
     <div class="stats-cards" *ngIf="!loading && reviews.length > 0">
         <div class="stat-card">
             <div class="stat-icon">💬</div>

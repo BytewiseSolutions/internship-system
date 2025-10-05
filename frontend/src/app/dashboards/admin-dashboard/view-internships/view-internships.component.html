@@ -1,54 +1,6 @@
-<!-- <div class="internships-container">
-    <h2>Internships List</h2>
-
-    <div *ngIf="loading">Loading internships...</div>
-    <div *ngIf="error" class="error">{{ error }}</div>
-
-    <div class="filters" *ngIf="!loading && internships.length > 0">
-        <input type="text" placeholder="Filter by title" [(ngModel)]="filterTitle" (input)="filterInternshipsList()">
-        <select [(ngModel)]="filterStatus" (change)="filterInternshipsList()">
-            <option value="">All Statuses</option>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-        </select>
-    </div>
-
-    <div class="table-wrapper" *ngIf="!loading && filteredInternships.length > 0">
-        <table class="internships-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Company</th>
-                    <th>Location</th>
-                    <th>Posted Date</th>
-                    <th>Deadline</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let internship of filteredInternships">
-                    <td>{{ internship.id }}</td>
-                    <td>{{ internship.title }}</td>
-                    <td>{{ internship.company_name }}</td>
-                    <td>{{ internship.location }}</td>
-                    <td>{{ internship.postedDate | date }}</td>
-                    <td>{{ internship.deadline | date }}</td>
-                    <td>{{ internship.status }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div *ngIf="!loading && filteredInternships.length === 0" class="empty-state">
-        No internships found.
-    </div>
-</div> -->
-
 <div class="internships-container">
     <h2>Internships List</h2>
 
-    <!-- Statistics Cards -->
     <div class="stats-cards" *ngIf="!loading && internships.length > 0">
         <div class="stat-card">
             <div class="stat-icon">💼</div>

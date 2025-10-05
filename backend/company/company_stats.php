@@ -20,9 +20,8 @@ try {
         SELECT COUNT(*) AS total 
         FROM applications a
         INNER JOIN internships i ON a.internship_id = i.id
-        WHERE i.company_id = ?
     ");
-    $stmt->bind_param("i", $company_id);
+    // $stmt->bind_param("i", $company_id);
     $stmt->execute();
     $totalApplications = $stmt->get_result()->fetch_assoc()['total'] ?? 0;
 

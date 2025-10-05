@@ -22,24 +22,24 @@
                     <th>Company Name</th>
                     <th>Location</th>
                     <th>Post Date</th>
-                    <th>Deadline</th>
                     <th>Brief Description</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th class="action-column">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let internship of internships">
-                    <td>{{internship.title}}</td>
-                    <td>{{internship.company_name}}</td>
-                    <td>{{internship.location}}</td>
-                    <td>{{internship.postedDate}}</td>
-                    <td>{{internship.deadline}}</td>
-                    <td>{{internship.description}}</td>
-                    <td [attr.data-status]="internship.status">{{internship.status}}</td>
-                    <td class="action-buttons">
-                        <button class="edit" (click)="openEditModal(internship)"><i class="fas fa-edit"></i></button>
-                        <button class="delete" (click)="deleteInternship(internship.id!)">
+                    <td data-label="Title">{{internship.title}}</td>
+                    <td data-label="Company">{{internship.company_name}}</td>
+                    <td data-label="Location">{{internship.location}}</td>
+                    <td data-label="Post Date">{{internship.postedDate}}</td>
+                    <td data-label="Description">{{internship.description}}</td>
+                    <td data-label="Status" [attr.data-status]="internship.status">{{internship.status}}</td>
+                    <td class="action-buttons" data-label="Actions">
+                        <button class="edit" title="Edit Internship" (click)="openEditModal(internship)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete" title="Delete Internship" (click)="deleteInternship(internship.id!)">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>

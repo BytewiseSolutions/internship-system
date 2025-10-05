@@ -192,7 +192,7 @@ export class BrowseInternshipsComponent implements OnInit {
 
     console.log('Submitting application for internship:', this.selectedInternship);
 
-    this.http.post(`${environment.apiUrl}/add_application.php`, formData)
+    this.http.post(`${environment.apiUrl}/applications/add_application.php`, formData)
       .subscribe({
         next: (res) => {
           console.log('Application submitted successfully:', res);

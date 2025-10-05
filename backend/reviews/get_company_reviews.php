@@ -24,12 +24,11 @@ SELECT
 FROM reviews r
 JOIN internships i ON r.internship_id = i.id
 JOIN users u ON r.student_id = u.id
-WHERE r.company_id = ?
 ORDER BY r.created_at DESC
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $company_id);
+// $stmt->bind_param("i", $company_id);
 $stmt->execute();
 $result = $stmt->get_result();
 

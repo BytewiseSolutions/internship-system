@@ -57,6 +57,9 @@ switch ($path) {
         break;
 
     // Applications endpoints
+    case '/internship/add_application.php':
+        require 'internship/add_application.php';
+        break;
     case '/applications/get_applications.php':
         require 'applications/get_applications.php';
         break;
@@ -77,6 +80,9 @@ switch ($path) {
         break;
     case '/applications/accepted_internships.php':
         require 'applications/accepted_internships.php';
+        break;
+    case '/applications/view_applications.php';
+        require 'applications/view_applications.php';
         break;
 
     // Internships endpoints

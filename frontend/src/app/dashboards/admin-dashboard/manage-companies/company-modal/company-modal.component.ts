@@ -20,6 +20,7 @@ export class CompanyModalComponent {
     step: number = 1;
 
     constructor(private companyService: CompanyService, private toast: ToastService) { }
+
     onSubmit() {
         if (!this.company) return;
 
@@ -37,6 +38,7 @@ export class CompanyModalComponent {
                 this.toast.show('Please fill all company fields', 'error');
                 return;
             }
+
             const payload: AddCompanyPayload = {
                 user: this.company.user!,
                 company: {
@@ -51,6 +53,7 @@ export class CompanyModalComponent {
             this.companyService.addCompany(payload).subscribe({
                 next: added => {
                     this.toast.show('Company added successfully', 'success');
+                    this.save.emit(added);
                     this.onClose();
                 },
                 error: err => {

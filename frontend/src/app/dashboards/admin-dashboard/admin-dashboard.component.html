@@ -1,51 +1,128 @@
 <div class="admin-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
     <app-admin-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-admin-sidebar>
 
-
     <main class="main-content">
         <app-admin-header [isSidebarCollapsed]="isSidebarCollapsed"></app-admin-header>
 
-        <div class="dashboard-cards">
-            <div class="card card-users">
-                <div class="icon-container">
-                    <i class="fas fa-users"></i>
+        <div class="dashboard-container">
+            <!-- Loading State -->
+            <div *ngIf="loading" class="loading-state">
+                <div class="spinner-container">
+                    <i class="fas fa-spinner fa-spin"></i>
                 </div>
-                <div class="card-text">
-                    <h3>Total Users</h3>
-                    <p>{{ totalUsers }}</p>
+                <p>Loading dashboard data...</p>
+            </div>
+
+            <!-- Stats Cards Grid -->
+            <div class="dashboard-cards" *ngIf="!loading">
+                <div class="card card-users">
+                    <div class="card-background"></div>
+                    <div class="card-content">
+                        <div class="icon-container">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-text">
+                            <h3>Total Users</h3>
+                            <p class="card-number">{{ totalUsers | number }}</p>
+                            <span class="card-trend positive">
+                                <i class="fas fa-users"></i>
+                                All Users
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-pending">
+                    <div class="card-background"></div>
+                    <div class="card-content">
+                        <div class="icon-container">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                        <div class="card-text">
+                            <h3>Pending</h3>
+                            <p class="card-number">{{ pendingUsers | number }}</p>
+                            <span class="card-trend warning">
+                                <i class="fas fa-clock"></i>
+                                Awaiting
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-active">
+                    <div class="card-background"></div>
+                    <div class="card-content">
+                        <div class="icon-container">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="card-text">
+                            <h3>Active</h3>
+                            <p class="card-number">{{ activeUsers | number }}</p>
+                            <span class="card-trend positive">
+                                <i class="fas fa-check"></i>
+                                Verified
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-companies">
+                    <div class="card-background"></div>
+                    <div class="card-content">
+                        <div class="icon-container">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="card-text">
+                            <h3>Companies</h3>
+                            <p class="card-number">{{ totalCompanies | number }}</p>
+                            <span class="card-trend neutral">
+                                <i class="fas fa-briefcase"></i>
+                                Partners
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card card-pending">
-                <div class="icon-container">
-                    <i class="fas fa-user-clock"></i>
-                </div>
-                <div class="card-text">
-                    <h3>Pending Approvals</h3>
-                    <p>{{ pendingUsers }}</p>
+            <!-- Quick Actions -->
+            <div class="quick-actions" *ngIf="!loading">
+                <h2 class="section-title">Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="action-btn primary" routerLink="/manage-users">
+                        <i class="fas fa-users-cog"></i>
+                        Manage Users
+                    </button>
+                    <button class="action-btn secondary" routerLink="/manage-companies">
+                        <i class="fas fa-building"></i>
+                        Companies
+                    </button>
+                    <button class="action-btn tertiary" routerLink="/view-applications">
+                        <i class="fas fa-clipboard-list"></i>
+                        Applications
+                    </button>
                 </div>
             </div>
 
-            <div class="card card-active">
-                <div class="icon-container">
-                    <i class="fas fa-user-check"></i>
-                </div>
-                <div class="card-text">
-                    <h3>Active Users</h3>
-                    <p>{{ activeUsers }}</p>
-                </div>
-            </div>
-
-            <div class="card card-companies">
-                <div class="icon-container">
-                    <i class="fas fa-building"></i>
-                </div>
-                <div class="card-text">
-                    <h3>Total Companies</h3>
-                    <p>{{ totalCompanies }}</p>
+            <!-- Stats Summary -->
+            <div class="stats-summary" *ngIf="!loading && totalUsers > 0">
+                <div class="summary-card">
+                    <h3>Platform Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">Active Rate</span>
+                            <span class="stat-value">{{ (activeUsers / totalUsers * 100) | number:'1.1-1' }}%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Pending Rate</span>
+                            <span class="stat-value">{{ (pendingUsers / totalUsers * 100) | number:'1.1-1' }}%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Company Ratio</span>
+                            <span class="stat-value">{{ (totalCompanies / totalUsers * 100) | number:'1.1-1' }}%</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
     </main>
 </div>
