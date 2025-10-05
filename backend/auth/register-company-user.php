@@ -1,7 +1,7 @@
 <?php
-require '../config.php';
-require '../cors.php';
-require '../utils.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -25,6 +25,17 @@ if (!$stmt) {
     send_json(["message" => "Failed to prepare query: " . $conn->error], 500);
     exit;
 }
+
+// Check if email already exists
+$checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+$checkStmt->bind_param("s", $email);
+$checkStmt->execute();
+$checkResult = $checkStmt->get_result();
+if ($checkResult->num_rows > 0) {
+    send_json(["message" => "Email already registered"], 409);
+    exit;
+}
+$checkStmt->close();
 
 $stmt->bind_param("ssss", $name, $email, $contact, $hashedPassword);
 

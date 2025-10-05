@@ -1,11 +1,36 @@
 <div class="internships-container">
     <h2>Internships List</h2>
 
-    <div *ngIf="loading">Loading internships...</div>
+    <div class="stats-cards" *ngIf="!loading && internships.length > 0">
+        <div class="stat-card">
+            <div class="stat-icon">💼</div>
+            <div class="stat-number total">{{ stats.total }}</div>
+            <div class="stat-label">Total Internships</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-number active">{{ stats.active }}</div>
+            <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏸️</div>
+            <div class="stat-number inactive">{{ stats.inactive }}</div>
+            <div class="stat-label">Inactive</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏰</div>
+            <div class="stat-number expiring">{{ stats.expiring }}</div>
+            <div class="stat-label">Expiring Soon</div>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">Loading internships...</div>
+
     <div *ngIf="error" class="error">{{ error }}</div>
 
     <div class="filters" *ngIf="!loading && internships.length > 0">
-        <input type="text" placeholder="Filter by title" [(ngModel)]="filterTitle" (input)="filterInternshipsList()">
+        <input type="text" placeholder="🔍 Filter by internship title..." [(ngModel)]="filterTitle"
+            (input)="filterInternshipsList()">
         <select [(ngModel)]="filterStatus" (change)="filterInternshipsList()">
             <option value="">All Statuses</option>
             <option value="Active">Active</option>
@@ -27,20 +52,30 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let internship of filteredInternships">
-                    <td>{{ internship.id }}</td>
+                <tr *ngFor="let internship of filteredInternships" [ngClass]="getRowClass(internship)">
+                    <td>#{{ internship.id }}</td>
                     <td>{{ internship.title }}</td>
-                    <td>{{ internship.company_name }}</td>
+                    <td>{{ internship.company_name || 'N/A' }}</td>
                     <td>{{ internship.location }}</td>
-                    <td>{{ internship.postedDate | date }}</td>
-                    <td>{{ internship.deadline | date }}</td>
-                    <td>{{ internship.status }}</td>
+                    <td>{{ internship.postedDate | date:'mediumDate' }}</td>
+                    <td [ngClass]="getDeadlineClass(internship.deadline)">
+                        {{ internship.deadline | date:'mediumDate' }}
+                    </td>
+                    <td [attr.data-status]="internship.status" [ngClass]="getStatusClass(internship.status)">
+                        {{ internship.status }}
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div *ngIf="!loading && filteredInternships.length === 0" class="empty-state">
-        No internships found.
+    <div *ngIf="!loading && filteredInternships.length === 0 && internships.length > 0" class="empty-state">
+        <p>No internships match your filters</p>
+        <p class="subtext">Try adjusting your search criteria</p>
+    </div>
+
+    <div *ngIf="!loading && internships.length === 0" class="empty-state">
+        <p>No internships found</p>
+        <p class="subtext">Internships will appear here once companies start posting</p>
     </div>
 </div>

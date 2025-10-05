@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../services/toast.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-register-company',
@@ -34,7 +35,7 @@ export class RegisterCompanyComponent {
     status: 'ACTIVE'
   };
 
-  private baseUrl = 'http://localhost:8081';
+  private baseUrl = `${environment.apiUrl}/backend`;
 
   constructor(
     private http: HttpClient,
@@ -83,7 +84,7 @@ export class RegisterCompanyComponent {
           this.loading = false;
           localStorage.removeItem('newCompanyUserId');
 
-          this.http.post(`${this.baseUrl}/auth/notify_admin.php`, { role: 'COMPANY' }).subscribe();
+          this.http.post(`${this.baseUrl}/auth/notify-admin.php`, { role: 'COMPANY' }).subscribe();
 
           this.router.navigate(['/login']);
         },

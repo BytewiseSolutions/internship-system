@@ -35,7 +35,7 @@ export interface AddCompanyPayload {
 @Injectable({ providedIn: 'root' })
 export class CompanyService {
     private baseUrl = environment.apiUrl;
-    private apiUrl = `${this.baseUrl}/company`;
+    private apiUrl = `${this.baseUrl}/backend/company`;
 
     constructor(private http: HttpClient) { }
 

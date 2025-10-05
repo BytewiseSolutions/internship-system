@@ -1,11 +1,31 @@
 <div class="applications-container">
     <h2>Applications List</h2>
 
-    <div *ngIf="loading">Loading applications...</div>
+    <div class="stats-cards" *ngIf="!loading && applications.length > 0">
+        <div class="stat-card">
+            <div class="stat-number total">{{ stats.total }}</div>
+            <div class="stat-label">Total Applications</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number pending">{{ stats.pending }}</div>
+            <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number approved">{{ stats.approved }}</div>
+            <div class="stat-label">Approved</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number rejected">{{ stats.rejected }}</div>
+            <div class="stat-label">Rejected</div>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">Loading applications...</div>
+
     <div *ngIf="error" class="error">{{ error }}</div>
 
     <div class="filters" *ngIf="!loading && applications.length > 0">
-        <input type="text" placeholder="Filter by internship" [(ngModel)]="filterInternship"
+        <input type="text" placeholder="🔍 Filter by internship title..." [(ngModel)]="filterInternship"
             (input)="filterApplications()">
         <select [(ngModel)]="filterStatus" (change)="filterApplications()">
             <option value="">All Statuses</option>
@@ -27,16 +47,24 @@
             </thead>
             <tbody>
                 <tr *ngFor="let app of filteredApplications">
-                    <td>{{ app.application_id }}</td>
+                    <td>#{{ app.application_id }}</td>
                     <td>{{ app.student_name }}</td>
                     <td>{{ app.internship_title }}</td>
-                    <td>{{ app.status }}</td>
+                    <td [attr.data-status]="app.status" [ngClass]="getStatusClass(app.status)">
+                        {{ app.status }}
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div *ngIf="!loading && filteredApplications.length === 0" class="empty-state">
-        No applications found.
+    <div *ngIf="!loading && filteredApplications.length === 0 && applications.length > 0" class="empty-state">
+        <p>No applications match your filters</p>
+        <p class="subtext">Try adjusting your search criteria</p>
+    </div>
+
+    <div *ngIf="!loading && applications.length === 0" class="empty-state">
+        <p>No applications found</p>
+        <p class="subtext">Applications will appear here once students start applying</p>
     </div>
 </div>

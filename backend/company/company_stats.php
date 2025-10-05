@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../cors.php";
+require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../utils.php";
 
 $company_id = isset($_GET['company_id']) ? intval($_GET['company_id']) : 0;
@@ -20,9 +20,8 @@ try {
         SELECT COUNT(*) AS total 
         FROM applications a
         INNER JOIN internships i ON a.internship_id = i.id
-        WHERE i.company_id = ?
     ");
-    $stmt->bind_param("i", $company_id);
+    // $stmt->bind_param("i", $company_id);
     $stmt->execute();
     $totalApplications = $stmt->get_result()->fetch_assoc()['total'] ?? 0;
 

@@ -1,23 +1,19 @@
 <?php
-require '../config.php';
-require '../cors.php';
-require '../utils.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
-// Decode JSON input
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Extract and trim fields
 $name = trim($data['name'] ?? '');
 $email = trim($data['email'] ?? '');
 $password = $data['password'] ?? '';
 $contact = trim($data['contact'] ?? '');
 
-// Validate required fields
 if (!$name || !$email || !$password) {
     send_json(["message" => "All fields are required."], 400);
     exit;
 }
-
 
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
@@ -37,7 +33,7 @@ if ($stmt->execute()) {
         "user_id" => $userId
     ]);
 } else {
-    if ($conn->errno === 1062) { 
+    if ($conn->errno === 1062) {
         send_json(["message" => "Email already exists."], 409);
     } else {
         send_json(["message" => "Registration failed: " . $stmt->error], 500);

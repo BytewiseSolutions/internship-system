@@ -1,7 +1,6 @@
 <div class="internship-section">
     <div class="header">
         <h2>Manage Internships</h2>
-
         <button (click)="openAddModal()" class="add-btn">
             <i class="fas fa-plus"></i>Add Internship
         </button>
@@ -14,6 +13,7 @@
     <div *ngIf="loading" class="spinner">
         <i class="fas fa-spinner fa-spin"></i> Loading internships...
     </div>
+
     <div class="table-wrapper" *ngIf="!loading">
         <table class="table-container">
             <thead>
@@ -22,25 +22,24 @@
                     <th>Company Name</th>
                     <th>Location</th>
                     <th>Post Date</th>
-                    <th>Deadline</th>
                     <th>Brief Description</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th class="action-column">Action</th>
                 </tr>
             </thead>
-
             <tbody>
                 <tr *ngFor="let internship of internships">
-                    <td>{{internship.title}}</td>
-                    <td>{{internship.company_name}}</td>
-                    <td>{{internship.location}}</td>
-                    <td>{{internship.postedDate}}</td>
-                    <td>{{internship.deadline}}</td>
-                    <td>{{internship.description}}</td>
-                    <td>{{internship.status}}</td>
-                    <td class="action-buttons">
-                        <button class="edit" (click)="openEditModal(internship)"><i class="fas fa-edit"></i></button>
-                        <button class="delete" (click)="deleteInternship(internship.id!)">
+                    <td data-label="Title">{{internship.title}}</td>
+                    <td data-label="Company">{{internship.company_name}}</td>
+                    <td data-label="Location">{{internship.location}}</td>
+                    <td data-label="Post Date">{{internship.postedDate}}</td>
+                    <td data-label="Description">{{internship.description}}</td>
+                    <td data-label="Status" [attr.data-status]="internship.status">{{internship.status}}</td>
+                    <td class="action-buttons" data-label="Actions">
+                        <button class="edit" title="Edit Internship" (click)="openEditModal(internship)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete" title="Delete Internship" (click)="deleteInternship(internship.id!)">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -55,20 +54,18 @@
     <div class="modal" *ngIf="showAddModal">
         <div class="modal-content">
             <h3>Add Internship</h3>
-
-            <form (submit)="addInternship()">
-                <input type="text" placeholder="Internship Title" [(ngModel)]="newInternship.title" name="title">
+            <form (submit)="addInternship(); $event.preventDefault()">
+                <input type="text" placeholder="Internship Title" [(ngModel)]="newInternship.title" name="title"
+                    required>
                 <select id="company" [(ngModel)]="newInternship.company_id" name="company_id" required>
                     <option [ngValue]="null" disabled>Select a company</option>
                     <option *ngFor="let company of companies" [ngValue]="company.id">{{ company.name }}</option>
                 </select>
-                <input type="text" placeholder="Location" [(ngModel)]="newInternship.location" name="location">
-                <input type="date" [(ngModel)]="newInternship.postedDate" name="postedDate">
-                <input type="date" [(ngModel)]="newInternship.deadline" name="deadline">
-                <textarea [(ngModel)]="newInternship.description" name="description">
-                    Please add the brief description...
-                </textarea>
-
+                <input type="text" placeholder="Location" [(ngModel)]="newInternship.location" name="location" required>
+                <input type="date" [(ngModel)]="newInternship.postedDate" name="postedDate" required>
+                <input type="date" [(ngModel)]="newInternship.deadline" name="deadline" required>
+                <textarea [(ngModel)]="newInternship.description" name="description"
+                    placeholder="Please add the brief description..."></textarea>
                 <div class="modal-actions">
                     <button type="submit">Add</button>
                     <button type="button" (click)="closeAddModal()">Cancel</button>
@@ -79,21 +76,22 @@
 
     <div class="modal" *ngIf="showEditModal">
         <div class="modal-content">
-            <h3>Edit Company</h3>
-
-            <form (submit)="updateInternship()">
-                <input type="text" placeholder="Internship Title" [(ngModel)]="selectedInternship!.title" name="title">
+            <h3>Edit Internship</h3>
+            <form (submit)="updateInternship(); $event.preventDefault()">
+                <input type="text" placeholder="Internship Title" [(ngModel)]="selectedInternship!.title" name="title"
+                    required>
                 <select id="edit-company" [(ngModel)]="selectedInternship!.company_id" name="company_id" required>
                     <option [ngValue]="null" disabled>Select a company</option>
                     <option *ngFor="let company of companies" [ngValue]="company.id">{{ company.name }}</option>
                 </select>
-                <input type="text" placeholder="Location..." [(ngModel)]="selectedInternship!.location" name="location">
-                <input type="date" [(ngModel)]="selectedInternship!.postedDate" name="postedDate
-                    required=">
+                <input type="text" placeholder="Location" [(ngModel)]="selectedInternship!.location" name="location"
+                    required>
+                <input type="date" [(ngModel)]="selectedInternship!.postedDate" name="postedDate" required>
                 <input type="date" [(ngModel)]="selectedInternship!.deadline" name="deadline" required>
-                <textarea name="description" [(ngModel)]="selectedInternship!.description"></textarea>
+                <textarea name="description" [(ngModel)]="selectedInternship!.description"
+                    placeholder="Brief description..."></textarea>
                 <div class="modal-actions">
-                    <button type="submit">Edit</button>
+                    <button type="submit">Update</button>
                     <button type="button" (click)="closeEditModal()">Cancel</button>
                 </div>
             </form>

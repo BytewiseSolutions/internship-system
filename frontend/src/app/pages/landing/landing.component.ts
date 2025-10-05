@@ -32,6 +32,7 @@ export class LandingComponent implements OnInit {
     private router: Router,
     private internshipService: InternshipService
   ) { }
+
   ngOnInit() {
     this.internshipService.getAvailableInternships().subscribe({
       next: (data) => {

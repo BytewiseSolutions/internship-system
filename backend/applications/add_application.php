@@ -1,7 +1,12 @@
 <?php
-require '../config.php';
-require '../cors.php';
-require '../utils.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+header('Content-Type: application/json');
+
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
 $student_id = isset($_POST['student_id']) ? $_POST['student_id'] : null;
 $internship_id = isset($_POST['internship_id']) ? $_POST['internship_id'] : null;

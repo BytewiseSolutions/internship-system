@@ -1,53 +1,71 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { AdminSidebarComponent } from "../../components/admin/admin-sidebar/admin-sidebar.component";
-
-import { HttpClient } from '@angular/common/http';
 import { AdminHeaderComponent } from '../../components/admin/admin-header/admin-header.component';
 import { AuthService } from '../../services/auth.service';
-import { environment } from '../../../environments/environment';
+import { UserService } from '../../services/user.service';
+import { User } from '../../services/user.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [AdminSidebarComponent, AdminHeaderComponent],
+  imports: [CommonModule, RouterModule, AdminSidebarComponent, AdminHeaderComponent],
   templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.scss'
+  styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit {
   isSidebarCollapsed = false;
+  loading = true;
 
-  totalUsers: number = 0;
-  pendingUsers: number = 0;
-  activeUsers: number = 0;
-  totalCompanies: number = 0;
+  totalUsers = 0;
+  pendingUsers = 0;
+  activeUsers = 0;
+  totalCompanies = 0;
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private http: HttpClient
+    private userService: UserService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.fetchUserStats();
   }
-  fetchUserStats() {
-    this.http.get<any[]>(`${environment.apiUrl}/auth/all_users.php`).subscribe(users => {
-      this.totalUsers = users.length;
-      this.pendingUsers = users.filter(user => user.status === 'PENDING').length;
-      this.activeUsers = users.filter(user => user.status === 'ACTIVE').length;
-      this.totalCompanies = users.filter(user => user.role === 'COMPANY').length;
-    }, error => {
-      console.error('Failed to fetch users:', error);
+
+  fetchUserStats(): void {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      console.error('No token found. Redirecting to login.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.loading = true;
+
+    this.userService.getAllUsers(token).subscribe({
+      next: (users: User[]) => {
+        this.totalUsers = users.length;
+        this.pendingUsers = users.filter(u => u.status === 'PENDING').length;
+        this.activeUsers = users.filter(u => u.status === 'ACTIVE').length;
+        this.totalCompanies = users.filter(u => u.role === 'COMPANY').length;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Failed to fetch users:', err);
+        this.loading = false;
+      }
     });
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  onSidebarCollapseChanged(collapsed: boolean) {
+  onSidebarCollapseChanged(collapsed: boolean): void {
     this.isSidebarCollapsed = collapsed;
   }
 }
