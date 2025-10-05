@@ -1,7 +1,7 @@
 <?php
-require_once '../cors.php';
-require_once '../utils.php';
-require '../config.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
 $id = $_GET['id'] ?? null;
 if (!$id)

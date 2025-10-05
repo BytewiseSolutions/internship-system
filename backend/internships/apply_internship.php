@@ -1,6 +1,7 @@
 <?php
-require '../config.php';
-require '../cors.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
 $student_id = $_POST['student_id'];
 $internship_id = $_POST['internship_id'];

@@ -1,16 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+
+interface Review {
+  id: number;
+  internship_title: string;
+  rating: number;
+  comment: string;
+  created_at: string;
+  employer_reply?: string;
+  status?: string;
+}
 
 @Component({
   selector: 'app-view-reviews',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './view-reviews.component.html',
   styleUrls: ['./view-reviews.component.scss']
 })
 export class ViewReviewsComponent implements OnInit {
-  reviews: any[] = [];
+  reviews: Review[] = [];
   loading = true;
   error: string | null = null;
   apiUrl = 'http://localhost:8081/reviews';
@@ -32,14 +43,14 @@ export class ViewReviewsComponent implements OnInit {
       endpoint += `?student_id=${user.id}`;
     }
 
-    this.http.get<any>(endpoint).subscribe({
+    this.http.get<{ reviews: Review[] }>(endpoint).subscribe({
       next: (res) => {
         this.reviews = res.reviews || [];
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Failed to load reviews';
-        console.error(err);
+        this.error = 'Failed to load reviews. Please try again.';
+        console.error('Error loading reviews:', err);
         this.loading = false;
       }
     });

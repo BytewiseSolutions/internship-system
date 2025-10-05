@@ -1,7 +1,7 @@
 <?php
-require_once '../cors.php';
-require_once '../utils.php';
-require './config.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 $email = trim($data['email'] ?? '');

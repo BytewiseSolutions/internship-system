@@ -88,4 +88,12 @@ export class ManageReviewsComponent implements OnInit {
       }
     });
   }
+
+  isReplyEmpty(reviewId: number): boolean {
+    return !this.companyReply[reviewId] || this.companyReply[reviewId].trim() === '';
+  }
+
+  getStars(rating: number): number[] {
+    return [1, 2, 3, 4, 5];
+  }
 }

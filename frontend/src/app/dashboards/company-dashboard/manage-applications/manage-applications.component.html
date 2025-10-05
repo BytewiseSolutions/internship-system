@@ -1,5 +1,25 @@
 <div class="applications-section">
     <h2>Manage Applications</h2>
+
+    <div class="stats-cards" *ngIf="applications.length > 0">
+        <div class="stat-card">
+            <div class="stat-number">{{ getStatusCount('PENDING') }}</div>
+            <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ getStatusCount('APPROVED') }}</div>
+            <div class="stat-label">Approved</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ getStatusCount('REJECTED') }}</div>
+            <div class="stat-label">Rejected</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ getStatusCount('UNDER_REVIEW') }}</div>
+            <div class="stat-label">Under Review</div>
+        </div>
+    </div>
+
     <div class="table-wrapper">
         <table class="table-container">
             <thead>
@@ -20,28 +40,43 @@
                     <td>{{ app.internship_title }}</td>
                     <td>
                         <button class="cv" *ngIf="app.cvPath" (click)="downloadFile(app.cvPath)">
-                            Download CV
+                            📄 Download CV
+                        </button>
+                        <button class="cv" *ngIf="!app.cvPath" disabled>
+                            No CV
                         </button>
                     </td>
                     <td>
                         <button class="transcript" *ngIf="app.transcriptPath"
                             (click)="downloadFile(app.transcriptPath)">
-                            Download Transcript
+                            📊 Download Transcript
+                        </button>
+                        <button class="transcript" *ngIf="!app.transcriptPath" disabled>
+                            No Transcript
                         </button>
                     </td>
                     <td>
                         <button class="letter" *ngIf="app.applicationLetterPath"
                             (click)="downloadFile(app.applicationLetterPath)">
-                            Download Letter
+                            📝 Download Letter
+                        </button>
+                        <button class="letter" *ngIf="!app.applicationLetterPath" disabled>
+                            No Letter
                         </button>
                     </td>
                     <td>
-                        <select [(ngModel)]="app.status" (change)="updateStatus(app, app.status)">
+                        <select [(ngModel)]="app.status" (change)="updateStatus(app, app.status)"
+                            [attr.data-status]="app.status">
                             <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
                         </select>
                     </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div *ngIf="applications.length === 0" class="empty-state">
+        <p>No applications found</p>
+        <p class="subtext">Student applications will appear here once they start applying</p>
     </div>
 </div>

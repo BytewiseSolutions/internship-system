@@ -33,7 +33,7 @@ export interface Company {
 @Injectable({ providedIn: 'root' })
 export class InternshipService {
     private baseUrl = environment.apiUrl;
-    private apiUrl = `${this.baseUrl}/backend/internships`;
+    private apiUrl = `${this.baseUrl}/internships`;
 
     constructor(private http: HttpClient) { }
 

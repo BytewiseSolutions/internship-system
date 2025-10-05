@@ -1,28 +1,77 @@
-<div class="company-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+<div class="student-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
     <app-student-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-student-sidebar>
 
     <main class="main-content">
         <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
 
-
-        <div class="dashboard-cards">
-            <div class="card">
-                <h3>My Applications</h3>
-                <p>{{ studentStats.applications || 0 }}</p>
+        <div class="dashboard-content">
+            <div class="welcome-section">
+                <h1>Welcome back, Neo! 👋</h1>
+                <p>Here's your internship journey overview</p>
             </div>
 
-            <div class="card">
-                <h3>Approved Reviews</h3>
-                <p>{{ studentStats.reviews || 0 }}</p>
+            <div class="dashboard-cards">
+                <div class="card application-card">
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>My Applications</h3>
+                        <p class="card-number">{{ studentStats.applications || 0 }}</p>
+                        <span class="card-subtitle">Total submitted</span>
+                    </div>
+                </div>
+
+                <div class="card review-card">
+                    <div class="card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Approved Reviews</h3>
+                        <p class="card-number">{{ studentStats.reviews || 0 }}</p>
+                        <span class="card-subtitle">Reviews published</span>
+                    </div>
+                </div>
+
+                <div class="card notification-card">
+                    <div class="card-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Notifications</h3>
+                        <p class="card-number">{{ studentStats.notifications || 0 }}</p>
+                        <span class="card-subtitle">Unread messages</span>
+                    </div>
+                </div>
+
+                <div class="card internship-card">
+                    <div class="card-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Available Internships</h3>
+                        <p class="card-number">{{ studentStats.internships || 0 }}</p>
+                        <span class="card-subtitle">Opportunities</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>Notifications</h3>
-                <p>{{ studentStats.notifications || 0 }}</p>
-            </div>
-            <div class="card">
-                <h3>Internships</h3>
-                <p>{{ studentStats.internships || 0 }}</p>
+            <div class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="action-btn primary" routerLink="/browse-internships">
+                        <i class="fas fa-search"></i>
+                        Browse Internships
+                    </button>
+                    <button class="action-btn secondary" routerLink="/track-application">
+                        <i class="fas fa-chart-line"></i>
+                        Track Application
+                    </button>
+                    <button class="action-btn tertiary" routerLink="/create-reviews">
+                        <i class="fas fa-edit"></i>
+                        Write Review
+                    </button>
+                </div>
             </div>
         </div>
     </main>

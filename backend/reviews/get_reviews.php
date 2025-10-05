@@ -1,11 +1,10 @@
 <?php
-require '../config.php';
-require '../cors.php';
-require '../utils.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
-// Get optional query parameters
 $user_id = isset($_GET['user_id']) ? (int) $_GET['user_id'] : null;
-$role = isset($_GET['role']) ? $_GET['role'] : null; // 'ADMIN', 'STUDENT', 'COMPANY'
+$role = isset($_GET['role']) ? $_GET['role'] : null;
 
 $sql = "
     SELECT 

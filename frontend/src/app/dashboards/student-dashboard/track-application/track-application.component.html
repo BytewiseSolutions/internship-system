@@ -1,31 +1,84 @@
-<div class="track-container">
-    <h2>Your Applications</h2>
+<div class="track-applications">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1 class="page-title">Your Applications</h1>
+            <p class="page-subtitle">Track the status of your internship applications</p>
+        </div>
 
-    <div *ngIf="loading">Loading your applications...</div>
-    <div *ngIf="error" class="error">{{ error }}</div>
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading-state">
+            <div class="spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <p>Loading your applications...</p>
+        </div>
 
-    <div class="table-wrapper" *ngIf="!loading && applications.length > 0">
-        <table class="applications-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Internship</th>
-                    <th>Status</th>
-                    <th>Submitted At</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let app of applications">
-                    <td>{{ app.id }}</td>
-                    <td>{{ app.internship_title }}</td>
-                    <td>{{ app.status }}</td>
-                    <td>{{ app.submitted_at | date:'medium' }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <!-- Error State -->
+        <div *ngIf="error && !loading" class="error-state">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Something went wrong</h3>
+            <p>{{ error }}</p>
+            <button class="retry-btn" (click)="loadApplications()">
+                <i class="fas fa-redo"></i>
+                Try Again
+            </button>
+        </div>
 
-    <div *ngIf="!loading && applications.length === 0" class="empty-state">
-        You have not applied to any internships yet.
+        <!-- Applications Table -->
+        <div *ngIf="!loading && applications.length > 0" class="applications-section">
+            <div class="section-header">
+                <div class="results-info">
+                    <span class="results-count">{{ applications.length }} application{{ applications.length !== 1 ? 's'
+                        : '' }}</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="applications-table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th>Internship Position</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Submitted Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let app of applications; let i = index" class="application-row">
+                            <td class="text-center app-id">#{{ app.id }}</td>
+                            <td class="internship-info">
+                                <div class="internship-title">{{ app.internship_title }}</div>
+                            </td>
+                            <td class="text-center">
+                                <span class="status-badge" [class]="getStatusClass(app.status)">
+                                    <i [class]="getStatusIcon(app.status)"></i>
+                                    {{ app.status }}
+                                </span>
+                            </td>
+                            <td class="text-center submission-date">
+                                <div class="date">{{ app.submitted_at | date:'mediumDate' }}</div>
+                                <div class="time">{{ app.submitted_at | date:'shortTime' }}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && applications.length === 0 && !error" class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <h3>No applications yet</h3>
+            <p>You haven't applied to any internships. Start browsing opportunities to apply!</p>
+            <button class="browse-btn" routerLink="/browse-internships">
+                <i class="fas fa-search"></i>
+                Browse Internships
+            </button>
+        </div>
     </div>
 </div>

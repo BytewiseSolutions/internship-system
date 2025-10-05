@@ -1,7 +1,7 @@
 <?php
-require '../cors.php';
-require '../config.php';
-require '../utils.php';
+require_once __DIR__ . '/../cors.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../utils.php';
 
 $sql = "SELECT i.id, i.title, c.name AS name, i.location, i.postedDate, i.deadline, i.description 
         FROM internships i

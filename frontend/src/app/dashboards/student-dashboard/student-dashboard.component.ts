@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { StudentHeaderComponent } from '../../components/student/student-header/student-header.component';
 import { StudentSidebarComponent } from '../../components/student/student-sidebar/student-sidebar.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-student-dashboard',
-  imports: [StudentHeaderComponent, StudentSidebarComponent],
+  imports: [StudentHeaderComponent, StudentSidebarComponent, RouterLink],
   templateUrl: './student-dashboard.component.html',
   styleUrl: './student-dashboard.component.scss'
 })

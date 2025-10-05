@@ -1,4 +1,4 @@
-<div *ngIf="loading" class="loading">Loading reviews...</div>
+<!-- <div *ngIf="loading" class="loading">Loading reviews...</div>
 <div *ngIf="error" class="error">{{ error }}</div>
 
 <div *ngFor="let r of reviews" class="review-card">
@@ -9,4 +9,75 @@
     <button *ngIf="r.status==='PENDING'" (click)="approveReview(r.id)">Accept</button>
     <button *ngIf="r.status==='PENDING'" (click)="rejectReview(r.id)">Reject</button>
     <button (click)="deleteReview(r.id)" class="delete-btn">Delete</button>
+</div> -->
+
+<div class="moderate-reviews-container">
+    <h2>Moderate Reviews</h2>
+
+    <!-- Statistics Cards -->
+    <div class="stats-cards" *ngIf="!loading && reviews.length > 0">
+        <div class="stat-card">
+            <div class="stat-icon">💬</div>
+            <div class="stat-number total">{{ stats.total }}</div>
+            <div class="stat-label">Total Reviews</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-number pending">{{ stats.pending }}</div>
+            <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-number approved">{{ stats.approved }}</div>
+            <div class="stat-label">Approved</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">❌</div>
+            <div class="stat-number rejected">{{ stats.rejected }}</div>
+            <div class="stat-label">Rejected</div>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">Loading reviews...</div>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div class="reviews-grid" *ngIf="!loading && reviews.length > 0">
+        <div *ngFor="let r of reviews" class="review-card" [attr.data-status]="r.status">
+            <div class="review-header">
+                <div class="student-info">
+                    <strong>{{ r.student_name }}</strong>
+                    <span class="internship-title">{{ r.internship_title }}</span>
+                </div>
+                <div class="rating">
+                    {{ r.rating }}/5
+                </div>
+            </div>
+
+            <div class="review-comment">
+                {{ r.comment }}
+            </div>
+
+            <div class="review-status" [ngClass]="getStatusClass(r.status)">
+                {{ r.status }}
+            </div>
+
+            <div class="review-actions">
+                <button *ngIf="r.status==='PENDING'" (click)="approveReview(r.id)">
+                    Accept
+                </button>
+                <button *ngIf="r.status==='PENDING'" (click)="rejectReview(r.id)">
+                    Reject
+                </button>
+                <button (click)="deleteReview(r.id)" class="delete-btn">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && reviews.length === 0" class="empty-state">
+        <p>No reviews to moderate</p>
+        <p class="subtext">Reviews from students will appear here for moderation</p>
+    </div>
 </div>

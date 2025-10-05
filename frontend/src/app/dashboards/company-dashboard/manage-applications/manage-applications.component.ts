@@ -23,9 +23,10 @@ interface Application {
   styleUrls: ['./manage-applications.component.scss']
 })
 export class ManageApplicationsComponent implements OnInit {
-
   applications: Application[] = [];
   statuses = ['PENDING', 'ACCEPTED', 'REJECTED'];
+  loading = true;
+  error: string | null = null;
 
   constructor(private http: HttpClient) { }
 
@@ -34,19 +35,29 @@ export class ManageApplicationsComponent implements OnInit {
   }
 
   loadApplications() {
+    this.loading = true;
+    this.error = null;
+
     this.http.get<any>(`${environment.apiUrl}/backend/applications/get_all_applications.php`)
       .subscribe({
         next: (res) => {
           if (res.status === 'success') {
             this.applications = res.applications;
           } else {
-            console.error('Error fetching applications:', res.message);
+            this.error = res.message || 'Failed to load applications';
           }
+          this.loading = false;
         },
         error: (err) => {
           console.error('Failed to load applications:', err);
+          this.error = 'Failed to load applications. Please try again.';
+          this.loading = false;
         }
       });
+  }
+
+  getStatusCount(status: string): number {
+    return this.applications.filter(app => app.status === status).length;
   }
 
   updateStatus(application: Application, newStatus: string) {
@@ -59,6 +70,7 @@ export class ManageApplicationsComponent implements OnInit {
         },
         error: (err) => {
           console.error('Failed to update status:', err);
+          this.loadApplications();
         }
       });
   }
@@ -68,4 +80,7 @@ export class ManageApplicationsComponent implements OnInit {
     window.open(`${environment.apiUrl}/${path}`, '_blank');
   }
 
+  getTotalApplications(): number {
+    return this.applications.length;
+  }
 }
