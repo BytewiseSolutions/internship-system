@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
 
 interface Review {
   id: number;
@@ -24,7 +25,7 @@ export class ModerateReviewsComponent implements OnInit {
   reviews: Review[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/backend/reviews';
+  apiUrl = `${environment.apiUrl}/reviews`;
 
   // Statistics
   stats = {

@@ -530,6 +530,18 @@
                     }
                 }
 
+                .readonly-input {
+                    background: #f8f9fa;
+                    color: #6c757d;
+                    cursor: not-allowed;
+                    border-color: #dee2e6;
+                    
+                    &:focus {
+                        border-color: #dee2e6;
+                        box-shadow: none;
+                    }
+                }
+
                 textarea {
                     resize: vertical;
                     min-height: 100px;

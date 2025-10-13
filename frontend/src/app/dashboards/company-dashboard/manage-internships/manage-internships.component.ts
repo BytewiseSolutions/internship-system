@@ -44,7 +44,13 @@ export class ManageInternshipsComponent implements OnInit {
   }
   loadCompanies(): void {
     this.internshipService.getCompanies().subscribe({
-      next: (data) => this.companies = data,
+      next: (data) => {
+        this.companies = data;
+        // Auto-select company for company users
+        if (data.length === 1) {
+          this.newInternship.company_id = data[0].id;
+        }
+      },
       error: (err) => this.toast.show('Failed to load companies', 'error')
     });
   }
@@ -58,7 +64,15 @@ export class ManageInternshipsComponent implements OnInit {
 
   openAddModal() {
     this.showAddModal = true;
-    this.newInternship = { title: '', company_id: null, location: '', postedDate: new Date().toISOString().split('T')[0], deadline: new Date().toISOString().split('T')[0], description: '', status: 'ACTIVE' };
+    this.newInternship = { 
+      title: '', 
+      company_id: this.companies.length === 1 ? this.companies[0].id : null, 
+      location: '', 
+      postedDate: new Date().toISOString().split('T')[0], 
+      deadline: new Date().toISOString().split('T')[0], 
+      description: '', 
+      status: 'ACTIVE' 
+    };
   }
   closeAddModal() { this.showAddModal = false; }
 

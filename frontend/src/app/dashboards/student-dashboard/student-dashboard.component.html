@@ -6,19 +6,19 @@
 
         <div class="dashboard-content">
             <div class="welcome-section">
-                <h1>Welcome back, Neo! 👋</h1>
+                <h1>Welcome back, {{ userName }}! 👋</h1>
                 <p>Here's your internship journey overview</p>
             </div>
 
             <div class="dashboard-cards">
                 <div class="card application-card">
                     <div class="card-icon">
-                        <i class="fas fa-file-alt"></i>
+                        <i class="fas fa-check-circle"></i>
                     </div>
                     <div class="card-content">
-                        <h3>My Applications</h3>
-                        <p class="card-number">{{ studentStats.applications || 0 }}</p>
-                        <span class="card-subtitle">Total submitted</span>
+                        <h3>Approved Applications</h3>
+                        <p class="card-number">{{ studentStats.approved_applications || 0 }}</p>
+                        <span class="card-subtitle">Applications accepted</span>
                     </div>
                 </div>
 

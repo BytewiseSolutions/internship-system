@@ -6,23 +6,72 @@ require_once __DIR__ . '/../utils.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$sql = "
-    SELECT 
-        i.id, 
-        i.title, 
-        i.company_id, 
-        c.name AS company_name, 
-        i.location, 
-        i.postedDate, 
-        i.deadline, 
-        i.description, 
-        i.status 
-    FROM internships i
-    LEFT JOIN companies c ON i.company_id = c.id
-    ORDER BY i.postedDate DESC
-";
+// Get token from Authorization header
+$headers = getallheaders();
+$token = isset($headers['Authorization']) ? str_replace('Bearer ', '', $headers['Authorization']) : null;
 
-$result = $conn->query($sql);
+if (!$token) {
+    send_json(['error' => 'No token provided'], 401);
+}
+
+$payload = decodeToken($token);
+if (empty($payload) || !isset($payload['email'])) {
+    send_json(['error' => 'Invalid token'], 401);
+}
+
+// Get user info
+$stmt = $conn->prepare("SELECT id, role FROM users WHERE email = ?");
+$stmt->bind_param("s", $payload['email']);
+$stmt->execute();
+$userResult = $stmt->get_result();
+$user = $userResult->fetch_assoc();
+
+if (!$user) {
+    send_json(['error' => 'User not found'], 404);
+}
+
+// Build SQL based on user role
+if ($user['role'] === 'COMPANY') {
+    // For company users, only show their internships
+    $sql = "
+        SELECT 
+            i.id, 
+            i.title, 
+            i.company_id, 
+            c.name AS company_name, 
+            i.location, 
+            i.postedDate, 
+            i.deadline, 
+            i.description, 
+            i.status 
+        FROM internships i
+        LEFT JOIN companies c ON i.company_id = c.id
+        WHERE c.user_id = ?
+        ORDER BY i.postedDate DESC
+    ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    // For admin users, show all internships
+    $sql = "
+        SELECT 
+            i.id, 
+            i.title, 
+            i.company_id, 
+            c.name AS company_name, 
+            i.location, 
+            i.postedDate, 
+            i.deadline, 
+            i.description, 
+            i.status 
+        FROM internships i
+        LEFT JOIN companies c ON i.company_id = c.id
+        ORDER BY i.postedDate DESC
+    ";
+    $result = $conn->query($sql);
+}
 
 if (!$result) {
     send_json(["error" => "SQL Error: " . $conn->error], 500);

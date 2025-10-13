@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-manage-reviews',
@@ -14,7 +15,7 @@ export class ManageReviewsComponent implements OnInit {
   reviews: any[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/backend/reviews';
+  apiUrl = `${environment.apiUrl}/reviews`;
   companyReply: { [key: number]: string } = {};
 
   constructor(private http: HttpClient) { }

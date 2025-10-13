@@ -3,7 +3,40 @@ require_once __DIR__ . '/../cors.php';
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../utils.php';
 
-$result = $conn->query("SELECT * FROM companies ORDER BY created_at DESC");
+// Get token from Authorization header
+$headers = getallheaders();
+$token = isset($headers['Authorization']) ? str_replace('Bearer ', '', $headers['Authorization']) : null;
+
+if (!$token) {
+    send_json(['error' => 'No token provided'], 401);
+}
+
+$payload = decodeToken($token);
+if (empty($payload) || !isset($payload['email'])) {
+    send_json(['error' => 'Invalid token'], 401);
+}
+
+// Get user info
+$stmt = $conn->prepare("SELECT id, role FROM users WHERE email = ?");
+$stmt->bind_param("s", $payload['email']);
+$stmt->execute();
+$userResult = $stmt->get_result();
+$user = $userResult->fetch_assoc();
+
+if (!$user) {
+    send_json(['error' => 'User not found'], 404);
+}
+
+// If user is COMPANY role, only return their company
+if ($user['role'] === 'COMPANY') {
+    $stmt = $conn->prepare("SELECT * FROM companies WHERE user_id = ?");
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    // For ADMIN users, return all companies
+    $result = $conn->query("SELECT * FROM companies ORDER BY created_at DESC");
+}
 
 $companies = [];
 while ($row = $result->fetch_assoc()) {

@@ -57,10 +57,11 @@
             <form (submit)="addInternship(); $event.preventDefault()">
                 <input type="text" placeholder="Internship Title" [(ngModel)]="newInternship.title" name="title"
                     required>
-                <select id="company" [(ngModel)]="newInternship.company_id" name="company_id" required>
+                <select *ngIf="companies.length > 1" id="company" [(ngModel)]="newInternship.company_id" name="company_id" required>
                     <option [ngValue]="null" disabled>Select a company</option>
                     <option *ngFor="let company of companies" [ngValue]="company.id">{{ company.name }}</option>
                 </select>
+                <input *ngIf="companies.length === 1" type="text" [value]="companies[0]?.name" readonly class="readonly-input">
                 <input type="text" placeholder="Location" [(ngModel)]="newInternship.location" name="location" required>
                 <input type="date" [(ngModel)]="newInternship.postedDate" name="postedDate" required>
                 <input type="date" [(ngModel)]="newInternship.deadline" name="deadline" required>
@@ -80,10 +81,11 @@
             <form (submit)="updateInternship(); $event.preventDefault()">
                 <input type="text" placeholder="Internship Title" [(ngModel)]="selectedInternship!.title" name="title"
                     required>
-                <select id="edit-company" [(ngModel)]="selectedInternship!.company_id" name="company_id" required>
+                <select *ngIf="companies.length > 1" id="edit-company" [(ngModel)]="selectedInternship!.company_id" name="company_id" required>
                     <option [ngValue]="null" disabled>Select a company</option>
                     <option *ngFor="let company of companies" [ngValue]="company.id">{{ company.name }}</option>
                 </select>
+                <input *ngIf="companies.length === 1" type="text" [value]="companies[0]?.name" readonly class="readonly-input">
                 <input type="text" placeholder="Location" [(ngModel)]="selectedInternship!.location" name="location"
                     required>
                 <input type="date" [(ngModel)]="selectedInternship!.postedDate" name="postedDate" required>

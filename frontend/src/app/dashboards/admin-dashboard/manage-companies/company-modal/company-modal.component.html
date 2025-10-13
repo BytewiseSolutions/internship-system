@@ -1,48 +1,84 @@
 <div class="modal">
     <div class="modal-content">
-        <h3 *ngIf="mode==='add'">Add Company</h3>
-        <h3 *ngIf="mode==='edit'">Edit Company</h3>
-        <h3 *ngIf="mode==='view'">Company Details</h3>
+        <h3 *ngIf="mode==='add'">
+            <i class="fas fa-plus-circle"></i> Add New Company
+        </h3>
+        <h3 *ngIf="mode==='edit'">
+            <i class="fas fa-edit"></i> Edit Company
+        </h3>
+        <h3 *ngIf="mode==='view'">
+            <i class="fas fa-building"></i> Company Details
+        </h3>
 
         <form *ngIf="mode==='add' || mode==='edit'" (ngSubmit)="onSubmit()">
-            <div *ngIf="step === 1">
-                <h4>Responsible User</h4>
-                <input type="text" placeholder="User Name" [(ngModel)]="company!.user!.name" name="userName" required>
-                <input type="email" placeholder="User Email" [(ngModel)]="company!.user!.email" name="userEmail"
-                    required>
-                <input type="text" placeholder="Contact" [(ngModel)]="company!.user!.contact" name="userContact">
-                <input type="password" placeholder="Password" [(ngModel)]="company!.user!.password" name="userPassword"
-                    required>
+            <div *ngIf="step === 1" class="step-content">
+                <h4>
+                    <i class="fas fa-user-tie"></i> Responsible User Information
+                </h4>
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" [(ngModel)]="company!.user!.name" name="userName" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" [(ngModel)]="company!.user!.email" name="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="Contact Number" [(ngModel)]="company!.user!.contact" name="userContact">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" [(ngModel)]="company!.user!.password" name="userPassword" required>
+                </div>
 
                 <div class="modal-actions">
-                    <button type="button" (click)="nextStep()">Next</button>
+                    <button type="button" (click)="nextStep()">
+                        <i class="fas fa-arrow-right"></i> Next Step
+                    </button>
+                    <button type="button" (click)="onClose()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
                 </div>
             </div>
 
-            <div *ngIf="step === 2">
-                <h4>Company Info</h4>
-                <input type="text" placeholder="Company Name" [(ngModel)]="company!.name" name="name" required>
-                <input type="email" placeholder="Company Email" [(ngModel)]="company!.email" name="email" required>
-                <input type="text" placeholder="Industry" [(ngModel)]="company!.industry" name="industry" required>
-                <input type="date" placeholder="Registered On" [(ngModel)]="company!.createdAt" name="createdAt"
-                    required>
+            <div *ngIf="step === 2" class="step-content">
+                <h4>
+                    <i class="fas fa-building"></i> Company Information
+                </h4>
+                <div class="form-group">
+                    <input type="text" placeholder="Company Name" [(ngModel)]="company!.name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Company Email" [(ngModel)]="company!.email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Industry" [(ngModel)]="company!.industry" name="industry" required>
+                </div>
+                <div class="form-group">
+                    <label for="createdAt">Registration Date:</label>
+                    <input type="date" id="createdAt" [(ngModel)]="company!.createdAt" name="createdAt" required>
+                </div>
 
                 <div class="modal-actions">
-                    <button type="button" (click)="previousStep()">Back</button>
-                    <button type="submit">{{ mode === 'add' ? 'Add' : 'Save' }}</button>
+                    <button type="submit">
+                        <i class="fas fa-save"></i> {{ mode === 'add' ? 'Create Company' : 'Save Changes' }}
+                    </button>
+                    <button type="button" (click)="previousStep()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
                 </div>
             </div>
-
         </form>
 
         <div *ngIf="mode==='view'" class="view-info">
-            <p><strong>Name:</strong> {{company?.name}}</p>
-            <p><strong>Email:</strong> {{company?.email}}</p>
-            <p><strong>Industry:</strong> {{company?.industry}}</p>
-            <p><strong>Registered:</strong> {{company?.createdAt | date:'mediumDate'}}</p>
-            <p><strong>Status:</strong> {{company?.status}}</p>
+            <p><strong><i class="fas fa-building"></i> Company Name:</strong> {{company?.name}}</p>
+            <p><strong><i class="fas fa-envelope"></i> Email:</strong> {{company?.email}}</p>
+            <p><strong><i class="fas fa-industry"></i> Industry:</strong> {{company?.industry}}</p>
+            <p><strong><i class="fas fa-calendar"></i> Registered:</strong> {{company?.createdAt | date:'mediumDate'}}</p>
+            <p><strong><i class="fas fa-info-circle"></i> Status:</strong> 
+                <span class="status-badge" [class]="'status-' + company?.status?.toLowerCase()">{{company?.status}}</span>
+            </p>
             <div class="modal-actions">
-                <button type="button" (click)="onClose()">Close</button>
+                <button type="button" (click)="onClose()">
+                    <i class="fas fa-times"></i> Close
+                </button>
             </div>
         </div>
     </div>

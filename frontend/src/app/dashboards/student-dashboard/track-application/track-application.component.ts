@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 interface Application {
   id: number;
@@ -21,7 +22,7 @@ export class TrackApplicationComponent implements OnInit {
   applications: Application[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/applications';
+  apiUrl = `${environment.apiUrl}/applications`;
 
   constructor(private http: HttpClient) { }
 

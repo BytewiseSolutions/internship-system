@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 interface Review {
   id: number;
@@ -24,7 +25,7 @@ export class ViewReviewsComponent implements OnInit {
   reviews: Review[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/reviews';
+  apiUrl = `${environment.apiUrl}/reviews`;
 
   constructor(private http: HttpClient) { }
 

@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { StudentHeaderComponent } from '../../components/student/student-header/student-header.component';
 import { StudentSidebarComponent } from '../../components/student/student-sidebar/student-sidebar.component';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -14,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
 export class StudentDashboardComponent {
   isSidebarCollapsed = false;
   studentStats: any = {};
+  userName: string = '';
 
   constructor(
     private authService: AuthService,
@@ -23,10 +25,23 @@ export class StudentDashboardComponent {
 
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.http.get<any>(`http://localhost:8081/students/get_dashboard_stats.php?student_id=${user.id}`)
-      .subscribe(data => {
-        console.log("Dashboard stats:", data);
-        this.studentStats = data;
+    this.userName = user.name || 'Student';
+    this.http.get<any>(`${environment.apiUrl}/students/get_dashboard_stats.php?student_id=${user.id}`)
+      .subscribe({
+        next: (data) => {
+          console.log("Dashboard stats:", data);
+          this.studentStats = data;
+        },
+        error: (err) => {
+          console.error('Error loading dashboard stats:', err);
+          // Set default values on error
+          this.studentStats = {
+            applications: 0,
+            reviews: 0,
+            notifications: 0,
+            internships: 0
+          };
+        }
       });
   }
 

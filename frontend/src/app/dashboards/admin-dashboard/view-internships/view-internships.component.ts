@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
 
 interface Internship {
   id: number;
@@ -27,7 +28,7 @@ export class ViewInternshipsComponent implements OnInit {
   filteredInternships: Internship[] = [];
   loading = true;
   error: string | null = null;
-  apiUrl = 'http://localhost:8081/internships';
+  apiUrl = `${environment.apiUrl}/internships`;
 
   filterTitle: string = '';
   filterStatus: string = '';

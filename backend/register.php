@@ -1,7 +1,7 @@
 <?php
-require_once '../cors.php';
-require_once '../utils.php';
-require_once '../db.php';
+require_once 'cors.php';
+require_once 'utils.php';
+require_once 'config.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -24,11 +24,15 @@ if ($check->num_rows > 0) {
 }
 $check->close();
 
-$stmt = $conn->prepare("INSERT INTO users (name, email, role, contact, password, status) VALUES (?, ?, ?, ?, ?, 'ACTIVE')");
-$stmt->bind_param("sssss", $name, $email, $role, $contact, $password);
+// Set status based on role
+$status = ($role === 'STUDENT') ? 'PENDING' : 'ACTIVE';
+
+$stmt = $conn->prepare("INSERT INTO users (name, email, role, contact, password, status) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssssss", $name, $email, $role, $contact, $password, $status);
 
 if ($stmt->execute()) {
-    send_json(["message" => "Registration successful. Awaiting approval."]);
+    $message = ($role === 'STUDENT') ? "Registration successful. Awaiting admin approval." : "Registration successful.";
+    send_json(["message" => $message]);
 } else {
     send_json(["message" => "Registration failed: " . $conn->error], 500);
 }

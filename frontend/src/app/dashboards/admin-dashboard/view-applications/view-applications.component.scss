@@ -9,7 +9,6 @@
         font-weight: 800;
         color: #2c3e50;
         margin-bottom: 2rem;
-        text-align: center;
         background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -20,7 +19,7 @@
             content: '';
             position: absolute;
             bottom: -10px;
-            left: 50%;
+            left: 5%;
             transform: translateX(-50%);
             width: 80px;
             height: 4px;
@@ -30,7 +29,6 @@
     }
 }
 
-// Loading State
 .loading {
     text-align: center;
     margin: 3rem 0;

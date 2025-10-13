@@ -55,7 +55,7 @@ export class ViewApplicationsComponent implements OnInit {
   calculateStats(): void {
     this.stats.total = this.applications.length;
     this.stats.pending = this.applications.filter(app => app.status === 'PENDING').length;
-    this.stats.approved = this.applications.filter(app => app.status === 'APPROVED').length;
+    this.stats.approved = this.applications.filter(app => app.status === 'ACCEPTED').length;
     this.stats.rejected = this.applications.filter(app => app.status === 'REJECTED').length;
   }
 
