@@ -12,11 +12,17 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class CompanyHeaderComponent {
   @Input() isSidebarCollapsed = false;
+  userName: string = '';
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) { }
+
+  ngOnInit() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.userName = user.name || 'Company User';
+  }
 
   logout() {
     this.authService.logout();
