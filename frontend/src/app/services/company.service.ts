@@ -35,7 +35,7 @@ export interface AddCompanyPayload {
 @Injectable({ providedIn: 'root' })
 export class CompanyService {
     private baseUrl = environment.apiUrl;
-    private apiUrl = `${this.baseUrl}/backend/company`;
+    private apiUrl = `${this.baseUrl}/company`;
 
     constructor(private http: HttpClient) { }
 
@@ -43,7 +43,7 @@ export class CompanyService {
         return this.http.get<Company[]>(`${this.apiUrl}/get_companies.php`);
     }
     addUser(user: any) {
-        return this.http.post<{ id: number }>(`${this.apiUrl}/register-company-user.php`, user);
+        return this.http.post<{ id: number }>(`${this.baseUrl}/auth/register-company-user.php`, user);
     }
 
     addCompany(payload: AddCompanyPayload) {
