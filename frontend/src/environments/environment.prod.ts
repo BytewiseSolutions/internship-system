@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://bytewisesolutions.com/backend'
+    apiUrl: 'https://internship.com/backend'
 };
