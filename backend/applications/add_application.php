@@ -8,11 +8,18 @@ require_once __DIR__ . '/../cors.php';
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../utils.php';
 
+// Debug: Log all received data
+error_log('POST data: ' . print_r($_POST, true));
+error_log('FILES data: ' . print_r($_FILES, true));
+
 $student_id = isset($_POST['student_id']) ? $_POST['student_id'] : null;
 $internship_id = isset($_POST['internship_id']) ? $_POST['internship_id'] : null;
 
+error_log('Student ID: ' . $student_id);
+error_log('Internship ID: ' . $internship_id);
+
 if (!$student_id || !$internship_id) {
-    die(json_encode(['status' => 'error', 'message' => 'Student ID or Internship ID missing']));
+    die(json_encode(['status' => 'error', 'message' => 'Student ID or Internship ID missing. Received: student_id=' . $student_id . ', internship_id=' . $internship_id]));
 }
 
 $checkStmt = $conn->prepare("SELECT id FROM applications WHERE student_id = ? AND internship_id = ?");
