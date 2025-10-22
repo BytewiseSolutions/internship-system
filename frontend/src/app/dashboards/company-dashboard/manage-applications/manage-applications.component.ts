@@ -38,7 +38,7 @@ export class ManageApplicationsComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    this.http.get<any>(`${environment.apiUrl}/backend/applications/get_all_applications.php`)
+    this.http.get<any>(`${environment.apiUrl}/applications/get_all_applications.php`)
       .subscribe({
         next: (res) => {
           if (res.status === 'success') {
@@ -62,7 +62,7 @@ export class ManageApplicationsComponent implements OnInit {
 
   updateStatus(application: Application, newStatus: string) {
     const payload = { id: application.application_id, status: newStatus };
-    this.http.post(`${environment.apiUrl}/backend/applications/update_application_status.php`, payload)
+    this.http.post(`${environment.apiUrl}/applications/update_application_status.php`, payload)
       .subscribe({
         next: () => {
           application.status = newStatus;
