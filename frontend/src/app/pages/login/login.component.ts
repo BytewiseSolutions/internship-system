@@ -62,6 +62,9 @@ export class LoginComponent {
         if (response.companyId !== undefined) {
           userObj.companyId = response.companyId;
         }
+        if (response.school_id !== undefined) {
+          userObj.school_id = response.school_id;
+        }
         localStorage.setItem('user', JSON.stringify(userObj));
 
         if (this.credentials.rememberMe) {
@@ -76,7 +79,9 @@ export class LoginComponent {
           } else {
             if (response.role === 'SYSTEM_ADMIN') {
               this.router.navigate(['/system-admin-dashboard']);
-            } else if (response.role === 'ADMIN' || response.role === 'SCHOOL_ADMIN') {
+            } else if (response.role === 'SCHOOL_ADMIN') {
+              this.router.navigate(['/school-admin-dashboard']);
+            } else if (response.role === 'ADMIN') {
               this.router.navigate(['/admin-dashboard']);
             } else if (response.role === 'COMPANY') {
               this.router.navigate(['/company-dashboard']);

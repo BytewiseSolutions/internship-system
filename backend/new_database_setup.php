@@ -18,7 +18,7 @@ if (!$conn->query($sqlCreateDB)) {
 $conn->select_db($dbname);
 
 $tableQueries = [
-    "users" => "
+    "users_temp" => "
         CREATE TABLE users (
             user_id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
@@ -117,7 +117,13 @@ $tableQueries = [
             supervisor_feedback TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
-        )"
+        )",
+
+    "users_update" => "
+        ALTER TABLE users ADD COLUMN school_id INT NULL,
+        ADD COLUMN company_id INT NULL,
+        ADD FOREIGN KEY (school_id) REFERENCES schools(school_id) ON DELETE SET NULL,
+        ADD FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE SET NULL"
 ];
 
 foreach ($tableQueries as $table => $query) {

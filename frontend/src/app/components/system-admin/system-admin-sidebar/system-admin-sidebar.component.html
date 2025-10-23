@@ -35,6 +35,11 @@
             <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Manage Companies</span>
         </li>
 
+        <li routerLinkActive="active" [routerLink]="['/manage-company-users']" (click)="onMenuItemClick()">
+            <i class="fas fa-users"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Company Users</span>
+        </li>
+
         <li routerLinkActive="active" [routerLink]="['/system-overview']" (click)="onMenuItemClick()">
             <i class="fas fa-chart-line"></i>
             <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">System Overview</span>

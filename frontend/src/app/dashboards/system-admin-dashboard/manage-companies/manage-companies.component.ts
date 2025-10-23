@@ -20,6 +20,13 @@ export class SystemManageCompaniesComponent implements OnInit {
     email: '',
     address: ''
   };
+  showCreateUserForm = false;
+  selectedCompany: any = null;
+  newCompanyUser = {
+    name: '',
+    email: '',
+    password: ''
+  };
 
   constructor(private http: HttpClient) {}
 
@@ -75,6 +82,43 @@ export class SystemManageCompaniesComponent implements OnInit {
 
   closeModal() {
     this.showAddForm = false;
+  }
+
+  createCompanyUser(company: any) {
+    this.selectedCompany = company;
+    this.showCreateUserForm = true;
+  }
+
+  addCompanyUser() {
+    const userData = {
+      ...this.newCompanyUser,
+      company_id: this.selectedCompany.id,
+      role: 'COMPANY'
+    };
+
+    this.http.post(`${environment.apiUrl}/api/users/add_company_user.php`, userData)
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            alert('Company user created successfully!');
+            this.closeUserModal();
+          }
+        },
+        error: (error) => {
+          console.error('Error creating company user:', error);
+          alert('Error creating company user');
+        }
+      });
+  }
+
+  closeUserModal() {
+    this.showCreateUserForm = false;
+    this.selectedCompany = null;
+    this.newCompanyUser = {
+      name: '',
+      email: '',
+      password: ''
+    };
   }
 
   activateCompany(companyId: number) {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { SystemAdminHeaderComponent } from '../../components/system-admin/system-admin-header/system-admin-header.component';
@@ -8,7 +9,7 @@ import { SystemAdminSidebarComponent } from '../../components/system-admin/syste
 @Component({
   selector: 'app-system-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, SystemAdminHeaderComponent, SystemAdminSidebarComponent],
+  imports: [CommonModule, RouterModule, SystemAdminHeaderComponent, SystemAdminSidebarComponent],
   templateUrl: './system-admin-dashboard.component.html',
   styleUrls: ['./system-admin-dashboard.component.scss']
 })
@@ -32,22 +33,13 @@ export class SystemAdminDashboardComponent implements OnInit {
   }
 
   loadSystemStats() {
-    // Load schools count
-    this.http.get(`${environment.apiUrl}/api/schools/get_schools.php`).subscribe({
-      next: (schools: any) => {
-        this.systemStats.schools = schools.length;
-      },
-      error: (error) => console.error('Error loading schools:', error)
-    });
-
-    // Load users count
-    this.http.get(`${environment.apiUrl}/getAllUsers.php`).subscribe({
-      next: (users: any) => {
-        this.systemStats.users = users.length;
+    this.http.get(`${environment.apiUrl}/api/system/get_system_stats.php`).subscribe({
+      next: (stats: any) => {
+        this.systemStats = stats;
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading users:', error);
+        console.error('Error loading system stats:', error);
         this.loading = false;
       }
     });

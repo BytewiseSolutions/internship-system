@@ -31,10 +31,10 @@ export class ManageSchoolAdminsComponent implements OnInit {
   }
 
   loadSchoolAdmins() {
-    this.http.get(`${environment.apiUrl}/getAllUsers.php`)
+    this.http.get(`${environment.apiUrl}/api/users/get_school_admins.php`)
       .subscribe({
         next: (data: any) => {
-          this.schoolAdmins = data.filter((user: any) => user.role === 'SCHOOL_ADMIN');
+          this.schoolAdmins = data;
           this.loading = false;
         },
         error: (error) => {
@@ -110,8 +110,7 @@ export class ManageSchoolAdminsComponent implements OnInit {
     this.showAddForm = false;
   }
 
-  getSchoolName(schoolId: number): string {
-    const school = this.schools.find(s => s.school_id === schoolId);
-    return school ? school.name : 'Unknown School';
+  getSchoolName(admin: any): string {
+    return admin.school_name || 'Unknown School';
   }
 }

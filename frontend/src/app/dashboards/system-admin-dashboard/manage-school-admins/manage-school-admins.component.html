@@ -43,11 +43,11 @@
             <div class="admin-info">
                 <h3>{{ admin.name }}</h3>
                 <p class="email">{{ admin.email }}</p>
-                <p class="school">School: {{ getSchoolName(admin.school_id) }}</p>
-                <div class="status-badge" [class]="admin.status.toLowerCase()">{{ admin.status }}</div>
+                <p class="school">School: {{ getSchoolName(admin) }}</p>
+                <div class="status-badge" [class]="admin.status?.toLowerCase()">{{ admin.status || 'ACTIVE' }}</div>
             </div>
             <div class="admin-actions">
-                <button class="btn-delete" (click)="deleteAdmin(admin.id)">
+                <button class="btn-delete" (click)="deleteAdmin(admin.user_id)">
                     <i class="fas fa-trash"></i> Delete
                 </button>
             </div>

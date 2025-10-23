@@ -20,7 +20,7 @@ export class ManageSchoolsComponent implements OnInit {
     name: '',
     address: ''
   };
-  editSchool = {
+  editSchoolData = {
     school_id: 0,
     name: '',
     address: ''
@@ -72,7 +72,7 @@ export class ManageSchoolsComponent implements OnInit {
   editSchool(schoolId: number) {
     const school = this.schools.find(s => s.school_id === schoolId);
     if (school) {
-      this.editSchool = {
+      this.editSchoolData = {
         school_id: school.school_id,
         name: school.name,
         address: school.address
@@ -82,7 +82,7 @@ export class ManageSchoolsComponent implements OnInit {
   }
 
   updateSchool() {
-    this.http.put(`${environment.apiUrl}/api/schools/update_school.php`, this.editSchool)
+    this.http.put(`${environment.apiUrl}/api/schools/update_school.php`, this.editSchoolData)
       .subscribe({
         next: (response: any) => {
           if (response.success) {
@@ -130,7 +130,7 @@ export class ManageSchoolsComponent implements OnInit {
 
   closeEditModal() {
     this.showEditForm = false;
-    this.editSchool = {
+    this.editSchoolData = {
       school_id: 0,
       name: '',
       address: ''

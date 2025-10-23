@@ -36,9 +36,11 @@ import { LogbookComponent } from './dashboards/student-dashboard/logbook/logbook
 import { LecturerLayoutComponent } from './layout/lecturer-layout/lecturer-layout.component';
 import { SystemAdminDashboardComponent } from './dashboards/system-admin-dashboard/system-admin-dashboard.component';
 import { SystemAdminLayoutComponent } from './layout/system-admin-layout/system-admin-layout.component';
+import { SchoolAdminDashboardComponent } from './dashboards/school-admin-dashboard/school-admin-dashboard.component';
 import { ManageSchoolsComponent } from './dashboards/system-admin-dashboard/manage-schools/manage-schools.component';
 import { SystemManageCompaniesComponent } from './dashboards/system-admin-dashboard/manage-companies/manage-companies.component';
 import { ManageSchoolAdminsComponent } from './dashboards/system-admin-dashboard/manage-school-admins/manage-school-admins.component';
+import { ManageCompanyUsersComponent } from './dashboards/system-admin-dashboard/manage-company-users/manage-company-users.component';
 import { SystemOverviewComponent } from './dashboards/system-admin-dashboard/system-overview/system-overview.component';
 
 export const routes: Routes = [
@@ -55,6 +57,7 @@ export const routes: Routes = [
     { path: 'student-dashboard', component: StudentDashboardComponent },
     { path: 'admin-dashboard', component: AdminDashboardComponent },
     { path: 'system-admin-dashboard', component: SystemAdminDashboardComponent },
+    { path: 'school-admin-dashboard', component: SchoolAdminDashboardComponent },
     { path: 'lecturer-dashboard', component: LecturerDashboardComponent },
     { path: 'apply/:id', component: ApplyComponent },
 
@@ -110,7 +113,13 @@ export const routes: Routes = [
             { path: 'manage-schools', component: ManageSchoolsComponent },
             { path: 'system-manage-companies', component: SystemManageCompaniesComponent },
             { path: 'manage-school-admins', component: ManageSchoolAdminsComponent },
+            { path: 'manage-company-users', component: ManageCompanyUsersComponent },
             { path: 'system-overview', component: SystemOverviewComponent },
         ]
     },
+    // School Admin routes
+    { path: 'manage-courses', component: SchoolAdminDashboardComponent },
+    { path: 'manage-lecturers', component: SchoolAdminDashboardComponent },
+    { path: 'manage-students', component: SchoolAdminDashboardComponent },
+    { path: 'school-reports', component: SchoolAdminDashboardComponent },
 ];

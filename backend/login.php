@@ -12,7 +12,7 @@ if (!$data || !isset($data['email'], $data['password'])) {
 $email = $data['email'];
 $password = $data['password'];
 
-$stmt = $conn->prepare("SELECT user_id, name, email, role, password, status FROM users WHERE email=?");
+$stmt = $conn->prepare("SELECT user_id, name, email, role, password, status, school_id FROM users WHERE email=?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -53,6 +53,11 @@ if ($row = $result->fetch_assoc()) {
             $response['course_name'] = $r2['course_name'];
         }
         $stmt2->close();
+    } elseif ($row['role'] === 'SCHOOL_ADMIN') {
+        if ($row['school_id']) {
+            $response['school_id'] = (int) $row['school_id'];
+        }
+        error_log('SCHOOL_ADMIN login - school_id: ' . ($row['school_id'] ?? 'NULL'));
     }
 
     $stmt->close();
