@@ -74,7 +74,9 @@ export class LoginComponent {
           if (this.redirectUrl) {
             this.router.navigateByUrl(this.redirectUrl);
           } else {
-            if (response.role === 'ADMIN' || response.role === 'SYSTEM_ADMIN') {
+            if (response.role === 'SYSTEM_ADMIN') {
+              this.router.navigate(['/system-admin-dashboard']);
+            } else if (response.role === 'ADMIN' || response.role === 'SCHOOL_ADMIN') {
               this.router.navigate(['/admin-dashboard']);
             } else if (response.role === 'COMPANY') {
               this.router.navigate(['/company-dashboard']);

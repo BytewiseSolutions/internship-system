@@ -1,0 +1,25 @@
+<div class="manage-schools">
+    <div class="page-header">
+        <h1><i class="fas fa-university"></i> Manage Schools</h1>
+        <p>Register and manage educational institutions</p>
+    </div>
+
+    <div class="schools-container" *ngIf="!loading">
+        <div class="school-card" *ngFor="let school of schools">
+            <div class="school-info">
+                <h3>{{ school.name }}</h3>
+                <p class="address">{{ school.address }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading schools...
+    </div>
+
+    <div class="no-data" *ngIf="!loading && schools.length === 0">
+        <i class="fas fa-university"></i>
+        <h3>No schools found</h3>
+        <p>No schools are currently registered in the system.</p>
+    </div>
+</div>

@@ -34,6 +34,10 @@ import { ReportsComponent } from './dashboards/lecturer-dashboard/reports/report
 import { InternshipStatusComponent } from './dashboards/lecturer-dashboard/internship-status/internship-status.component';
 import { LogbookComponent } from './dashboards/student-dashboard/logbook/logbook.component';
 import { LecturerLayoutComponent } from './layout/lecturer-layout/lecturer-layout.component';
+import { SystemAdminDashboardComponent } from './dashboards/system-admin-dashboard/system-admin-dashboard.component';
+import { SystemAdminLayoutComponent } from './layout/system-admin-layout/system-admin-layout.component';
+import { ManageSchoolsComponent } from './dashboards/system-admin-dashboard/manage-schools/manage-schools.component';
+import { SystemManageCompaniesComponent } from './dashboards/system-admin-dashboard/manage-companies/manage-companies.component';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -48,6 +52,7 @@ export const routes: Routes = [
     { path: 'company-dashboard', component: CompanyDashboardComponent },
     { path: 'student-dashboard', component: StudentDashboardComponent },
     { path: 'admin-dashboard', component: AdminDashboardComponent },
+    { path: 'system-admin-dashboard', component: SystemAdminDashboardComponent },
     { path: 'lecturer-dashboard', component: LecturerDashboardComponent },
     { path: 'apply/:id', component: ApplyComponent },
 
@@ -93,6 +98,15 @@ export const routes: Routes = [
             { path: 'view-students', component: ViewStudentsComponent },
             { path: 'reports', component: ReportsComponent },
             { path: 'internship-status', component: InternshipStatusComponent },
+        ]
+    },
+    // System Admin layout with children
+    {
+        path: '',
+        component: SystemAdminLayoutComponent,
+        children: [
+            { path: 'manage-schools', component: ManageSchoolsComponent },
+            { path: 'system-manage-companies', component: SystemManageCompaniesComponent },
         ]
     },
 ];

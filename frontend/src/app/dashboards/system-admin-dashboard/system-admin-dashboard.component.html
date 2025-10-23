@@ -1,0 +1,82 @@
+<div class="system-admin-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-system-admin-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-system-admin-sidebar>
+
+    <main class="main-content">
+        <app-system-admin-header [isSidebarCollapsed]="isSidebarCollapsed"></app-system-admin-header>
+
+        <div class="dashboard-content">
+            <div class="welcome-section">
+                <h1>Welcome back, {{ userName }}! 🏛️</h1>
+                <p>System-wide control and management</p>
+            </div>
+
+            <div class="dashboard-cards">
+                <div class="card schools-card">
+                    <div class="card-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Schools</h3>
+                        <p class="card-number">{{ systemStats.schools }}</p>
+                        <span class="card-subtitle">Registered institutions</span>
+                    </div>
+                </div>
+
+                <div class="card companies-card">
+                    <div class="card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Companies</h3>
+                        <p class="card-number">{{ systemStats.companies }}</p>
+                        <span class="card-subtitle">Active partners</span>
+                    </div>
+                </div>
+
+                <div class="card users-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Users</h3>
+                        <p class="card-number">{{ systemStats.users }}</p>
+                        <span class="card-subtitle">System-wide</span>
+                    </div>
+                </div>
+
+                <div class="card applications-card">
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Applications</h3>
+                        <p class="card-number">{{ systemStats.applications }}</p>
+                        <span class="card-subtitle">Total submissions</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h2>System Management</h2>
+                <div class="action-buttons">
+                    <button class="action-btn primary" routerLink="/manage-schools">
+                        <i class="fas fa-university"></i>
+                        Manage Schools
+                    </button>
+                    <button class="action-btn secondary" routerLink="/manage-school-admins">
+                        <i class="fas fa-user-tie"></i>
+                        School Admins
+                    </button>
+                    <button class="action-btn tertiary" routerLink="/system-manage-companies">
+                        <i class="fas fa-building"></i>
+                        Manage Companies
+                    </button>
+                    <button class="action-btn quaternary" routerLink="/system-overview">
+                        <i class="fas fa-chart-line"></i>
+                        System Overview
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

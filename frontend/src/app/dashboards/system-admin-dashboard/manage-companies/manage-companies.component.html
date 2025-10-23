@@ -1,0 +1,44 @@
+<div class="manage-companies">
+    <div class="page-header">
+        <h1><i class="fas fa-building"></i> Manage Companies</h1>
+        <p>Register and manage company partners</p>
+        <button class="add-company-btn" (click)="showAddForm = !showAddForm">
+            <i class="fas fa-plus"></i> Register New Company
+        </button>
+    </div>
+
+    <div class="add-company-form" *ngIf="showAddForm">
+        <h3>Register New Company</h3>
+        <form (ngSubmit)="addCompany()">
+            <div class="form-row">
+                <input type="text" [(ngModel)]="newCompany.name" name="name" placeholder="Company Name" required>
+                <input type="email" [(ngModel)]="newCompany.email" name="email" placeholder="Company Email" required>
+            </div>
+            <input type="text" [(ngModel)]="newCompany.address" name="address" placeholder="Company Address">
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Register Company</button>
+                <button type="button" class="btn-secondary" (click)="showAddForm = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="companies-container" *ngIf="!loading">
+        <div class="company-card" *ngFor="let company of companies">
+            <div class="company-info">
+                <h3>{{ company.name }}</h3>
+                <p class="email">{{ company.email }}</p>
+                <p class="status">Status: {{ company.status }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading companies...
+    </div>
+
+    <div class="no-data" *ngIf="!loading && companies.length === 0">
+        <i class="fas fa-building"></i>
+        <h3>No companies found</h3>
+        <p>No companies are currently registered in the system.</p>
+    </div>
+</div>
