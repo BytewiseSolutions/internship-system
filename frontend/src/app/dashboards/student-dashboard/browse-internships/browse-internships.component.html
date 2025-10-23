@@ -71,12 +71,17 @@
                 </div>
 
                 <div class="card-actions">
-                    <button class="apply-btn" [class.applied]="appliedInternshipIds.includes(internship.id)"
-                        [class.pending]="appliedInternshipIds.includes(internship.id)"
-                        [disabled]="appliedInternshipIds.includes(internship.id)" (click)="openApplyModal(internship)">
-                        <i class="fas" [class.fa-check]="appliedInternshipIds.includes(internship.id)"
-                            [class.fa-paper-plane]="!appliedInternshipIds.includes(internship.id)"></i>
-                        {{ appliedInternshipIds.includes(internship.id) ? 'Application Sent' : 'Apply Now' }}
+                    <button class="apply-btn" 
+                        [class.applied]="appliedInternshipIds.includes(internship.id)"
+                        [class.expired]="isExpired(internship)"
+                        [disabled]="!canApply(internship)" 
+                        (click)="openApplyModal(internship)">
+                        <i class="fas" 
+                            [class.fa-check]="appliedInternshipIds.includes(internship.id)"
+                            [class.fa-clock]="isExpired(internship)"
+                            [class.fa-paper-plane]="canApply(internship)"></i>
+                        {{ appliedInternshipIds.includes(internship.id) ? 'Application Sent' : 
+                           isExpired(internship) ? 'Deadline Passed' : 'Apply Now' }}
                     </button>
                 </div>
             </div>

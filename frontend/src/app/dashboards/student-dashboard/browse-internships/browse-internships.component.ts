@@ -56,10 +56,7 @@ export class BrowseInternshipsComponent implements OnInit {
   }
 
   loadInternships() {
-    this.http.get<Internship[]>(`${environment.apiUrl}/internships/get_internships.php`)
-      .pipe(
-        map(data => data.filter(item => item.status === 'ACTIVE'))
-      )
+    this.http.get<Internship[]>(`${environment.apiUrl}/internships/get_available_internships.php`)
       .subscribe({
         next: (data) => {
           this.internships = data;
@@ -124,6 +121,14 @@ export class BrowseInternshipsComponent implements OnInit {
 
   applyForInternship(internship: Internship) {
     console.log(`Applying for internship: ${internship.title} at ${internship.company_name}`);
+  }
+
+  isExpired(internship: Internship): boolean {
+    return new Date(internship.deadline) < new Date();
+  }
+
+  canApply(internship: Internship): boolean {
+    return !this.isExpired(internship) && !this.appliedInternshipIds.includes(internship.id);
   }
   openApplyModal(internship: Internship) {
     this.selectedInternship = internship;

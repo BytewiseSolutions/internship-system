@@ -5,15 +5,15 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private baseUrl = `${environment.apiUrl}/backend`;
+    private baseUrl = `${environment.apiUrl}`;
 
     constructor(private http: HttpClient) { }
 
     register(student: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/register`, student, { headers: { 'Content-Type': 'application/json' } });
+        return this.http.post(`${this.baseUrl}/register.php`, student, { headers: { 'Content-Type': 'application/json' } });
     }
     login(credentials: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/login`, credentials, {
+        return this.http.post(`${this.baseUrl}/login.php`, credentials, {
             headers: { 'Content-Type': 'application/json' }
         }).pipe(
             tap((response: any) => {
@@ -30,17 +30,17 @@ export class AuthService {
 
     notifyAdmin(role: string) {
         return this.http.post(
-            `${this.baseUrl}/notify-admin?role=${role}`,
+            `${this.baseUrl}/auth/notify-admin.php?role=${role}`,
             {},
             { responseType: 'text' }
         );
     }
 
     forgotPassword(email: string): Observable<any> {
-        return this.http.post(`${this.baseUrl}/forgot-password`, { email }, { responseType: 'json' });
+        return this.http.post(`${this.baseUrl}/auth/forgot-password.php`, { email }, { responseType: 'json' });
     }
     resetPassword(token: string, newPassword: string) {
-        return this.http.post(`${this.baseUrl}/reset-password`, { token, newPassword }, { responseType: 'json' });
+        return this.http.post(`${this.baseUrl}/auth/reset-password.php`, { token, newPassword }, { responseType: 'json' });
     }
     logout() {
         localStorage.clear();

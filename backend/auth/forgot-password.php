@@ -7,27 +7,26 @@ $data = json_decode(file_get_contents("php://input"), true);
 $email = trim($data['email'] ?? '');
 
 if (!$email) {
-    http_response_code(400);
-    echo "Email required.";
-    exit;
+    send_json(['message' => 'Email required'], 400);
 }
 
-$stmt = $pdo->prepare("SELECT id FROM users WHERE email=? LIMIT 1");
-$stmt->execute([$email]);
-$user = $stmt->fetch();
+$stmt = $conn->prepare("SELECT id FROM users WHERE email=? LIMIT 1");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
 
 if (!$user) {
-    http_response_code(404);
-    echo "User not found.";
-    exit;
+    send_json(['message' => 'User not found'], 404);
 }
 
 $token = bin2hex(random_bytes(32));
-$stmt = $pdo->prepare("UPDATE users SET reset_token=? WHERE id=?");
-$stmt->execute([$token, $user['id']]);
+$stmt = $conn->prepare("UPDATE users SET reset_token=? WHERE id=?");
+$stmt->bind_param("si", $token, $user['id']);
+$stmt->execute();
 
 $resetLink = "http://localhost:4200/reset-password?token=$token";
 
 sendMail($email, "Password Reset Request", "Reset your password here: $resetLink");
 
-echo "Password reset link sent to $email.";
+send_json(['message' => "Password reset link sent to $email"]);

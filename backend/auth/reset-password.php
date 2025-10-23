@@ -9,24 +9,23 @@ $token = $data['token'] ?? '';
 $newPassword = $data['newPassword'] ?? '';
 
 if (!$token || strlen($newPassword) < 6) {
-    http_response_code(400);
-    echo "Invalid token or weak password.";
-    exit;
+    send_json(['message' => 'Invalid token or weak password'], 400);
 }
 
-$stmt = $pdo->prepare("SELECT id FROM users WHERE reset_token=? LIMIT 1");
-$stmt->execute([$token]);
-$user = $stmt->fetch();
+$stmt = $conn->prepare("SELECT id FROM users WHERE reset_token=? LIMIT 1");
+$stmt->bind_param("s", $token);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
 
 if (!$user) {
-    http_response_code(400);
-    echo "Invalid or expired token.";
-    exit;
+    send_json(['message' => 'Invalid or expired token'], 400);
 }
 
-$hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+$hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-$stmt = $pdo->prepare("UPDATE users SET password=?, reset_token=NULL WHERE id=?");
-$stmt->execute([$hashedPassword, $user['id']]);
+$stmt = $conn->prepare("UPDATE users SET password=?, reset_token=NULL WHERE id=?");
+$stmt->bind_param("si", $hashedPassword, $user['id']);
+$stmt->execute();
 
-echo "Password reset successfully.";
+send_json(['message' => 'Password reset successfully']);

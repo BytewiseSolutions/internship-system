@@ -22,6 +22,18 @@ if (!$student_id || !$internship_id) {
     die(json_encode(['status' => 'error', 'message' => 'Student ID or Internship ID missing. Received: student_id=' . $student_id . ', internship_id=' . $internship_id]));
 }
 
+// Check if internship deadline has passed
+$deadlineStmt = $conn->prepare("SELECT deadline FROM internships WHERE id = ?");
+$deadlineStmt->bind_param("i", $internship_id);
+$deadlineStmt->execute();
+$deadlineResult = $deadlineStmt->get_result();
+$internship = $deadlineResult->fetch_assoc();
+
+if ($internship && $internship['deadline'] < date('Y-m-d')) {
+    die(json_encode(['status' => 'error', 'message' => 'Cannot apply for expired internship']));
+}
+$deadlineStmt->close();
+
 $checkStmt = $conn->prepare("SELECT id FROM applications WHERE student_id = ? AND internship_id = ?");
 $checkStmt->bind_param("ii", $student_id, $internship_id);
 $checkStmt->execute();
