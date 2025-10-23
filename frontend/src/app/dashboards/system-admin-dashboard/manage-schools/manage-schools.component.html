@@ -2,6 +2,33 @@
     <div class="page-header">
         <h1><i class="fas fa-university"></i> Manage Schools</h1>
         <p>Register and manage educational institutions</p>
+        <button class="add-school-btn" (click)="showAddForm = !showAddForm">
+            <i class="fas fa-plus"></i> Register New School
+        </button>
+    </div>
+
+    <!-- Add School Modal -->
+    <div class="modal-backdrop" *ngIf="showAddForm" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Register New School</h3>
+                <button class="close-btn" (click)="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form (ngSubmit)="addSchool()">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <input type="text" [(ngModel)]="newSchool.name" name="name" placeholder="School Name" required>
+                        <input type="text" [(ngModel)]="newSchool.address" name="address" placeholder="School Address">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">Register School</button>
+                    <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="schools-container" *ngIf="!loading">
@@ -9,6 +36,14 @@
             <div class="school-info">
                 <h3>{{ school.name }}</h3>
                 <p class="address">{{ school.address }}</p>
+            </div>
+            <div class="school-actions">
+                <button class="btn-edit" (click)="editSchool(school.school_id)">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn-delete" (click)="deleteSchool(school.school_id)">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
             </div>
         </div>
     </div>
@@ -21,5 +56,29 @@
         <i class="fas fa-university"></i>
         <h3>No schools found</h3>
         <p>No schools are currently registered in the system.</p>
+    </div>
+
+    <!-- Edit School Modal -->
+    <div class="modal-backdrop" *ngIf="showEditForm" (click)="closeEditModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Edit School</h3>
+                <button class="close-btn" (click)="closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form (ngSubmit)="updateSchool()">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <input type="text" [(ngModel)]="editSchool.name" name="name" placeholder="School Name" required>
+                        <input type="text" [(ngModel)]="editSchool.address" name="address" placeholder="School Address">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">Update School</button>
+                    <button type="button" class="btn-secondary" (click)="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

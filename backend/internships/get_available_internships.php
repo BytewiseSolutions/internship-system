@@ -3,11 +3,11 @@ require_once __DIR__ . '/../cors.php';
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../utils.php';
 
-$sql = "SELECT i.id, i.title, c.name AS name, i.location, i.postedDate, i.deadline, i.description 
+$sql = "SELECT i.internship_id as id, i.title, c.name AS name, i.location, i.created_at as postedDate, i.deadline, i.description 
         FROM internships i
-        JOIN companies c ON i.company_id = c.id
-        WHERE i.status = 'ACTIVE'
-        ORDER BY i.postedDate DESC";
+        JOIN companies c ON i.company_id = c.company_id
+        WHERE i.status = 'OPEN'
+        ORDER BY i.created_at DESC";
 
 $result = $conn->query($sql);
 

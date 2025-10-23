@@ -7,19 +7,29 @@
         </button>
     </div>
 
-    <div class="add-company-form" *ngIf="showAddForm">
-        <h3>Register New Company</h3>
-        <form (ngSubmit)="addCompany()">
-            <div class="form-row">
-                <input type="text" [(ngModel)]="newCompany.name" name="name" placeholder="Company Name" required>
-                <input type="email" [(ngModel)]="newCompany.email" name="email" placeholder="Company Email" required>
+    <!-- Add Company Modal -->
+    <div class="modal-backdrop" *ngIf="showAddForm" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Register New Company</h3>
+                <button class="close-btn" (click)="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <input type="text" [(ngModel)]="newCompany.address" name="address" placeholder="Company Address">
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">Register Company</button>
-                <button type="button" class="btn-secondary" (click)="showAddForm = false">Cancel</button>
-            </div>
-        </form>
+            <form (ngSubmit)="addCompany()">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <input type="text" [(ngModel)]="newCompany.name" name="name" placeholder="Company Name" required>
+                        <input type="email" [(ngModel)]="newCompany.email" name="email" placeholder="Company Email" required>
+                    </div>
+                    <input type="text" [(ngModel)]="newCompany.address" name="address" placeholder="Company Address">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">Register Company</button>
+                    <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="companies-container" *ngIf="!loading">
@@ -27,7 +37,19 @@
             <div class="company-info">
                 <h3>{{ company.name }}</h3>
                 <p class="email">{{ company.email }}</p>
-                <p class="status">Status: {{ company.status }}</p>
+                <p class="address">{{ company.address }}</p>
+                <div class="status-badge" [class]="company.status.toLowerCase()">{{ company.status }}</div>
+            </div>
+            <div class="company-actions">
+                <button class="btn-activate" *ngIf="company.status === 'INACTIVE'" (click)="activateCompany(company.id)">
+                    <i class="fas fa-check"></i> Activate
+                </button>
+                <button class="btn-deactivate" *ngIf="company.status === 'ACTIVE'" (click)="deactivateCompany(company.id)">
+                    <i class="fas fa-ban"></i> Deactivate
+                </button>
+                <button class="btn-delete" (click)="deleteCompany(company.id)">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
             </div>
         </div>
     </div>

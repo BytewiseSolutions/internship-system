@@ -1,0 +1,127 @@
+.system-overview {
+  padding: 2rem;
+
+  .page-header {
+    margin-bottom: 2rem;
+    
+    h1 {
+      color: #2e7d32;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    p {
+      color: #6c757d;
+      margin: 0;
+    }
+  }
+
+  .overview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    .overview-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+      }
+
+      &.users .card-icon { background: #2e7d32; }
+      &.schools .card-icon { background: #ff9800; }
+      &.companies .card-icon { background: #2196f3; }
+      &.applications .card-icon { background: #4caf50; }
+
+      .card-content {
+        h3 {
+          margin: 0 0 0.5rem 0;
+          color: #2c3e50;
+          font-size: 0.9rem;
+        }
+
+        .card-number {
+          font-size: 2rem;
+          font-weight: bold;
+          margin: 0;
+          color: #2c3e50;
+        }
+
+        .card-subtitle {
+          color: #6c757d;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  .system-health {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+    h2 {
+      color: #2e7d32;
+      margin-bottom: 1rem;
+    }
+
+    .health-indicators {
+      display: grid;
+      gap: 1rem;
+
+      .health-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .indicator {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          
+          &.active {
+            background: #4caf50;
+          }
+          
+          &.inactive {
+            background: #f44336;
+          }
+        }
+
+        span:last-child {
+          color: #2c3e50;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+
+    i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+  }
+}

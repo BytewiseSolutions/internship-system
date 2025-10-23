@@ -38,6 +38,8 @@ import { SystemAdminDashboardComponent } from './dashboards/system-admin-dashboa
 import { SystemAdminLayoutComponent } from './layout/system-admin-layout/system-admin-layout.component';
 import { ManageSchoolsComponent } from './dashboards/system-admin-dashboard/manage-schools/manage-schools.component';
 import { SystemManageCompaniesComponent } from './dashboards/system-admin-dashboard/manage-companies/manage-companies.component';
+import { ManageSchoolAdminsComponent } from './dashboards/system-admin-dashboard/manage-school-admins/manage-school-admins.component';
+import { SystemOverviewComponent } from './dashboards/system-admin-dashboard/system-overview/system-overview.component';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -107,6 +109,8 @@ export const routes: Routes = [
         children: [
             { path: 'manage-schools', component: ManageSchoolsComponent },
             { path: 'system-manage-companies', component: SystemManageCompaniesComponent },
+            { path: 'manage-school-admins', component: ManageSchoolAdminsComponent },
+            { path: 'system-overview', component: SystemOverviewComponent },
         ]
     },
 ];
