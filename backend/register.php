@@ -1,42 +1,37 @@
 <?php
-require_once 'cors.php';
-require_once 'utils.php';
-require_once 'config.php';
+require_once './cors.php';
+require_once './config.php';
+require_once './utils.php';
 
-$data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents('php://input'), true);
 
-if (!$data || !isset($data['name'], $data['email'], $data['contact'], $data['password'], $data['role'])) {
-    send_json(["message" => "Missing required fields"], 400);
-}
-
-$name = $conn->real_escape_string($data['name']);
-$email = $conn->real_escape_string($data['email']);
-$contact = $conn->real_escape_string($data['contact']);
+$name = $data['name'];
+$email = $data['email'];
 $password = password_hash($data['password'], PASSWORD_DEFAULT);
-$role = strtoupper($conn->real_escape_string($data['role']));
+$school_id = $data['school_id'];
+$course_id = $data['course_id'];
 
-$check = $conn->prepare("SELECT id FROM users WHERE email=?");
-$check->bind_param("s", $email);
-$check->execute();
-$check->store_result();
-if ($check->num_rows > 0) {
-    send_json(["message" => "Email already registered."], 409);
+$conn->begin_transaction();
+
+try {
+    // Insert user
+    $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'STUDENT')");
+    $stmt->bind_param("sss", $name, $email, $password);
+    $stmt->execute();
+    $user_id = $conn->insert_id;
+
+    // Insert student
+    $stmt = $conn->prepare("INSERT INTO students (user_id, school_id, course_id) VALUES (?, ?, ?)");
+    $stmt->bind_param("iii", $user_id, $school_id, $course_id);
+    $stmt->execute();
+
+    $conn->commit();
+    send_json(['success' => true, 'message' => 'Student registered successfully']);
+
+} catch (Exception $e) {
+    $conn->rollback();
+    send_json(['success' => false, 'message' => 'Registration failed: ' . $e->getMessage()], 500);
 }
-$check->close();
 
-// Set status based on role
-$status = ($role === 'STUDENT') ? 'PENDING' : 'ACTIVE';
-
-$stmt = $conn->prepare("INSERT INTO users (name, email, role, contact, password, status) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssssss", $name, $email, $role, $contact, $password, $status);
-
-if ($stmt->execute()) {
-    $message = ($role === 'STUDENT') ? "Registration successful. Awaiting admin approval." : "Registration successful.";
-    send_json(["message" => $message]);
-} else {
-    send_json(["message" => "Registration failed: " . $conn->error], 500);
-}
-
-$stmt->close();
 $conn->close();
 ?>

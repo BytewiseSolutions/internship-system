@@ -1,0 +1,54 @@
+<div class="view-students">
+    <div class="page-header">
+        <h1><i class="fas fa-users"></i> View Students</h1>
+        <p>Manage and monitor student information</p>
+    </div>
+
+    <div class="students-stats" *ngIf="!loading">
+        <div class="stat-card">
+            <h3>Number of Students</h3>
+            <p class="stat-number">{{ students.length }}</p>
+        </div>
+    </div>
+
+    <div class="search-section" *ngIf="!loading">
+        <div class="search-bar">
+            <input type="text" 
+                   placeholder="Search by Student ID" 
+                   [(ngModel)]="searchTerm" 
+                   (input)="searchStudents()">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <div class="students-table" *ngIf="!loading">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Student ID</th>
+                    <th>Faculty</th>
+                    <th>Company</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of filteredStudents">
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.faculty || 'Not specified' }}</td>
+                    <td>{{ student.company || 'Not assigned' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading students...
+    </div>
+
+    <div class="no-data" *ngIf="!loading && filteredStudents.length === 0">
+        <i class="fas fa-user-graduate"></i>
+        <h3>No students found</h3>
+        <p>{{ searchTerm ? 'No students match your search criteria.' : 'No students are currently registered in the system.' }}</p>
+    </div>
+</div>

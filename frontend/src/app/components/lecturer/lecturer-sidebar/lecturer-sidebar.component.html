@@ -1,0 +1,43 @@
+<div class="sidebar-backdrop" [class.mobile-visible]="isMobile && isMobileBackdropVisible"
+    (click)="closeMobileSidebar()"></div>
+
+<nav class="sidebar" [class.collapsed]="!isMobile && isCollapsed" [class.expanded]="isMobile && isMobileExpanded"
+    [class.mobile]="isMobile">
+
+    <div class="sidebar-header">
+        <h3 *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">
+            <i class="fas fa-chalkboard-teacher"></i> Lecturer Panel
+        </h3>
+
+        <button class="toggle-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li routerLinkActive="active" [routerLink]="['/lecturer-dashboard']" (click)="onMenuItemClick()">
+            <i class="fas fa-tachometer-alt"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Dashboard</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/view-students']" (click)="onMenuItemClick()">
+            <i class="fas fa-users"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">View Students</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/reports']" (click)="onMenuItemClick()">
+            <i class="fas fa-chart-bar"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Reports</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/internship-status']" (click)="onMenuItemClick()">
+            <i class="fas fa-briefcase"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Internship Status</span>
+        </li>
+
+        <li (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Logout</span>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,8 @@
+<div class="lecturer-layout" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-lecturer-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-lecturer-sidebar>
+    
+    <main class="main-content">
+        <app-lecturer-header [isSidebarCollapsed]="isSidebarCollapsed"></app-lecturer-header>
+        <router-outlet></router-outlet>
+    </main>
+</div>

@@ -1,0 +1,164 @@
+.manage-logbooks {
+  padding: 2rem;
+
+  .page-header {
+    margin-bottom: 2rem;
+    
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    p {
+      color: #6c757d;
+      margin: 0;
+    }
+  }
+
+  .logbooks-container {
+    display: grid;
+    gap: 1.5rem;
+
+    .logbook-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+
+      .logbook-header {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e9ecef;
+
+        .student-info {
+          h3 {
+            margin: 0 0 0.25rem 0;
+            color: #2c3e50;
+          }
+          
+          .email {
+            color: #6c757d;
+            font-size: 0.9rem;
+          }
+        }
+
+        .week-info {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 0.25rem;
+
+          .week-badge {
+            background: #3498db;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+          }
+
+          .date {
+            color: #6c757d;
+            font-size: 0.8rem;
+          }
+        }
+      }
+
+      .logbook-content {
+        padding: 1.5rem;
+
+        .section {
+          margin-bottom: 1.5rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          h4 {
+            color: #2c3e50;
+            margin: 0 0 0.75rem 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            i {
+              color: #3498db;
+            }
+          }
+
+          p {
+            color: #495057;
+            line-height: 1.6;
+            margin: 0;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+          }
+
+          &.feedback-section p {
+            background: #e8f5e8;
+            border-left-color: #28a745;
+          }
+        }
+      }
+
+      .logbook-actions {
+        padding: 1rem 1.5rem;
+        background: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+
+        .btn {
+          padding: 0.5rem 1rem;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: 500;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          transition: all 0.3s ease;
+
+          &.btn-primary {
+            background: #3498db;
+            color: white;
+            &:hover { background: #2980b9; }
+          }
+
+          &.btn-secondary {
+            background: #6c757d;
+            color: white;
+            &:hover { background: #5a6268; }
+          }
+        }
+      }
+    }
+  }
+
+  .loading, .no-data {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+
+    i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<div class="reports">
+    <div class="page-header">
+        <h1><i class="fas fa-chart-bar"></i> Reports</h1>
+        <p>Generate and view comprehensive reports</p>
+    </div>
+
+    <div class="reports-grid">
+        <div class="report-card" *ngFor="let report of reportTypes">
+            <div class="report-icon">
+                <i [class]="report.icon"></i>
+            </div>
+            <div class="report-content">
+                <h3>{{ report.title }}</h3>
+                <p>{{ report.description }}</p>
+                <button class="generate-btn">
+                    <i class="fas fa-download"></i>
+                    Generate Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

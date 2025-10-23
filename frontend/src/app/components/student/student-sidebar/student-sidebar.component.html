@@ -81,6 +81,11 @@
             <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">My Reviews</span>
         </li>
 
+        <li routerLinkActive="active" [routerLink]="['/logbook']" (click)="onMenuItemClick()">
+            <i class="fas fa-book"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Logbook</span>
+        </li>
+
         <li (click)="logout()">
             <i class="fas fa-sign-out-alt"></i>
             <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Logout</span>

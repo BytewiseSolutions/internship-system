@@ -1,0 +1,48 @@
+<div class="internship-status">
+    <div class="page-header">
+        <h1><i class="fas fa-briefcase"></i> Internship Status</h1>
+        <p>Monitor student internship applications and status</p>
+    </div>
+
+    <div class="status-stats" *ngIf="!loading">
+        <div class="stat-card ongoing">
+            <div class="stat-icon">
+                <i class="fas fa-play-circle"></i>
+            </div>
+            <div class="stat-content">
+                <h3>Ongoing</h3>
+                <p class="stat-number">{{ ongoingCount }}</p>
+            </div>
+        </div>
+
+        <div class="stat-card completed">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <h3>Completed</h3>
+                <p class="stat-number">{{ completedCount }}</p>
+            </div>
+        </div>
+
+        <div class="stat-card pending">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+                <h3>Pending</h3>
+                <p class="stat-number">{{ pendingCount }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading internship status...
+    </div>
+
+    <div class="no-data" *ngIf="!loading && applications.length === 0">
+        <i class="fas fa-briefcase"></i>
+        <h3>No applications found</h3>
+        <p>No internship applications have been submitted yet.</p>
+    </div>
+</div>

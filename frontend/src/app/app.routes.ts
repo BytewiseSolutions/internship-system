@@ -27,6 +27,13 @@ import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.compone
 import { StudentLayoutComponent } from './layout/student-layout/student-layout.component';
 import { CompanyLayoutComponent } from './layout/company-layout/company-layout.component';
 import { ApplyComponent } from './pages/apply/apply-page.component';
+import { LecturerDashboardComponent } from './dashboards/lecturer-dashboard/lecturer-dashboard.component';
+import { ViewStudentsComponent } from './dashboards/lecturer-dashboard/view-students/view-students.component';
+import { ReportsComponent } from './dashboards/lecturer-dashboard/reports/reports.component';
+
+import { InternshipStatusComponent } from './dashboards/lecturer-dashboard/internship-status/internship-status.component';
+import { LogbookComponent } from './dashboards/student-dashboard/logbook/logbook.component';
+import { LecturerLayoutComponent } from './layout/lecturer-layout/lecturer-layout.component';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -41,6 +48,7 @@ export const routes: Routes = [
     { path: 'company-dashboard', component: CompanyDashboardComponent },
     { path: 'student-dashboard', component: StudentDashboardComponent },
     { path: 'admin-dashboard', component: AdminDashboardComponent },
+    { path: 'lecturer-dashboard', component: LecturerDashboardComponent },
     { path: 'apply/:id', component: ApplyComponent },
 
     // Admin layout with children
@@ -74,7 +82,17 @@ export const routes: Routes = [
             { path: 'track-application', component: TrackApplicationComponent },
             { path: 'create-reviews', component: CreateReviewsComponent },
             { path: 'view-reviews', component: ViewReviewsComponent },
+            { path: 'logbook', component: LogbookComponent },
         ]
-
+    },
+    // Lecturer layout with children
+    {
+        path: '',
+        component: LecturerLayoutComponent,
+        children: [
+            { path: 'view-students', component: ViewStudentsComponent },
+            { path: 'reports', component: ReportsComponent },
+            { path: 'internship-status', component: InternshipStatusComponent },
+        ]
     },
 ];
