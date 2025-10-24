@@ -170,6 +170,9 @@
                                 <p class="email">{{ lecturer.email }}</p>
                             </div>
                             <div class="lecturer-actions">
+                                <button class="btn-assign" (click)="assignCourse(lecturer)">
+                                    <i class="fas fa-plus"></i> Assign Course
+                                </button>
                                 <button class="btn-delete" (click)="deleteLecturer(lecturer.lecturer_id)">
                                     <i class="fas fa-trash"></i> Delete
                                 </button>
@@ -181,6 +184,30 @@
                         <i class="fas fa-chalkboard-teacher"></i>
                         <h3>No lecturers found</h3>
                         <p>No lecturers are currently registered for this school.</p>
+                    </div>
+
+                    <!-- Assign Course Modal -->
+                    <div class="modal-backdrop" *ngIf="showAssignCourseForm" (click)="closeAssignModal()">
+                        <div class="modal-content" (click)="$event.stopPropagation()">
+                            <div class="modal-header">
+                                <h3>Assign Course to {{ selectedLecturer?.name }}</h3>
+                                <button class="close-btn" (click)="closeAssignModal()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <form (ngSubmit)="submitCourseAssignment()">
+                                <div class="modal-body">
+                                    <select [(ngModel)]="assignmentData.course_id" name="course_id" required>
+                                        <option value="">Select Course</option>
+                                        <option *ngFor="let course of courses" [value]="course.course_id">{{ course.course_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn-primary">Assign Course</button>
+                                    <button type="button" class="btn-secondary" (click)="closeAssignModal()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div *ngIf="currentView === 'students'" class="students-content">

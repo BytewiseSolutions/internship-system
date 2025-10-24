@@ -225,6 +225,29 @@
           }
 
           .course-actions, .lecturer-actions, .student-actions {
+            display: flex;
+            gap: 10px;
+
+            .btn-assign {
+              background: linear-gradient(135deg, #2196f3, #1976d2);
+              color: white;
+              border: none;
+              padding: 8px 16px;
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 0.9rem;
+              transition: all 0.3s ease;
+
+              &:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+              }
+
+              i {
+                margin-right: 5px;
+              }
+            }
+
             .btn-delete {
               background: linear-gradient(135deg, #f44336, #d32f2f);
               color: white;

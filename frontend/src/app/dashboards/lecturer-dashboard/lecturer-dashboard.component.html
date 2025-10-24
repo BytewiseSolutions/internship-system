@@ -10,39 +10,54 @@
                 <p>Monitor and guide student internship progress</p>
             </div>
 
-            <div class="dashboard-cards">
+            <div class="dashboard-cards" *ngIf="!loading">
                 <div class="card students-card">
                     <div class="card-icon">
                         <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="card-content">
-                        <h3>Active Students</h3>
-                        <p class="card-number">12</p>
+                        <h3>My Students</h3>
+                        <p class="card-number">{{ lecturerStats.students }}</p>
                         <span class="card-subtitle">Students under supervision</span>
+                    </div>
+                </div>
+
+                <div class="card courses-card">
+                    <div class="card-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>My Courses</h3>
+                        <p class="card-number">{{ lecturerStats.courses }}</p>
+                        <span class="card-subtitle">Assigned courses</span>
                     </div>
                 </div>
 
                 <div class="card logbook-card">
                     <div class="card-icon">
-                        <i class="fas fa-book"></i>
+                        <i class="fas fa-clipboard-list"></i>
                     </div>
                     <div class="card-content">
                         <h3>Logbook Entries</h3>
-                        <p class="card-number">48</p>
-                        <span class="card-subtitle">This week</span>
+                        <p class="card-number">{{ lecturerStats.logbooks }}</p>
+                        <span class="card-subtitle">Total submissions</span>
                     </div>
                 </div>
 
-                <div class="card pending-card">
+                <div class="card applications-card">
                     <div class="card-icon">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-briefcase"></i>
                     </div>
                     <div class="card-content">
-                        <h3>Pending Reviews</h3>
-                        <p class="card-number">5</p>
-                        <span class="card-subtitle">Awaiting feedback</span>
+                        <h3>Applications</h3>
+                        <p class="card-number">{{ lecturerStats.applications }}</p>
+                        <span class="card-subtitle">Student applications</span>
                     </div>
                 </div>
+            </div>
+
+            <div class="loading" *ngIf="loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading dashboard...
             </div>
 
             <div class="quick-actions">

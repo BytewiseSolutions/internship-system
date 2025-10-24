@@ -37,6 +37,11 @@ export class SchoolAdminDashboardComponent implements OnInit {
     name: '',
     email: ''
   };
+  showAssignCourseForm = false;
+  selectedLecturer: any = null;
+  assignmentData = {
+    course_id: ''
+  };
   students: any[] = [];
   showAddStudentForm = false;
   newStudent = {
@@ -70,6 +75,7 @@ export class SchoolAdminDashboardComponent implements OnInit {
     } else if (url.includes('manage-lecturers')) {
       this.currentView = 'lecturers';
       this.loadLecturers();
+      this.loadCourses();
     } else if (url.includes('manage-students')) {
       this.currentView = 'students';
       this.loadStudents();
@@ -223,6 +229,41 @@ export class SchoolAdminDashboardComponent implements OnInit {
 
   closeLecturerModal() {
     this.showAddLecturerForm = false;
+  }
+
+  assignCourse(lecturer: any) {
+    this.selectedLecturer = lecturer;
+    this.loadCourses();
+    this.showAssignCourseForm = true;
+  }
+
+  submitCourseAssignment() {
+    const assignData = {
+      lecturer_id: this.selectedLecturer.lecturer_id,
+      course_id: this.assignmentData.course_id
+    };
+
+    this.http.post(`${environment.apiUrl}/api/lecturers/assign_course.php`, assignData).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          alert('Course assigned successfully!');
+          this.loadLecturers();
+          this.closeAssignModal();
+        }
+      },
+      error: (error) => {
+        console.error('Error assigning course:', error);
+        alert('Error assigning course');
+      }
+    });
+  }
+
+  closeAssignModal() {
+    this.showAssignCourseForm = false;
+    this.selectedLecturer = null;
+    this.assignmentData = {
+      course_id: ''
+    };
   }
 
   loadStudents() {
