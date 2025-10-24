@@ -2,85 +2,131 @@
     <app-company-sidebar (collapsedChange)="onSidebarCollapseChanged($event)">
     </app-company-sidebar>
 
-    <main class="main-content">
+    <main class="main-content" [class.sidebar-collapsed]="isSidebarCollapsed">
         <app-company-header [isSidebarCollapsed]="isSidebarCollapsed"></app-company-header>
-        <div class="dashboard-cards">
-            <div class="card text-center shadow-sm">
-                <i class="fas fa-briefcase fa-2x mb-2 text-primary"></i>
-                <h5>Total Internships</h5>
-                <p class="display-6">{{ totalInternships }}</p>
+
+        <div class="dashboard-content">
+            <div class="welcome-section">
+                <h1>Welcome back, {{ userName }}! 🏢</h1>
+                <p>Manage your company's internship programs</p>
             </div>
 
-            <div class="card text-center shadow-sm">
-                <i class="fas fa-user-graduate fa-2x mb-2 text-success"></i>
-                <h5>Total Applications</h5>
-                <p class="display-6">{{ totalApplications }}</p>
+            <div class="dashboard-cards">
+                <div class="card internships-card">
+                    <div class="card-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Internships</h3>
+                        <p class="card-number">{{ totalInternships }}</p>
+                        <span class="card-subtitle">Available positions</span>
+                    </div>
+                </div>
+
+                <div class="card applications-card">
+                    <div class="card-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Applications</h3>
+                        <p class="card-number">{{ totalApplications }}</p>
+                        <span class="card-subtitle">Student applications</span>
+                    </div>
+                </div>
+
+                <div class="card active-card">
+                    <div class="card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Approved Students</h3>
+                        <p class="card-number">{{ approvedStudents }}</p>
+                        <span class="card-subtitle">Active interns</span>
+                    </div>
+                </div>
+
+                <div class="card pending-card">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Pending Reviews</h3>
+                        <p class="card-number">{{ totalReviews }}</p>
+                        <span class="card-subtitle">Awaiting response</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="card text-center shadow-sm">
-                <i class="fas fa-star fa-2x mb-2 text-warning"></i>
-                <h5>Reviews</h5>
-                <p class="display-6">{{ totalReviews }}</p>
+            <div class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="action-btn primary" routerLink="/manage-internships">
+                        <i class="fas fa-briefcase"></i>
+                        Manage Internships
+                    </button>
+                    <button class="action-btn secondary" routerLink="/manage-applications">
+                        <i class="fas fa-file-alt"></i>
+                        View Applications
+                    </button>
+                    <button class="action-btn tertiary" routerLink="/manage-reviews">
+                        <i class="fas fa-star"></i>
+                        Manage Reviews
+                    </button>
+                </div>
             </div>
+            <section class="recent-section">
+                <h3>Recent Internships</h3>
+                <table class="custom-table" *ngIf="recentInternships.length">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Location</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let internship of recentInternships">
+                            <td>{{ internship.title }}</td>
+                            <td>{{ internship.location }}</td>
+                            <td>{{ internship.deadline | date }}</td>
+                            <td>{{ internship.status }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p *ngIf="recentInternships.length === 0" class="no-data">No recent internships found.</p>
+            </section>
 
-            <div class="card text-center shadow-sm">
-                <i class="fas fa-check-circle fa-2x mb-2 text-info"></i>
-                <h5>Approved Students</h5>
-                <p class="display-6">{{ approvedStudents }}</p>
-            </div>
+            <section class="recent-section">
+                <h3>Recent Applications</h3>
+                <table class="custom-table" *ngIf="recentApplications.length">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Internship</th>
+                            <th>Status</th>
+                            <th>Applied On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let application of recentApplications">
+                            <td>{{ application.student_name }}</td>
+                            <td>{{ application.internship_title }}</td>
+                            <td>
+                                <span [ngClass]="{
+                    'text-success': application.status === 'ACCEPTED',
+                    'text-warning': application.status === 'PENDING',
+                    'text-danger': application.status === 'REJECTED'
+                  }">
+                                    {{ application.status }}
+                                </span>
+                            </td>
+                            <td>{{ application.created_at | date:'mediumDate' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p *ngIf="recentApplications.length === 0" class="no-data">No recent applications found.</p>
+            </section>
         </div>
-        <section class="recent-section">
-            <h3>Recent Internships</h3>
-            <table class="custom-table" *ngIf="recentInternships.length">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Location</th>
-                        <th>Deadline</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let internship of recentInternships">
-                        <td>{{ internship.title }}</td>
-                        <td>{{ internship.location }}</td>
-                        <td>{{ internship.deadline | date }}</td>
-                        <td>{{ internship.status }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p *ngIf="recentInternships.length === 0" class="no-data">No recent internships found.</p>
-        </section>
-
-        <section class="recent-section">
-            <h3>Recent Applications</h3>
-            <table class="custom-table" *ngIf="recentApplications.length">
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Internship</th>
-                        <th>Status</th>
-                        <th>Applied On</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let application of recentApplications">
-                        <td>{{ application.student_name }}</td>
-                        <td>{{ application.internship_title }}</td>
-                        <td>
-                            <span [ngClass]="{
-                'text-success': application.status === 'ACCEPTED',
-                'text-warning': application.status === 'PENDING',
-                'text-danger': application.status === 'REJECTED'
-              }">
-                                {{ application.status }}
-                            </span>
-                        </td>
-                        <td>{{ application.created_at | date:'mediumDate' }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p *ngIf="recentApplications.length === 0" class="no-data">No recent applications found.</p>
-        </section>
     </main>
 </div>

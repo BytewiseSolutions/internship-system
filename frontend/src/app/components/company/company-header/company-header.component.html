@@ -1,13 +1,13 @@
-<header class="main-header" [class.collapsed]="isSidebarCollapsed">
-    <div class="header-title">
-        <h2>Company Dashboard</h2>
-    </div>
-
-    <div class="header-right">
-        <span class="company-info">Welcome, {{ userName }}</span>
-        <i class="fas fa-user-circle company-avatar"></i>
-        <button class="logout-btn" (click)="logout()" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-        </button>
+<header class="main-header" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <div class="header-content">
+        <div class="header-left">
+            <h2>Company Administration</h2>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <i class="fas fa-building"></i>
+                <span>Company Admin</span>
+            </div>
+        </div>
     </div>
 </header>

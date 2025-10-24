@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if (!$input || !isset($input['name']) || !isset($input['email']) || !isset($input['school_id'])) {
+if (!$input || !isset($input['name']) || !isset($input['email']) || !isset($input['school_id']) || !isset($input['password'])) {
     send_json(['success' => false, 'message' => 'Missing required fields'], 400);
 }
 
@@ -32,8 +32,8 @@ if ($result->fetch_assoc()) {
 
 // Insert new school admin
 $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, school_id) VALUES (?, ?, ?, 'SCHOOL_ADMIN', ?)");
-$defaultPassword = password_hash('admin123', PASSWORD_DEFAULT);
-$stmt->bind_param("sssi", $input['name'], $input['email'], $defaultPassword, $input['school_id']);
+$hashedPassword = password_hash($input['password'], PASSWORD_DEFAULT);
+$stmt->bind_param("sssi", $input['name'], $input['email'], $hashedPassword, $input['school_id']);
 
 if ($stmt->execute()) {
     send_json(['success' => true, 'message' => 'School admin added successfully']);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyHeaderComponent } from '../../components/company/company-header/company-header.component';
 import { CompanySidebarComponent } from '../../components/company/company-sidebar/company-sidebar.component';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { DashboardService } from '../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
@@ -9,12 +9,13 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-company-dashboard',
   standalone: true,
-  imports: [CommonModule, CompanyHeaderComponent, CompanySidebarComponent],
+  imports: [CommonModule, RouterModule, CompanyHeaderComponent, CompanySidebarComponent],
   templateUrl: './company-dashboard.component.html',
   styleUrls: ['./company-dashboard.component.scss']
 })
 export class CompanyDashboardComponent implements OnInit {
   isSidebarCollapsed = false;
+  userName = '';
   totalInternships = 0;
   totalApplications = 0;
   totalReviews = 0;
@@ -29,6 +30,9 @@ export class CompanyDashboardComponent implements OnInit {
     private dashboardService: DashboardService
   ) { }
   ngOnInit(): void {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.userName = user.name || 'Company Admin';
+    
     const companyId = this.authService.getCompanyId();
     console.log('Company ID retrieved:', companyId);
     
