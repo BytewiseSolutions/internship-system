@@ -33,8 +33,8 @@ $coursesResult->bind_param("i", $schoolId);
 $coursesResult->execute();
 $coursesCount = $coursesResult->get_result()->fetch_assoc()['count'];
 
-// Get lecturers count
-$lecturersResult = $conn->prepare("SELECT COUNT(*) as count FROM lecturers WHERE school_id = ?");
+// Get lecturers count (users with LECTURER role for this school)
+$lecturersResult = $conn->prepare("SELECT COUNT(*) as count FROM users WHERE role = 'LECTURER' AND school_id = ?");
 $lecturersResult->bind_param("i", $schoolId);
 $lecturersResult->execute();
 $lecturersCount = $lecturersResult->get_result()->fetch_assoc()['count'];

@@ -214,11 +214,35 @@
               color: #666;
               margin: 4px 0;
               font-size: 0.9rem;
+              text-align: left;
             }
 
             .course {
               color: #888;
               margin: 4px 0;
+              font-size: 0.85rem;
+              font-style: italic;
+              text-align: left;
+            }
+
+            .assigned-courses {
+              margin-top: 8px;
+              
+              .courses-label {
+                font-weight: 600;
+                color: #333;
+                font-size: 0.85rem;
+              }
+              
+              .courses-list {
+                color: #2e7d32;
+                font-size: 0.85rem;
+                margin-left: 4px;
+              }
+            }
+
+            .no-courses-text {
+              color: #999;
               font-size: 0.85rem;
               font-style: italic;
             }

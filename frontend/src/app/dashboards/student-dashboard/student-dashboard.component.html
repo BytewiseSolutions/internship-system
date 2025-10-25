@@ -1,75 +1,80 @@
 <div class="student-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
     <app-student-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-student-sidebar>
-
+    
     <main class="main-content">
         <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
-
+        
         <div class="dashboard-content">
             <div class="welcome-section">
-                <h1>Welcome back, {{ userName }}! 🎓</h1>
-                <p>Track your internship journey and progress</p>
+                <h1>Welcome back, {{ userName }}!</h1>
+                <p>Here's your internship journey overview</p>
             </div>
 
-            <div class="dashboard-cards">
-                <div class="card application-card">
-                    <div class="card-icon">
-                        <i class="fas fa-check-circle"></i>
+            <div class="stats-grid" *ngIf="!loading">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
                     </div>
-                    <div class="card-content">
-                        <h3>Approved Applications</h3>
-                        <p class="card-number">{{ studentStats.approved_applications || 0 }}</p>
-                        <span class="card-subtitle">Applications accepted</span>
-                    </div>
-                </div>
-
-                <div class="card review-card">
-                    <div class="card-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Approved Reviews</h3>
-                        <p class="card-number">{{ studentStats.reviews || 0 }}</p>
-                        <span class="card-subtitle">Reviews published</span>
+                    <div class="stat-info">
+                        <h3>{{ studentStats.applications }}</h3>
+                        <p>Applications Submitted</p>
                     </div>
                 </div>
 
-                <div class="card notification-card">
-                    <div class="card-icon">
-                        <i class="fas fa-bell"></i>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
                     </div>
-                    <div class="card-content">
-                        <h3>Notifications</h3>
-                        <p class="card-number">{{ studentStats.notifications || 0 }}</p>
-                        <span class="card-subtitle">Unread messages</span>
+                    <div class="stat-info">
+                        <h3>{{ studentStats.interviews }}</h3>
+                        <p>Interviews Scheduled</p>
                     </div>
                 </div>
 
-                <div class="card internship-card">
-                    <div class="card-icon">
+                <div class="stat-card">
+                    <div class="stat-icon">
                         <i class="fas fa-briefcase"></i>
                     </div>
-                    <div class="card-content">
-                        <h3>Available Internships</h3>
-                        <p class="card-number">{{ studentStats.internships || 0 }}</p>
-                        <span class="card-subtitle">Opportunities</span>
+                    <div class="stat-info">
+                        <h3>{{ studentStats.internships }}</h3>
+                        <p>Active Internships</p>
                     </div>
                 </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{ studentStats.logbookEntries }}</h3>
+                        <p>Logbook Entries</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading-spinner" *ngIf="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading your dashboard...</p>
             </div>
 
             <div class="quick-actions">
                 <h2>Quick Actions</h2>
                 <div class="action-buttons">
-                    <button class="action-btn primary" routerLink="/browse-internships">
+                    <button class="action-btn" routerLink="/browse-internships">
                         <i class="fas fa-search"></i>
                         Browse Internships
                     </button>
-                    <button class="action-btn secondary" routerLink="/track-application">
-                        <i class="fas fa-chart-line"></i>
-                        Track Application
+                    <button class="action-btn" routerLink="/my-applications">
+                        <i class="fas fa-file-alt"></i>
+                        View Applications
                     </button>
-                    <button class="action-btn tertiary" routerLink="/create-reviews">
-                        <i class="fas fa-edit"></i>
-                        Write Review
+                    <button class="action-btn" routerLink="/logbook">
+                        <i class="fas fa-book"></i>
+                        Update Logbook
+                    </button>
+                    <button class="action-btn" routerLink="/profile">
+                        <i class="fas fa-user"></i>
+                        Edit Profile
                     </button>
                 </div>
             </div>

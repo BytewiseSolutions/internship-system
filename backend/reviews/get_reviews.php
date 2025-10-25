@@ -11,10 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once '../config.php';
 require_once '../utils.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    send_json(['success' => false, 'message' => 'Method not allowed'], 405);
-}
-
 if (!isset($_GET['company_id']) || empty($_GET['company_id'])) {
     send_json(['success' => false, 'message' => 'Company ID is required'], 400);
 }

@@ -14,7 +14,7 @@ require_once '../../utils.php';
 $sql = "SELECT u.user_id, u.name, u.email, u.company_id, u.status, c.name as company_name 
         FROM users u 
         LEFT JOIN companies c ON u.company_id = c.company_id 
-        WHERE u.role = 'COMPANY'";
+        WHERE u.role IN ('COMPANY', 'EMPLOYER')";
 
 $result = $conn->query($sql);
 $users = [];

@@ -168,6 +168,13 @@
                             <div class="lecturer-info">
                                 <h3>{{ lecturer.name }}</h3>
                                 <p class="email">{{ lecturer.email }}</p>
+                                <div class="assigned-courses" *ngIf="lecturer.assigned_courses">
+                                    <span class="courses-label">Courses:</span>
+                                    <span class="courses-list">{{ lecturer.assigned_courses }}</span>
+                                </div>
+                                <div class="no-courses" *ngIf="!lecturer.assigned_courses">
+                                    <span class="no-courses-text">No courses assigned</span>
+                                </div>
                             </div>
                             <div class="lecturer-actions">
                                 <button class="btn-assign" (click)="assignCourse(lecturer)">

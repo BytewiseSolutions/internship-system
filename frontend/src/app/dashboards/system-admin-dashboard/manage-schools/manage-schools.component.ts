@@ -36,7 +36,7 @@ export class ManageSchoolsComponent implements OnInit {
     this.http.get(`${environment.apiUrl}/api/schools/get_schools.php`)
       .subscribe({
         next: (data: any) => {
-          this.schools = data;
+          this.schools = data.success ? data.schools : [];
           this.loading = false;
         },
         error: (error) => {

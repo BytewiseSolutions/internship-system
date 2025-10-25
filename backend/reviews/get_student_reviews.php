@@ -1,60 +1,60 @@
 <?php
-require_once __DIR__ . '/../cors.php';
-require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../utils.php';
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Content-Type: application/json');
 
-$student_id = isset($_GET['student_id']) ? (int) $_GET['student_id'] : null;
-
-if (!$student_id) {
-    send_json(['status' => 'error', 'message' => 'Student ID required'], 400);
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
 }
 
-$sql = "
-    SELECT 
-        r.id,
-        r.student_id,
-        u.name AS student_name,
-        r.internship_id,
-        i.title AS internship_title,
-        r.rating,
-        r.comment,
-        r.employer_reply,
-        r.status,
-        r.created_at
-    FROM internshipdb.reviews r
-    JOIN internshipdb.users u ON r.student_id = u.id
-    JOIN internshipdb.internships i ON r.internship_id = i.id
-    WHERE r.student_id = ?
-    ORDER BY r.created_at DESC
-";
+require_once '../config.php';
+require_once '../utils.php';
 
-$stmt = $conn->prepare($sql);
-if (!$stmt) {
-    send_json(['status' => 'error', 'message' => $conn->error], 500);
+if (!isset($_GET['user_id']) || empty($_GET['user_id'])) {
+    send_json(['success' => false, 'message' => 'User ID is required'], 400);
 }
 
-$stmt->bind_param("i", $student_id);
-$stmt->execute();
-$result = $stmt->get_result();
+$user_id = $_GET['user_id'];
 
-$reviews = [];
-while ($row = $result->fetch_assoc()) {
-    $reviews[] = [
-        'id' => (int) $row['id'],
-        'student_id' => (int) $row['student_id'],
-        'student_name' => $row['student_name'],
-        'internship_id' => (int) $row['internship_id'],
-        'internship_title' => $row['internship_title'],
-        'rating' => (int) $row['rating'],
-        'comment' => $row['comment'],
-        'employer_reply' => $row['employer_reply'] ?? null,
-        'status' => $row['status'],
-        'created_at' => $row['created_at']
-    ];
+try {
+    // Get student_id from user_id
+    $stmt = $conn->prepare("SELECT student_id FROM students WHERE user_id = ?");
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 0) {
+        send_json(['success' => false, 'message' => 'Student not found'], 404);
+    }
+    
+    $student = $result->fetch_assoc();
+    $student_id = $student['student_id'];
+    
+    // Get reviews with company details
+    $stmt = $conn->prepare("
+        SELECT 
+            r.review_id,
+            r.rating,
+            r.review_text,
+            r.created_at,
+            c.name as company_name,
+            i.title as internship_title
+        FROM reviews r
+        JOIN internships i ON r.internship_id = i.internship_id
+        JOIN companies c ON i.company_id = c.company_id
+        WHERE r.student_id = ?
+        ORDER BY r.created_at DESC
+    ");
+    
+    $stmt->bind_param('i', $student_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $reviews = $result->fetch_all(MYSQLI_ASSOC);
+    
+    send_json(['success' => true, 'reviews' => $reviews]);
+    
+} catch (Exception $e) {
+    send_json(['success' => false, 'message' => 'Database error: ' . $e->getMessage()], 500);
 }
-
-send_json(['reviews' => $reviews]);
-
-$stmt->close();
-$conn->close();
 ?>

@@ -17,23 +17,17 @@ if (!$lecturerId) {
     send_json(['success' => false, 'message' => 'Lecturer ID is required'], 400);
 }
 
-// Get user_id first
-$stmt = $conn->prepare("SELECT user_id FROM lecturers WHERE lecturer_id = ?");
+// Delete lecturer from users table
+$stmt = $conn->prepare("DELETE FROM users WHERE user_id = ? AND role = 'lecturer'");
 $stmt->bind_param("i", $lecturerId);
-$stmt->execute();
-$result = $stmt->get_result()->fetch_assoc();
 
-if ($result) {
-    // Delete lecturer record (user will be deleted by CASCADE)
-    $stmt = $conn->prepare("DELETE FROM users WHERE user_id = ?");
-    $stmt->bind_param("i", $result['user_id']);
-    
-    if ($stmt->execute()) {
+if ($stmt->execute()) {
+    if ($stmt->affected_rows > 0) {
         send_json(['success' => true, 'message' => 'Lecturer deleted successfully']);
     } else {
-        send_json(['success' => false, 'message' => 'Failed to delete lecturer'], 500);
+        send_json(['success' => false, 'message' => 'Lecturer not found'], 404);
     }
 } else {
-    send_json(['success' => false, 'message' => 'Lecturer not found'], 404);
+    send_json(['success' => false, 'message' => 'Failed to delete lecturer'], 500);
 }
 ?>

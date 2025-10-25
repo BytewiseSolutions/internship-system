@@ -34,7 +34,7 @@ export class ManageSchoolAdminsComponent implements OnInit {
     this.http.get(`${environment.apiUrl}/api/users/get_school_admins.php`)
       .subscribe({
         next: (data: any) => {
-          this.schoolAdmins = data;
+          this.schoolAdmins = Array.isArray(data) ? data : (data.success ? data.schoolAdmins || data.users || [] : []);
           this.loading = false;
         },
         error: (error) => {
@@ -48,7 +48,7 @@ export class ManageSchoolAdminsComponent implements OnInit {
     this.http.get(`${environment.apiUrl}/api/schools/get_schools.php`)
       .subscribe({
         next: (data: any) => {
-          this.schools = data;
+          this.schools = data.success ? data.schools : [];
         },
         error: (error) => {
           console.error('Error loading schools:', error);

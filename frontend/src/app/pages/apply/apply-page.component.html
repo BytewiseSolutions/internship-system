@@ -1,18 +1,78 @@
-<div class="apply-container">
-    <h2>Apply for Internship</h2>
-    <form (ngSubmit)="submitApplication()">
-        <div>
-            <label>Upload CV</label>
-            <input type="file" (change)="onFileChange($event, 'cv')" />
+<div class="apply-page" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-student-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-student-sidebar>
+    
+    <main class="main-content">
+        <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
+        
+        <div class="content">
+            <div class="loading-spinner" *ngIf="loadingInternship">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading internship details...</p>
+            </div>
+
+            <div class="apply-container" *ngIf="!loadingInternship && internship">
+                <div class="internship-info">
+                    <h1>Apply for Internship</h1>
+                    <div class="internship-details">
+                        <h2>{{ internship.title }}</h2>
+                        <p class="company">{{ internship.company_name }}</p>
+                        <p class="location"><i class="fas fa-map-marker-alt"></i> {{ internship.location }}</p>
+                        <p class="deadline"><i class="fas fa-clock"></i> Deadline: {{ internship.deadline | date }}</p>
+                    </div>
+                </div>
+
+                <form (ngSubmit)="submitApplication()" class="application-form">
+                    <h3>Required Documents</h3>
+                    
+                    <div class="file-upload-group">
+                        <label>Curriculum Vitae (CV) *</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="cv" accept=".pdf,.doc,.docx" (change)="onFileChange($event, 'cv')" required />
+                            <label for="cv" class="file-input-label">
+                                <i class="fas fa-upload"></i>
+                                <span *ngIf="!cvFile">Choose CV file</span>
+                                <span *ngIf="cvFile">{{ cvFile.name }}</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="file-upload-group">
+                        <label>Academic Transcript *</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="transcript" accept=".pdf,.doc,.docx" (change)="onFileChange($event, 'transcript')" required />
+                            <label for="transcript" class="file-input-label">
+                                <i class="fas fa-upload"></i>
+                                <span *ngIf="!transcriptFile">Choose transcript file</span>
+                                <span *ngIf="transcriptFile">{{ transcriptFile.name }}</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="file-upload-group">
+                        <label>Application Letter *</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="letter" accept=".pdf,.doc,.docx" (change)="onFileChange($event, 'letter')" required />
+                            <label for="letter" class="file-input-label">
+                                <i class="fas fa-upload"></i>
+                                <span *ngIf="!applicationLetterFile">Choose application letter</span>
+                                <span *ngIf="applicationLetterFile">{{ applicationLetterFile.name }}</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" (click)="router.navigate(['/browse-internships'])">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="submit-btn" [disabled]="loading || !cvFile || !transcriptFile || !applicationLetterFile">
+                            <i class="fas fa-paper-plane" *ngIf="!loading"></i>
+                            <i class="fas fa-spinner fa-spin" *ngIf="loading"></i>
+                            {{ loading ? 'Submitting...' : 'Submit Application' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <label>Upload Transcript</label>
-            <input type="file" (change)="onFileChange($event, 'transcript')" />
-        </div>
-        <div>
-            <label>Upload Application Letter</label>
-            <input type="file" (change)="onFileChange($event, 'letter')" />
-        </div>
-        <button type="submit" [disabled]="loading">Submit Application</button>
-    </form>
+    </main>
 </div>

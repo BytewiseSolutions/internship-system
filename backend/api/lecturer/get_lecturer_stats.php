@@ -17,8 +17,8 @@ if (!$userId) {
     send_json(['success' => false, 'message' => 'User ID is required'], 400);
 }
 
-// Get lecturer_id
-$stmt = $conn->prepare("SELECT lecturer_id, school_id FROM lecturers WHERE user_id = ?");
+// Verify lecturer exists
+$stmt = $conn->prepare("SELECT user_id, school_id FROM users WHERE user_id = ? AND role = 'lecturer'");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $lecturer = $stmt->get_result()->fetch_assoc();
@@ -27,7 +27,7 @@ if (!$lecturer) {
     send_json(['success' => false, 'message' => 'Lecturer not found'], 404);
 }
 
-$lecturerId = $lecturer['lecturer_id'];
+$lecturerId = $lecturer['user_id'];
 $schoolId = $lecturer['school_id'];
 
 // Get assigned courses count

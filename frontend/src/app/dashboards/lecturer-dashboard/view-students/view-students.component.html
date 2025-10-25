@@ -14,7 +14,7 @@
     <div class="search-section" *ngIf="!loading">
         <div class="search-bar">
             <input type="text" 
-                   placeholder="Search by Student ID" 
+                   placeholder="Search by name, student ID, or course" 
                    [(ngModel)]="searchTerm" 
                    (input)="searchStudents()">
             <i class="fas fa-search"></i>
@@ -27,16 +27,27 @@
                 <tr>
                     <th>Name</th>
                     <th>Student ID</th>
-                    <th>Faculty</th>
+                    <th>Email</th>
+                    <th>Course</th>
                     <th>Company</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let student of filteredStudents">
                     <td>{{ student.name }}</td>
-                    <td>{{ student.id }}</td>
-                    <td>{{ student.faculty || 'Not specified' }}</td>
-                    <td>{{ student.company || 'Not assigned' }}</td>
+                    <td>{{ student.student_id }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.course_name }}</td>
+                    <td>{{ student.company_name }}</td>
+                    <td>
+                        <span class="status-badge" [ngClass]="{
+                            'active': student.internship_status === 'Active Internship',
+                            'pending': student.internship_status === 'Application Pending',
+                            'rejected': student.internship_status === 'Application Rejected',
+                            'none': student.internship_status === 'No Application'
+                        }">{{ student.internship_status }}</span>
+                    </td>
                 </tr>
             </tbody>
         </table>

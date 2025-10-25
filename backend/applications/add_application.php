@@ -22,8 +22,32 @@ if (!$student_id || !$internship_id) {
     die(json_encode(['status' => 'error', 'message' => 'Student ID or Internship ID missing. Received: student_id=' . $student_id . ', internship_id=' . $internship_id]));
 }
 
+// Check if student_id exists in students table, if not, assume it's user_id and convert
+$checkStudentStmt = $conn->prepare("SELECT student_id FROM students WHERE student_id = ?");
+$checkStudentStmt->bind_param("i", $student_id);
+$checkStudentStmt->execute();
+$checkStudentResult = $checkStudentStmt->get_result();
+
+if ($checkStudentResult->num_rows == 0) {
+    // student_id doesn't exist, try to find by user_id
+    $getUserStmt = $conn->prepare("SELECT student_id FROM students WHERE user_id = ?");
+    $getUserStmt->bind_param("i", $student_id);
+    $getUserStmt->execute();
+    $getUserResult = $getUserStmt->get_result();
+    
+    if ($getUserResult->num_rows > 0) {
+        $studentData = $getUserResult->fetch_assoc();
+        $student_id = $studentData['student_id'];
+        error_log('Converted user_id to student_id: ' . $student_id);
+    } else {
+        die(json_encode(['status' => 'error', 'message' => 'Student not found']));
+    }
+    $getUserStmt->close();
+}
+$checkStudentStmt->close();
+
 // Check if internship deadline has passed
-$deadlineStmt = $conn->prepare("SELECT deadline FROM internships WHERE id = ?");
+$deadlineStmt = $conn->prepare("SELECT deadline FROM internships WHERE internship_id = ?");
 $deadlineStmt->bind_param("i", $internship_id);
 $deadlineStmt->execute();
 $deadlineResult = $deadlineStmt->get_result();
@@ -34,7 +58,7 @@ if ($internship && $internship['deadline'] < date('Y-m-d')) {
 }
 $deadlineStmt->close();
 
-$checkStmt = $conn->prepare("SELECT id FROM applications WHERE student_id = ? AND internship_id = ?");
+$checkStmt = $conn->prepare("SELECT application_id FROM applications WHERE student_id = ? AND internship_id = ?");
 $checkStmt->bind_param("ii", $student_id, $internship_id);
 $checkStmt->execute();
 $checkStmt->store_result();
@@ -75,7 +99,7 @@ if (isset($_FILES['letter'])) {
     }
 }
 
-$stmt = $conn->prepare("INSERT INTO applications (student_id, internship_id, cvPath, transcriptPath, applicationLetterPath, status) VALUES (?, ?, ?, ?, ?, 'PENDING')");
+$stmt = $conn->prepare("INSERT INTO applications (student_id, internship_id, cv_path, transcript_path, application_letter_path, status) VALUES (?, ?, ?, ?, ?, 'PENDING')");
 $stmt->bind_param("iisss", $student_id, $internship_id, $cvPath, $transcriptPath, $letterPath);
 
 if ($stmt->execute()) {

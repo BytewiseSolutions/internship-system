@@ -34,7 +34,7 @@ export class ManageCompanyUsersComponent implements OnInit {
     this.http.get(`${environment.apiUrl}/api/users/get_company_users.php`)
       .subscribe({
         next: (data: any) => {
-          this.companyUsers = data;
+          this.companyUsers = Array.isArray(data) ? data : (data.success ? data.users || [] : []);
           this.loading = false;
         },
         error: (error) => {

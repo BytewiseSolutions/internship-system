@@ -17,7 +17,13 @@ if (!$schoolId) {
     send_json(['success' => false, 'message' => 'School ID is required'], 400);
 }
 
-$sql = "SELECT l.lecturer_id, u.name, u.email FROM lecturers l JOIN users u ON l.user_id = u.user_id WHERE l.school_id = ?";
+$sql = "SELECT u.user_id as lecturer_id, u.name, u.email,
+              GROUP_CONCAT(c.course_name SEPARATOR ', ') as assigned_courses
+         FROM users u 
+         LEFT JOIN lecturer_courses lc ON u.user_id = lc.lecturer_id
+         LEFT JOIN courses c ON lc.course_id = c.course_id
+         WHERE u.role = 'LECTURER' AND u.school_id = ?
+         GROUP BY u.user_id, u.name, u.email";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $schoolId);
 $stmt->execute();

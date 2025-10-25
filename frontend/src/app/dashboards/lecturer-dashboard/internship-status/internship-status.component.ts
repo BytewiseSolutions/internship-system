@@ -24,7 +24,8 @@ export class InternshipStatusComponent implements OnInit {
   }
 
   loadInternshipStatus() {
-    this.http.get(`${environment.apiUrl}/applications/get_all_applications.php`)
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.http.get(`${environment.apiUrl}/api/lecturer/get_student_applications.php?user_id=${user.id}`)
       .subscribe({
         next: (data: any) => {
           this.applications = Array.isArray(data) ? data : [];
@@ -40,7 +41,7 @@ export class InternshipStatusComponent implements OnInit {
   }
 
   calculateCounts() {
-    this.ongoingCount = this.applications.filter(app => app.status === 'APPROVED').length;
+    this.ongoingCount = this.applications.filter(app => app.status === 'ACCEPTED').length;
     this.completedCount = this.applications.filter(app => app.status === 'COMPLETED').length;
     this.pendingCount = this.applications.filter(app => app.status === 'PENDING').length;
   }

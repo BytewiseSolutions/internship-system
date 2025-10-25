@@ -31,17 +31,7 @@ $defaultPassword = password_hash('password', PASSWORD_DEFAULT);
 $stmt->bind_param("sssi", $input['name'], $input['email'], $defaultPassword, $input['school_id']);
 
 if ($stmt->execute()) {
-    $userId = $conn->insert_id;
-    
-    // Insert lecturer
-    $stmt = $conn->prepare("INSERT INTO lecturers (user_id, school_id) VALUES (?, ?)");
-    $stmt->bind_param("ii", $userId, $input['school_id']);
-    
-    if ($stmt->execute()) {
-        send_json(['success' => true, 'message' => 'Lecturer added successfully']);
-    } else {
-        send_json(['success' => false, 'message' => 'Failed to add lecturer'], 500);
-    }
+    send_json(['success' => true, 'message' => 'Lecturer added successfully']);
 } else {
     send_json(['success' => false, 'message' => 'Failed to create user'], 500);
 }

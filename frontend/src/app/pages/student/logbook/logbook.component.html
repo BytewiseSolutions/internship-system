@@ -1,0 +1,126 @@
+<div class="logbook" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-student-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-student-sidebar>
+    
+    <main class="main-content">
+        <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
+        
+        <div class="content">
+            <div class="page-header">
+                <div class="header-info">
+                    <h1><i class="fas fa-book"></i> Logbook</h1>
+                    <p>Record your daily internship activities and progress</p>
+                    <div *ngIf="internshipInfo" class="internship-info">
+                        <span class="internship-badge">
+                            <i class="fas fa-briefcase"></i>
+                            {{ internshipInfo.internship_title }} at {{ internshipInfo.company_name }}
+                        </span>
+                    </div>
+                </div>
+                <button *ngIf="!showAddForm && internshipInfo" (click)="showAddForm = true; resetForm()" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Entry
+                </button>
+            </div>
+            
+            <div *ngIf="loading" class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading logbook entries...</p>
+            </div>
+            
+            <div *ngIf="error" class="error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>{{ error }}</p>
+            </div>
+            
+            <div *ngIf="showAddForm" class="modal-overlay" (click)="cancelEdit()">
+                <div class="modal-content" (click)="$event.stopPropagation()">
+                <div class="form-header">
+                    <h3>{{ editingEntry ? 'Edit Entry' : 'Add New Entry' }}</h3>
+                    <button (click)="cancelEdit()" class="btn-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form (ngSubmit)="editingEntry ? updateEntry() : addEntry()" class="entry-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Week Number</label>
+                            <input type="number" [(ngModel)]="newEntry.week_number" name="week_number" required min="1" [readonly]="editingEntry">
+                        </div>
+                        <div class="form-group">
+                            <label>Week Ending</label>
+                            <input type="date" [(ngModel)]="newEntry.week_ending" name="week_ending" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Activities Completed</label>
+                        <textarea [(ngModel)]="newEntry.activities_completed" name="activities_completed" rows="4" placeholder="Describe the activities you completed this week..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Skills Learned</label>
+                        <textarea [(ngModel)]="newEntry.skills_learned" name="skills_learned" rows="3" placeholder="What new skills did you learn?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Challenges Faced</label>
+                        <textarea [(ngModel)]="newEntry.challenges_faced" name="challenges_faced" rows="3" placeholder="What challenges did you encounter?"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" (click)="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            {{ editingEntry ? 'Update Entry' : 'Save Entry' }}
+                        </button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            
+            <div *ngIf="!loading && !error && entries.length === 0" class="no-entries">
+                <i class="fas fa-book-open"></i>
+                <h3>No Entries Yet</h3>
+                <p>Start recording your internship activities by adding your first logbook entry.</p>
+            </div>
+            
+            <div *ngIf="!loading && !error && entries.length > 0" class="entries-list">
+                <div *ngFor="let entry of entries" class="entry-card">
+                    <div class="entry-header">
+                        <div class="week-info">
+                            <h3>Week {{ entry.week_number }}</h3>
+                            <span class="week-ending">Ending {{ formatDate(entry.week_ending) }}</span>
+                        </div>
+                        <div class="entry-actions">
+                            <button (click)="editEntry(entry)" class="btn-edit" title="Edit Entry">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <span class="created-date">Added {{ formatDate(entry.created_at) }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="entry-content">
+                        <div class="section">
+                            <h4><i class="fas fa-tasks"></i> Activities Completed</h4>
+                            <p>{{ entry.activities_completed || 'No activities recorded' }}</p>
+                        </div>
+                        
+                        <div class="section">
+                            <h4><i class="fas fa-lightbulb"></i> Skills Learned</h4>
+                            <p>{{ entry.skills_learned || 'No skills recorded' }}</p>
+                        </div>
+                        
+                        <div class="section">
+                            <h4><i class="fas fa-exclamation-circle"></i> Challenges Faced</h4>
+                            <p>{{ entry.challenges_faced || 'No challenges recorded' }}</p>
+                        </div>
+                        
+                        <div *ngIf="entry.supervisor_feedback" class="section feedback">
+                            <h4><i class="fas fa-comment"></i> Supervisor Feedback</h4>
+                            <p>{{ entry.supervisor_feedback }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
