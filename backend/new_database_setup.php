@@ -9,7 +9,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Drop existing database and create new one
 $conn->query("DROP DATABASE IF EXISTS `$dbname`");
 $sqlCreateDB = "CREATE DATABASE `$dbname`";
 if (!$conn->query($sqlCreateDB)) {
