@@ -20,7 +20,7 @@ if (empty($payload) || !isset($payload['email'])) {
 }
 
 // Get user info
-$stmt = $conn->prepare("SELECT id, role FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT user_id, role FROM users WHERE email = ?");
 $stmt->bind_param("s", $payload['email']);
 $stmt->execute();
 $userResult = $stmt->get_result();
@@ -35,40 +35,40 @@ if ($user['role'] === 'COMPANY') {
     // For company users, only show their internships
     $sql = "
         SELECT 
-            i.id, 
+            i.internship_id as id, 
             i.title, 
             i.company_id, 
             c.name AS company_name, 
             i.location, 
-            i.postedDate, 
+            i.deadline as postedDate, 
             i.deadline, 
             i.description, 
             i.status 
         FROM internships i
-        LEFT JOIN companies c ON i.company_id = c.id
-        WHERE c.user_id = ?
-        ORDER BY i.postedDate DESC
+        LEFT JOIN companies c ON i.company_id = c.company_id
+        WHERE c.created_by = ?
+        ORDER BY i.created_at DESC
     ";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user['id']);
+    $stmt->bind_param("i", $user['user_id']);
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
     // For admin users, show all internships
     $sql = "
         SELECT 
-            i.id, 
+            i.internship_id as id, 
             i.title, 
             i.company_id, 
             c.name AS company_name, 
             i.location, 
-            i.postedDate, 
+            i.deadline as postedDate, 
             i.deadline, 
             i.description, 
             i.status 
         FROM internships i
-        LEFT JOIN companies c ON i.company_id = c.id
-        ORDER BY i.postedDate DESC
+        LEFT JOIN companies c ON i.company_id = c.company_id
+        ORDER BY i.created_at DESC
     ";
     $result = $conn->query($sql);
 }
