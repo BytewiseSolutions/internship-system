@@ -1,0 +1,54 @@
+<div class="system-admin-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-employer-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-employer-sidebar>
+
+    <main class="main-content">
+        <app-employer-header [isSidebarCollapsed]="isSidebarCollapsed"></app-employer-header>
+
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Manage Applications</h1>
+            </div>
+
+            <div class="applications-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Internship</th>
+                            <th>Applied Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let application of applications">
+                            <td>{{ application.student_name }}</td>
+                            <td>{{ application.internship_title }}</td>
+                            <td>{{ application.applied_at | date }}</td>
+                            <td>
+                                <span class="status" [class]="application.status.toLowerCase()">
+                                    {{ application.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-success" 
+                                        *ngIf="application.status === 'PENDING'"
+                                        (click)="updateStatus(application.application_id, 'ACCEPTED')">
+                                    Accept
+                                </button>
+                                <button class="btn btn-sm btn-danger" 
+                                        *ngIf="application.status === 'PENDING'"
+                                        (click)="updateStatus(application.application_id, 'REJECTED')">
+                                    Reject
+                                </button>
+                                <span *ngIf="application.status !== 'PENDING'" class="text-muted">
+                                    {{ application.status }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>

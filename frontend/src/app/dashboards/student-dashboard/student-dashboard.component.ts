@@ -1,53 +1,64 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import { StudentHeaderComponent } from '../../components/student/student-header/student-header.component';
 import { StudentSidebarComponent } from '../../components/student/student-sidebar/student-sidebar.component';
-import { AuthService } from '../../services/auth.service';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-student-dashboard',
-  imports: [StudentHeaderComponent, StudentSidebarComponent, RouterLink],
+  standalone: true,
+  imports: [CommonModule, RouterModule, StudentHeaderComponent, StudentSidebarComponent],
   templateUrl: './student-dashboard.component.html',
-  styleUrl: './student-dashboard.component.scss'
+  styleUrls: ['./student-dashboard.component.scss']
 })
-export class StudentDashboardComponent {
+export class StudentDashboardComponent implements OnInit {
   isSidebarCollapsed = false;
-  studentStats: any = {};
-  userName: string = '';
+  userName = '';
+  studentStats = {
+    applications: 0,
+    interviews: 0,
+    internships: 0,
+    logbookEntries: 0
+  };
+  loading = true;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     this.userName = user.name || 'Student';
-    this.http.get<any>(`${environment.apiUrl}/students/get_dashboard_stats.php?student_id=${user.id}`)
-      .subscribe({
-        next: (data) => {
-          console.log("Dashboard stats:", data);
-          this.studentStats = data;
-        },
-        error: (err) => {
-          console.error('Error loading dashboard stats:', err);
-          // Set default values on error
-          this.studentStats = {
-            applications: 0,
-            reviews: 0,
-            notifications: 0,
-            internships: 0
-          };
-        }
-      });
+    this.loadStudentStats();
   }
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  loadStudentStats() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const studentId = user.id;
+    
+    if (!studentId) {
+      console.error('No student ID found');
+      this.loading = false;
+      return;
+    }
+
+    this.http.get(`${environment.apiUrl}/api/student/get_student_stats.php?student_id=${studentId}`).subscribe({
+      next: (stats: any) => {
+        this.studentStats = stats;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading student stats:', error);
+        // Fallback to mock data if API fails
+        this.studentStats = {
+          applications: 0,
+          interviews: 0,
+          internships: 0,
+          logbookEntries: 0
+        };
+        this.loading = false;
+      }
+    });
   }
 
   onSidebarCollapseChanged(collapsed: boolean) {

@@ -1,0 +1,90 @@
+.system-admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+
+  .main-content {
+    flex: 1;
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+
+    .dashboard-content {
+      padding: 2rem;
+
+      .page-header {
+        margin-bottom: 2rem;
+
+        h1 {
+          color: #2e7d32;
+          margin: 0 0 0.5rem 0;
+        }
+
+        p {
+          color: #6c757d;
+          margin: 0;
+        }
+      }
+
+      .reviews-table {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+
+          th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+          }
+
+          th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+          }
+
+          .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+
+            .star {
+              color: #ddd;
+              font-size: 1.2rem;
+
+              &.filled {
+                color: #ffc107;
+              }
+            }
+
+            .rating-text {
+              margin-left: 0.5rem;
+              color: #6c757d;
+              font-size: 0.9rem;
+            }
+          }
+
+          .review-text {
+            max-width: 300px;
+            word-wrap: break-word;
+          }
+
+          .no-data {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 2rem;
+          }
+        }
+      }
+    }
+  }
+
+  &.sidebar-collapsed .main-content {
+    margin-left: 70px;
+  }
+}

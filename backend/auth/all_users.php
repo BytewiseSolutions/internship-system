@@ -14,13 +14,13 @@ if ($token) {
 }
 
 if ($loggedInEmail) {
-    $stmt = $conn->prepare("SELECT id, name, email, contact, role, status FROM users WHERE email != ?");
+    $stmt = $conn->prepare("SELECT user_id as id, name, email, '' as contact, role, status FROM users WHERE email != ?");
     $stmt->bind_param("s", $loggedInEmail);
     $stmt->execute();
     $result = $stmt->get_result();
     $users = $result->fetch_all(MYSQLI_ASSOC);
 } else {
-    $result = $conn->query("SELECT id, name, email, contact, role, status FROM users");
+    $result = $conn->query("SELECT user_id as id, name, email, '' as contact, role, status FROM users");
     $users = $result->fetch_all(MYSQLI_ASSOC);
 }
 

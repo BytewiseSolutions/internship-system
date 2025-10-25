@@ -1,0 +1,103 @@
+<div class="browse-internships" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-student-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-student-sidebar>
+    
+    <main class="main-content">
+        <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
+        
+        <div class="content">
+            <div class="header-section">
+                <h1>Browse Internships</h1>
+                <p>Find and apply for internship opportunities.</p>
+            </div>
+
+            <div class="filters-section" *ngIf="!loading && !error">
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label>Search</label>
+                        <input type="text" [(ngModel)]="filters.search" (input)="applyFilters()" 
+                               placeholder="Search by title, company, or description...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <input type="text" [(ngModel)]="filters.location" (input)="applyFilters()" 
+                               placeholder="Filter by location...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Company</label>
+                        <input type="text" [(ngModel)]="filters.company" (input)="applyFilters()" 
+                               placeholder="Filter by company...">
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="clear-btn" (click)="clearFilters()">
+                            <i class="fas fa-times"></i>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="results-count">
+                    <span>{{ filteredInternships.length }} internship(s) found</span>
+                </div>
+            </div>
+
+            <div class="loading-spinner" *ngIf="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading internships...</p>
+            </div>
+
+            <div class="error-message" *ngIf="error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>{{ error }}</p>
+            </div>
+
+            <div class="internships-grid" *ngIf="!loading && !error">
+                <div class="internship-card" *ngFor="let internship of filteredInternships">
+                    <div class="card-header">
+                        <h3>{{ internship.title }}</h3>
+                        <span class="company">{{ internship.company_name }}</span>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="info-row">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ internship.location }}</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <i class="fas fa-industry"></i>
+                            <span>{{ internship.industry }}</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <i class="fas fa-calendar"></i>
+                            <span>Posted: {{ formatDate(internship.postedDate) }}</span>
+                        </div>
+                        
+                        <div class="info-row" [class.deadline-near]="isDeadlineNear(internship.deadline)">
+                            <i class="fas fa-clock"></i>
+                            <span>Deadline: {{ formatDate(internship.deadline) }}</span>
+                        </div>
+                        
+                        <p class="description">{{ internship.description }}</p>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <button class="apply-btn" [routerLink]="['/apply', internship.id]">
+                            <i class="fas fa-paper-plane"></i>
+                            Apply Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-internships" *ngIf="!loading && !error && filteredInternships.length === 0">
+                <i class="fas fa-search"></i>
+                <h2>No Internships Available</h2>
+                <p>There are currently no active internships. Please check back later.</p>
+            </div>
+        </div>
+    </main>
+</div>

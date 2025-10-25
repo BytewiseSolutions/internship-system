@@ -1,0 +1,96 @@
+<div class="reviews" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-student-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-student-sidebar>
+    
+    <main class="main-content">
+        <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
+        
+        <div class="content">
+            <div class="page-header">
+                <h1><i class="fas fa-star"></i> Reviews</h1>
+                <p>Share your internship experience and rate companies</p>
+            </div>
+            
+            <div *ngIf="loading" class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading reviews...</p>
+            </div>
+            
+            <div *ngIf="error" class="error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>{{ error }}</p>
+            </div>
+            
+            <div *ngIf="completedInternships.length > 0" class="completed-internships">
+                <h2>Write Reviews</h2>
+                <div class="internships-grid">
+                    <div *ngFor="let internship of completedInternships" class="internship-card">
+                        <h3>{{ internship.internship_title }}</h3>
+                        <p class="company">{{ internship.company_name }}</p>
+                        <p class="deadline">Completed: {{ formatDate(internship.deadline) }}</p>
+                        <button (click)="startReview(internship)" class="btn btn-primary">
+                            <i class="fas fa-star"></i> Write Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div *ngIf="reviews.length > 0" class="my-reviews">
+                <h2>My Reviews</h2>
+                <div class="reviews-list">
+                    <div *ngFor="let review of reviews" class="review-card">
+                        <div class="review-header">
+                            <h3>{{ review.internship_title }}</h3>
+                            <div class="rating">
+                                <i *ngFor="let star of getStars(review.rating)" [class]="star"></i>
+                            </div>
+                        </div>
+                        <p class="company">{{ review.company_name }}</p>
+                        <p class="review-text">{{ review.review_text }}</p>
+                        <p class="date">Reviewed on {{ formatDate(review.created_at) }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div *ngIf="!loading && reviews.length === 0 && completedInternships.length === 0" class="no-reviews">
+                <i class="fas fa-star"></i>
+                <h3>No Reviews Available</h3>
+                <p>Complete an internship to write your first review.</p>
+            </div>
+        </div>
+    </main>
+    
+    <div *ngIf="showAddForm" class="modal-overlay" (click)="cancelReview()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="form-header">
+                <h3>Review: {{ selectedInternship?.internship_title }}</h3>
+                <button (click)="cancelReview()" class="btn-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form (ngSubmit)="submitReview()" class="review-form">
+                <div class="form-group">
+                    <label>Rating</label>
+                    <div class="rating-input">
+                        <button type="button" *ngFor="let i of [1,2,3,4,5]" 
+                                (click)="newReview.rating = i" 
+                                [class.active]="i <= newReview.rating">
+                            <i class="fas fa-star"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Review</label>
+                    <textarea [(ngModel)]="newReview.review_text" name="review_text" 
+                              rows="5" placeholder="Share your experience..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" (click)="cancelReview()" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

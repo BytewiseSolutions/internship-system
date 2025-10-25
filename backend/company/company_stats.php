@@ -11,31 +11,42 @@ if ($company_id <= 0) {
 }
 
 try {
+    // Count internship positions from internships table
     $stmt = $conn->prepare("SELECT COUNT(*) AS total FROM internships WHERE company_id = ?");
     $stmt->bind_param("i", $company_id);
     $stmt->execute();
     $totalInternships = $stmt->get_result()->fetch_assoc()['total'] ?? 0;
 
+    // Count total applications for this company's internships
     $stmt = $conn->prepare("
         SELECT COUNT(*) AS total 
-        FROM applications a
-        INNER JOIN internships i ON a.internship_id = i.id
+        FROM applications a 
+        JOIN internships i ON a.internship_id = i.internship_id 
+        WHERE i.company_id = ?
     ");
-    // $stmt->bind_param("i", $company_id);
+    $stmt->bind_param("i", $company_id);
     $stmt->execute();
     $totalApplications = $stmt->get_result()->fetch_assoc()['total'] ?? 0;
 
-    $stmt = $conn->prepare("SELECT COUNT(*) AS total FROM reviews WHERE company_id = ?");
+    // Count reviews for this company's internships
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) AS total 
+        FROM reviews r 
+        JOIN applications a ON r.student_id = a.student_id 
+        JOIN internships i ON a.internship_id = i.internship_id 
+        WHERE i.company_id = ?
+    ");
     $stmt->bind_param("i", $company_id);
     $stmt->execute();
     $totalReviews = $stmt->get_result()->fetch_assoc()['total'] ?? 0;
 
+    // Count accepted students for this company's internships
     $stmt = $conn->prepare("
-    SELECT COUNT(*) AS total
-    FROM applications a
-    INNER JOIN internships i ON a.internship_id = i.id
-    WHERE i.company_id = ? AND a.status = 'ACCEPTED'
-");
+        SELECT COUNT(*) AS total 
+        FROM applications a 
+        JOIN internships i ON a.internship_id = i.internship_id 
+        WHERE i.company_id = ? AND a.status = 'ACCEPTED'
+    ");
     $stmt->bind_param("i", $company_id);
     $stmt->execute();
     $approvedStudents = $stmt->get_result()->fetch_assoc()['total'] ?? 0;

@@ -1,0 +1,324 @@
+<div class="school-admin-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-school-admin-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-school-admin-sidebar>
+
+    <main class="main-content">
+        <app-school-admin-header [isSidebarCollapsed]="isSidebarCollapsed"></app-school-admin-header>
+
+        <div class="dashboard-content">
+            <div class="welcome-section" *ngIf="currentView === 'dashboard'">
+                <h1>Welcome back, {{ userName }}! 🎓</h1>
+                <p>{{ schoolName }} Administration</p>
+            </div>
+            
+            <div class="page-header" *ngIf="currentView !== 'dashboard'">
+                <h1 *ngIf="currentView === 'courses'"><i class="fas fa-book"></i> Manage Courses</h1>
+                <h1 *ngIf="currentView === 'lecturers'"><i class="fas fa-chalkboard-teacher"></i> Manage Lecturers</h1>
+                <h1 *ngIf="currentView === 'students'"><i class="fas fa-user-graduate"></i> Manage Students</h1>
+                <h1 *ngIf="currentView === 'reports'"><i class="fas fa-chart-bar"></i> School Reports</h1>
+            </div>
+
+            <div class="dashboard-cards" *ngIf="currentView === 'dashboard'">
+                <div class="card courses-card">
+                    <div class="card-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Courses</h3>
+                        <p class="card-number">{{ schoolStats.courses }}</p>
+                        <span class="card-subtitle">Available programs</span>
+                    </div>
+                </div>
+
+                <div class="card lecturers-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Lecturers</h3>
+                        <p class="card-number">{{ schoolStats.lecturers }}</p>
+                        <span class="card-subtitle">Faculty members</span>
+                    </div>
+                </div>
+
+                <div class="card students-card">
+                    <div class="card-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Students</h3>
+                        <p class="card-number">{{ schoolStats.students }}</p>
+                        <span class="card-subtitle">Enrolled students</span>
+                    </div>
+                </div>
+
+                <div class="card applications-card">
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Applications</h3>
+                        <p class="card-number">{{ schoolStats.applications }}</p>
+                        <span class="card-subtitle">Student applications</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions" *ngIf="currentView === 'dashboard'">
+                <h2>School Management</h2>
+                <div class="action-buttons">
+                    <button class="action-btn primary" routerLink="/manage-courses">
+                        <i class="fas fa-book"></i>
+                        Manage Courses
+                    </button>
+                    <button class="action-btn secondary" routerLink="/manage-lecturers">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        Manage Lecturers
+                    </button>
+                    <button class="action-btn tertiary" routerLink="/manage-students">
+                        <i class="fas fa-user-graduate"></i>
+                        Manage Students
+                    </button>
+                    <button class="action-btn quaternary" routerLink="/school-reports">
+                        <i class="fas fa-chart-bar"></i>
+                        School Reports
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Content for different views -->
+            <div class="content-area" *ngIf="currentView !== 'dashboard'">
+                <div *ngIf="currentView === 'courses'" class="courses-content">
+                    <div class="courses-header">
+                        <button class="add-course-btn" (click)="showAddCourseForm = !showAddCourseForm">
+                            <i class="fas fa-plus"></i> Add New Course
+                        </button>
+                    </div>
+
+                    <!-- Add Course Modal -->
+                    <div class="modal-backdrop" *ngIf="showAddCourseForm" (click)="closeCourseModal()">
+                        <div class="modal-content" (click)="$event.stopPropagation()">
+                            <div class="modal-header">
+                                <h3>Add New Course</h3>
+                                <button class="close-btn" (click)="closeCourseModal()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <form (ngSubmit)="addCourse()">
+                                <div class="modal-body">
+                                    <input type="text" [(ngModel)]="newCourse.course_name" name="course_name" placeholder="Course Name" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn-primary">Add Course</button>
+                                    <button type="button" class="btn-secondary" (click)="closeCourseModal()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="courses-grid">
+                        <div class="course-card" *ngFor="let course of courses">
+                            <div class="course-info">
+                                <h3>{{ course.course_name }}</h3>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn-delete" (click)="deleteCourse(course.course_id)">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="no-data" *ngIf="courses.length === 0">
+                        <i class="fas fa-book"></i>
+                        <h3>No courses found</h3>
+                        <p>No courses are currently available for this school.</p>
+                    </div>
+                </div>
+                <div *ngIf="currentView === 'lecturers'" class="lecturers-content">
+                    <div class="lecturers-header">
+                        <button class="add-lecturer-btn" (click)="showAddLecturerForm = !showAddLecturerForm">
+                            <i class="fas fa-plus"></i> Add New Lecturer
+                        </button>
+                    </div>
+
+                    <!-- Add Lecturer Modal -->
+                    <div class="modal-backdrop" *ngIf="showAddLecturerForm" (click)="closeLecturerModal()">
+                        <div class="modal-content" (click)="$event.stopPropagation()">
+                            <div class="modal-header">
+                                <h3>Add New Lecturer</h3>
+                                <button class="close-btn" (click)="closeLecturerModal()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <form (ngSubmit)="addLecturer()">
+                                <div class="modal-body">
+                                    <input type="text" [(ngModel)]="newLecturer.name" name="name" placeholder="Full Name" required>
+                                    <input type="email" [(ngModel)]="newLecturer.email" name="email" placeholder="Email Address" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn-primary">Add Lecturer</button>
+                                    <button type="button" class="btn-secondary" (click)="closeLecturerModal()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="lecturers-grid">
+                        <div class="lecturer-card" *ngFor="let lecturer of lecturers">
+                            <div class="lecturer-info">
+                                <h3>{{ lecturer.name }}</h3>
+                                <p class="email">{{ lecturer.email }}</p>
+                                <div class="assigned-courses" *ngIf="lecturer.assigned_courses">
+                                    <span class="courses-label">Courses:</span>
+                                    <span class="courses-list">{{ lecturer.assigned_courses }}</span>
+                                </div>
+                                <div class="no-courses" *ngIf="!lecturer.assigned_courses">
+                                    <span class="no-courses-text">No courses assigned</span>
+                                </div>
+                            </div>
+                            <div class="lecturer-actions">
+                                <button class="btn-assign" (click)="assignCourse(lecturer)">
+                                    <i class="fas fa-plus"></i> Assign Course
+                                </button>
+                                <button class="btn-delete" (click)="deleteLecturer(lecturer.lecturer_id)">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="no-data" *ngIf="lecturers.length === 0">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <h3>No lecturers found</h3>
+                        <p>No lecturers are currently registered for this school.</p>
+                    </div>
+
+                    <!-- Assign Course Modal -->
+                    <div class="modal-backdrop" *ngIf="showAssignCourseForm" (click)="closeAssignModal()">
+                        <div class="modal-content" (click)="$event.stopPropagation()">
+                            <div class="modal-header">
+                                <h3>Assign Course to {{ selectedLecturer?.name }}</h3>
+                                <button class="close-btn" (click)="closeAssignModal()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <form (ngSubmit)="submitCourseAssignment()">
+                                <div class="modal-body">
+                                    <select [(ngModel)]="assignmentData.course_id" name="course_id" required>
+                                        <option value="">Select Course</option>
+                                        <option *ngFor="let course of courses" [value]="course.course_id">{{ course.course_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn-primary">Assign Course</button>
+                                    <button type="button" class="btn-secondary" (click)="closeAssignModal()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="currentView === 'students'" class="students-content">
+                    <div class="students-header">
+                        <button class="add-student-btn" (click)="showAddStudentForm = !showAddStudentForm">
+                            <i class="fas fa-plus"></i> Add New Student
+                        </button>
+                    </div>
+
+                    <!-- Add Student Modal -->
+                    <div class="modal-backdrop" *ngIf="showAddStudentForm" (click)="closeStudentModal()">
+                        <div class="modal-content" (click)="$event.stopPropagation()">
+                            <div class="modal-header">
+                                <h3>Add New Student</h3>
+                                <button class="close-btn" (click)="closeStudentModal()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <form (ngSubmit)="addStudent()">
+                                <div class="modal-body">
+                                    <input type="text" [(ngModel)]="newStudent.name" name="name" placeholder="Full Name" required>
+                                    <input type="email" [(ngModel)]="newStudent.email" name="email" placeholder="Email Address" required>
+                                    <select [(ngModel)]="newStudent.course_id" name="course_id" required>
+                                        <option value="">Select Course</option>
+                                        <option *ngFor="let course of courses" [value]="course.course_id">{{ course.course_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn-primary">Add Student</button>
+                                    <button type="button" class="btn-secondary" (click)="closeStudentModal()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="students-grid">
+                        <div class="student-card" *ngFor="let student of students">
+                            <div class="student-info">
+                                <h3>{{ student.name }}</h3>
+                                <p class="email">{{ student.email }}</p>
+                                <p class="course">{{ student.course_name }}</p>
+                            </div>
+                            <div class="student-actions">
+                                <button class="btn-delete" (click)="deleteStudent(student.student_id)">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="no-data" *ngIf="students.length === 0">
+                        <i class="fas fa-user-graduate"></i>
+                        <h3>No students found</h3>
+                        <p>No students are currently enrolled in this school.</p>
+                    </div>
+                </div>
+                <div *ngIf="currentView === 'reports'" class="reports-content">
+                    <div class="reports-overview">
+                        <div class="report-card">
+                            <h3>Total Courses</h3>
+                            <div class="report-number">{{ schoolStats.courses }}</div>
+                        </div>
+                        <div class="report-card">
+                            <h3>Total Lecturers</h3>
+                            <div class="report-number">{{ schoolStats.lecturers }}</div>
+                        </div>
+                        <div class="report-card">
+                            <h3>Total Students</h3>
+                            <div class="report-number">{{ schoolStats.students }}</div>
+                        </div>
+                        <div class="report-card">
+                            <h3>Applications</h3>
+                            <div class="report-number">{{ schoolStats.applications }}</div>
+                        </div>
+                    </div>
+
+                    <div class="reports-summary">
+                        <h3>School Summary</h3>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <div class="summary-text">
+                                    <h4>Academic Programs</h4>
+                                    <p>{{ schoolStats.courses }} active courses available for enrollment</p>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <i class="fas fa-users"></i>
+                                <div class="summary-text">
+                                    <h4>Faculty & Students</h4>
+                                    <p>{{ schoolStats.lecturers }} lecturers teaching {{ schoolStats.students }} students</p>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <i class="fas fa-briefcase"></i>
+                                <div class="summary-text">
+                                    <h4>Internship Activity</h4>
+                                    <p>{{ schoolStats.applications }} internship applications submitted</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

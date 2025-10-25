@@ -1,0 +1,49 @@
+<div class="system-admin-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-employer-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-employer-sidebar>
+
+    <main class="main-content">
+        <app-employer-header [isSidebarCollapsed]="isSidebarCollapsed"></app-employer-header>
+
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Intern Reviews</h1>
+                <p>Reviews and feedback from your interns</p>
+            </div>
+
+            <div class="reviews-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Internship</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let review of reviews">
+                            <td>{{ review.student_name }}</td>
+                            <td>{{ review.internship_title }}</td>
+                            <td>
+                                <div class="rating">
+                                    <span *ngFor="let star of getStars(review.rating)" 
+                                          class="star" 
+                                          [class.filled]="star <= review.rating">
+                                        ★
+                                    </span>
+                                    <span class="rating-text">({{ review.rating }}/5)</span>
+                                </div>
+                            </td>
+                            <td class="review-text">{{ review.review_text }}</td>
+                            <td>{{ review.created_at | date }}</td>
+                        </tr>
+                        <tr *ngIf="reviews.length === 0">
+                            <td colspan="5" class="no-data">No reviews available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>

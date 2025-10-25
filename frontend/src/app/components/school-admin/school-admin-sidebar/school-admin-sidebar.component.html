@@ -1,0 +1,48 @@
+<div class="sidebar-backdrop" [class.mobile-visible]="isMobile && isMobileBackdropVisible"
+    (click)="closeMobileSidebar()"></div>
+
+<nav class="sidebar" [class.collapsed]="!isMobile && isCollapsed" [class.expanded]="isMobile && isMobileExpanded"
+    [class.mobile]="isMobile">
+
+    <div class="sidebar-header">
+        <h3 *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">
+            <i class="fas fa-graduation-cap"></i> School Admin
+        </h3>
+
+        <button class="toggle-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li routerLinkActive="active" [routerLink]="['/school-admin-dashboard']" (click)="onMenuItemClick()">
+            <i class="fas fa-tachometer-alt"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Dashboard</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/manage-courses']" (click)="onMenuItemClick()">
+            <i class="fas fa-book"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Manage Courses</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/manage-lecturers']" (click)="onMenuItemClick()">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Manage Lecturers</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/manage-students']" (click)="onMenuItemClick()">
+            <i class="fas fa-user-graduate"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Manage Students</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/school-reports']" (click)="onMenuItemClick()">
+            <i class="fas fa-chart-bar"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">School Reports</span>
+        </li>
+
+        <li (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Logout</span>
+        </li>
+    </ul>
+</nav>

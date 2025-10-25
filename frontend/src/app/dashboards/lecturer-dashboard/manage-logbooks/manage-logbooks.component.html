@@ -1,0 +1,62 @@
+<div class="manage-logbooks">
+    <div class="page-header">
+        <h1><i class="fas fa-book-open"></i> Student Logbooks</h1>
+        <p>Review and provide feedback on student weekly reports</p>
+    </div>
+
+    <div class="logbooks-container" *ngIf="!loading">
+        <div class="logbook-card" *ngFor="let logbook of logbooks">
+            <div class="logbook-header">
+                <div class="student-info">
+                    <h3>{{ logbook.student_name }}</h3>
+                    <span class="email">{{ logbook.student_email }}</span>
+                </div>
+                <div class="week-info">
+                    <span class="week-badge">Week {{ logbook.week_number }}</span>
+                    <span class="date">{{ logbook.week_ending | date }}</span>
+                </div>
+            </div>
+
+            <div class="logbook-content">
+                <div class="section">
+                    <h4><i class="fas fa-tasks"></i> Activities Completed</h4>
+                    <p>{{ logbook.activities_completed }}</p>
+                </div>
+
+                <div class="section">
+                    <h4><i class="fas fa-lightbulb"></i> Skills Learned</h4>
+                    <p>{{ logbook.skills_learned }}</p>
+                </div>
+
+                <div class="section">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Challenges Faced</h4>
+                    <p>{{ logbook.challenges_faced }}</p>
+                </div>
+
+                <div class="section feedback-section" *ngIf="logbook.supervisor_feedback">
+                    <h4><i class="fas fa-comment"></i> Supervisor Feedback</h4>
+                    <p>{{ logbook.supervisor_feedback }}</p>
+                </div>
+            </div>
+
+            <div class="logbook-actions">
+                <button class="btn btn-primary" *ngIf="!logbook.supervisor_feedback">
+                    <i class="fas fa-comment-dots"></i> Add Feedback
+                </button>
+                <button class="btn btn-secondary" *ngIf="logbook.supervisor_feedback">
+                    <i class="fas fa-edit"></i> Edit Feedback
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading logbooks...
+    </div>
+
+    <div class="no-data" *ngIf="!loading && logbooks.length === 0">
+        <i class="fas fa-book"></i>
+        <h3>No logbook entries found</h3>
+        <p>Students haven't submitted any logbook entries yet.</p>
+    </div>
+</div>

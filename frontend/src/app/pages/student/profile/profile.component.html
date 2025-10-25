@@ -1,0 +1,101 @@
+<div class="profile" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-student-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-student-sidebar>
+    
+    <main class="main-content">
+        <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
+        
+        <div class="content">
+            <div class="page-header">
+                <h1><i class="fas fa-user"></i> Profile</h1>
+                <p>Manage your personal information and account settings</p>
+            </div>
+            
+            <div *ngIf="loading" class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading profile...</p>
+            </div>
+            
+            <div *ngIf="error" class="error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>{{ error }}</p>
+            </div>
+            
+            <div *ngIf="!loading && !error && profile" class="profile-container">
+                <div class="profile-card">
+                    <div class="card-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h2>{{ profile.name }}</h2>
+                            <p class="student-number">Student ID: {{ profile.student_id }}</p>
+                        </div>
+                        <button *ngIf="!editing" (click)="startEdit()" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div *ngIf="!editing" class="profile-details">
+                            <div class="detail-group">
+                                <h3>Personal Information</h3>
+                                <div class="detail-item">
+                                    <label>Full Name</label>
+                                    <span>{{ profile.name }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Email</label>
+                                    <span>{{ profile.email }}</span>
+                                </div>
+
+                            </div>
+                            
+                            <div class="detail-group">
+                                <h3>Academic Information</h3>
+                                <div class="detail-item">
+                                    <label>Student ID</label>
+                                    <span>{{ profile.student_id }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Course</label>
+                                    <span>{{ profile.course_name || 'Not assigned' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form *ngIf="editing" (ngSubmit)="saveProfile()" class="edit-form">
+                            <div class="form-section">
+                                <h3>Personal Information</h3>
+                                <div class="form-group">
+                                    <label>Full Name *</label>
+                                    <input type="text" [(ngModel)]="editForm.name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email *</label>
+                                    <input type="email" [(ngModel)]="editForm.email" name="email" required>
+                                </div>
+
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Academic Information</h3>
+                                <div class="form-group">
+                                    <label>Course ID</label>
+                                    <input type="number" [(ngModel)]="editForm.course" name="course" min="1">
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" (click)="cancelEdit()" class="btn btn-secondary" [disabled]="saving">Cancel</button>
+                                <button type="submit" class="btn btn-primary" [disabled]="saving">
+                                    <i *ngIf="saving" class="fas fa-spinner fa-spin"></i>
+                                    {{ saving ? 'Saving...' : 'Save Changes' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,66 @@
+<div class="manage-school-admins">
+    <div class="page-header">
+        <h1><i class="fas fa-user-tie"></i> Manage School Admins</h1>
+        <p>Create and manage school administrators</p>
+        <button class="add-admin-btn" (click)="showAddForm = !showAddForm">
+            <i class="fas fa-plus"></i> Create School Admin
+        </button>
+    </div>
+
+    <!-- Add School Admin Modal -->
+    <div class="modal-backdrop" *ngIf="showAddForm" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Create School Admin</h3>
+                <button class="close-btn" (click)="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form (ngSubmit)="addSchoolAdmin()">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <input type="text" [(ngModel)]="newAdmin.name" name="name" placeholder="Full Name" required>
+                        <input type="email" [(ngModel)]="newAdmin.email" name="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-row">
+                        <select [(ngModel)]="newAdmin.school_id" name="school_id" required>
+                            <option value="">Select School</option>
+                            <option *ngFor="let school of schools" [value]="school.school_id">{{ school.name }}</option>
+                        </select>
+                        <input type="password" [(ngModel)]="newAdmin.password" name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary">Create Admin</button>
+                    <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="admins-container" *ngIf="!loading">
+        <div class="admin-card" *ngFor="let admin of schoolAdmins">
+            <div class="admin-info">
+                <h3>{{ admin.name }}</h3>
+                <p class="email">{{ admin.email }}</p>
+                <p class="school">School: {{ getSchoolName(admin) }}</p>
+                <div class="status-badge" [class]="admin.status?.toLowerCase()">{{ admin.status || 'ACTIVE' }}</div>
+            </div>
+            <div class="admin-actions">
+                <button class="btn-delete" (click)="deleteAdmin(admin.user_id)">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading school admins...
+    </div>
+
+    <div class="no-data" *ngIf="!loading && schoolAdmins.length === 0">
+        <i class="fas fa-user-tie"></i>
+        <h3>No school admins found</h3>
+        <p>No school administrators are currently registered in the system.</p>
+    </div>
+</div>

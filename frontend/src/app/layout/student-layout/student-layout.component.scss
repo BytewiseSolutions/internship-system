@@ -1,40 +1,29 @@
-.layout-container {
-    display: flex;
-    height: 100vh;
+.student-layout {
+  display: flex;
+  min-height: 100vh;
+
+  .main-content {
+    flex: 1;
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+    background-color: #f8f9fa;
 
     &.sidebar-collapsed {
-        .layout-main-content {
-            margin-left: 80px;
-        }
+      margin-left: 70px;
     }
+  }
 
-    .layout-main-content {
-        flex: 1;
-        padding: 3.5rem 20px 20px;
-        margin-left: 250px;
-        transition: margin-left 0.3s ease;
+  &.sidebar-collapsed .main-content {
+    margin-left: 70px;
+  }
+}
 
-        app-admin-header {
-            flex-shrink: 0;
-        }
+@media (max-width: 768px) {
+  .student-layout .main-content {
+    margin-left: 0;
+  }
 
-        router-outlet {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1.25rem;
-        }
-    }
-
-    @media (min-width: 768px) {
-        .sidebar.collapsed~.layout-main-content {
-            margin-left: 80px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .layout-main-content {
-            margin-left: 80px;
-            padding: 3rem 10px 10px;
-        }
-    }
+  .student-layout.sidebar-collapsed .main-content {
+    margin-left: 0;
+  }
 }

@@ -98,17 +98,15 @@
 // }
 
 .sidebar {
-    background: linear-gradient(180deg, #2c3e50 0%, #1a2530 100%);
-    color: #fff;
+    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+    color: white;
     height: 100vh;
     position: fixed;
-    left: 0;
     top: 0;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1002;
-    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2);
+    left: 0;
+    width: 250px;
+    transition: width 0.3s ease;
+    z-index: 1000;
     overflow: hidden;
 
     // Collapsed states
@@ -181,52 +179,33 @@
 
     // Sidebar Header
     .sidebar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 25px 20px;
+        padding: 1.5rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px);
-        min-height: 80px;
-        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
         h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
             margin: 0;
-            background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            white-space: nowrap;
-            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .toggle-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: none;
             border: none;
-            color: #fff;
-            font-size: 1.1rem;
+            color: white;
+            font-size: 1.2rem;
             cursor: pointer;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
 
             &:hover {
-                background: rgba(255, 255, 255, 0.2);
-                transform: rotate(90deg);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            }
-
-            &:active {
-                transform: scale(0.95) rotate(90deg);
+                background-color: rgba(255, 255, 255, 0.1);
             }
         }
     }
@@ -234,114 +213,36 @@
     // Sidebar Menu
     .sidebar-menu {
         list-style: none;
-        padding: 25px 0;
+        padding: 0;
         margin: 0;
-        flex: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-
-        &::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        &::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-        }
 
         li {
-            padding: 16px 25px;
+            padding: 1rem 1.5rem;
             cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 18px;
-            font-size: 15px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            margin: 6px 15px;
-            border-radius: 14px;
-            position: relative;
-            white-space: nowrap;
-            overflow: hidden;
+            gap: 1rem;
+            border-left: 3px solid transparent;
 
             &:hover {
-                background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(46, 204, 113, 0.1) 100%);
-                transform: translateX(8px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-
-                i {
-                    transform: scale(1.2);
-                    color: #3498db;
-                }
+                background-color: rgba(255, 255, 255, 0.1);
+                border-left-color: #fff;
             }
 
             &.active {
-                background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-                box-shadow:
-                    0 8px 25px rgba(52, 152, 219, 0.4),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    left: -15px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    width: 5px;
-                    height: 80%;
-                    background: #2ecc71;
-                    border-radius: 3px;
-                    box-shadow: 0 0 10px #2ecc71;
-                }
-
-                i {
-                    color: white;
-                    transform: scale(1.1);
-                }
-
-                span {
-                    color: white;
-                    font-weight: 600;
-                }
+                background-color: rgba(255, 255, 255, 0.2);
+                border-left-color: #fff;
             }
 
             i {
-                width: 22px;
+                font-size: 1.1rem;
+                width: 20px;
                 text-align: center;
-                font-size: 1.2rem;
-                transition: all 0.3s ease;
-                color: #bdc3c7;
             }
 
             span {
-                transition: all 0.3s ease;
-                color: #ecf0f1;
-                font-size: 15px;
-                letter-spacing: 0.3px;
-            }
-
-            // Logout item special styling
-            &:last-child {
-                margin-top: auto;
-                background: rgba(231, 76, 60, 0.1);
-                border: 1px solid rgba(231, 76, 60, 0.2);
-
-                &:hover {
-                    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-
-                    i,
-                    span {
-                        color: white;
-                    }
-                }
-
-                i {
-                    color: #e74c3c;
-                }
+                font-weight: 500;
             }
         }
     }

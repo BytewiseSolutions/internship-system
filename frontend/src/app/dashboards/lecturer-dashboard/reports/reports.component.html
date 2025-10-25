@@ -1,0 +1,87 @@
+<div class="reports">
+    <div class="page-header">
+        <h1><i class="fas fa-chart-bar"></i> Reports</h1>
+        <p>Generate and view comprehensive reports</p>
+    </div>
+
+    <div class="reports-grid">
+        <div class="report-card" *ngFor="let report of reportTypes">
+            <div class="report-icon">
+                <i [class]="report.icon"></i>
+            </div>
+            <div class="report-content">
+                <h3>{{ report.title }}</h3>
+                <p>{{ report.description }}</p>
+                <button class="generate-btn" (click)="generateReport(report.type)">
+                    <i class="fas fa-download"></i>
+                    Generate Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Preview Modal -->
+    <div class="modal-backdrop" *ngIf="showReportModal" (click)="closeModal()">
+        <div class="modal-content report-modal" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ currentReportType === 'logbook' ? 'Logbook' : 'Feedback' }} Report Preview</h3>
+                <button class="close-btn" (click)="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="report-table" *ngIf="reportData.length > 0">
+                    <table>
+                        <thead *ngIf="currentReportType === 'logbook'">
+                            <tr>
+                                <th>Student</th>
+                                <th>Week</th>
+                                <th>Activities</th>
+                                <th>Skills</th>
+                                <th>Challenges</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <thead *ngIf="currentReportType === 'feedback'">
+                            <tr>
+                                <th>Student</th>
+                                <th>Rating</th>
+                                <th>Review</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of reportData" [ngSwitch]="currentReportType">
+                                <ng-container *ngSwitchCase="'logbook'">
+                                    <td>{{ item.student_name }}</td>
+                                    <td>{{ item.week_number }}</td>
+                                    <td>{{ item.activities }}</td>
+                                    <td>{{ item.skills_learned }}</td>
+                                    <td>{{ item.challenges }}</td>
+                                    <td>{{ item.created_at | date:'short' }}</td>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'feedback'">
+                                    <td>{{ item.student_name }}</td>
+                                    <td>{{ item.rating }}/5</td>
+                                    <td>{{ item.review_text }}</td>
+                                    <td>{{ item.application_status }}</td>
+                                    <td>{{ item.created_at | date:'short' }}</td>
+                                </ng-container>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="no-data" *ngIf="reportData.length === 0">
+                    <p>No data available for this report.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" (click)="downloadCurrentReport()">
+                    <i class="fas fa-download"></i> Download CSV
+                </button>
+                <button class="btn-secondary" (click)="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

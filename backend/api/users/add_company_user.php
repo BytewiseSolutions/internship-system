@@ -1,0 +1,43 @@
+<?php
+header("Access-Control-Allow-Origin: http://localhost:4200");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
+}
+
+require_once '../../config.php';
+require_once '../../utils.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    send_json(['success' => false, 'message' => 'Method not allowed'], 405);
+}
+
+$input = json_decode(file_get_contents('php://input'), true);
+
+if (!$input || !isset($input['name']) || !isset($input['email']) || !isset($input['company_id']) || !isset($input['password'])) {
+    send_json(['success' => false, 'message' => 'Missing required fields'], 400);
+}
+
+// Check if email already exists
+$stmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
+$stmt->bind_param("s", $input['email']);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->fetch_assoc()) {
+    send_json(['success' => false, 'message' => 'Email already exists'], 400);
+}
+
+// Insert new company user
+$stmt = $conn->prepare("INSERT INTO users (name, email, password, role, company_id) VALUES (?, ?, ?, 'EMPLOYER', ?)");
+$hashedPassword = password_hash($input['password'], PASSWORD_DEFAULT);
+$stmt->bind_param("sssi", $input['name'], $input['email'], $hashedPassword, $input['company_id']);
+
+if ($stmt->execute()) {
+    send_json(['success' => true, 'message' => 'Company user created successfully']);
+} else {
+    send_json(['success' => false, 'message' => 'Failed to create company user'], 500);
+}
+?>

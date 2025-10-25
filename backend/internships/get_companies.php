@@ -17,7 +17,7 @@ if (empty($payload) || !isset($payload['email'])) {
 }
 
 // Get user info
-$stmt = $conn->prepare("SELECT id, role FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT user_id, role FROM users WHERE email = ?");
 $stmt->bind_param("s", $payload['email']);
 $stmt->execute();
 $userResult = $stmt->get_result();
@@ -29,8 +29,8 @@ if (!$user) {
 
 // If user is COMPANY role, only return their company
 if ($user['role'] === 'COMPANY') {
-    $stmt = $conn->prepare("SELECT * FROM companies WHERE user_id = ?");
-    $stmt->bind_param("i", $user['id']);
+    $stmt = $conn->prepare("SELECT * FROM companies WHERE created_by = ?");
+    $stmt->bind_param("i", $user['user_id']);
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
@@ -41,7 +41,7 @@ if ($user['role'] === 'COMPANY') {
 $companies = [];
 while ($row = $result->fetch_assoc()) {
     $companies[] = [
-        "id" => (int) $row['id'],
+        "id" => (int) $row['company_id'],
         "name" => $row['name'],
         "email" => $row['email'],
         "industry" => $row['industry'],

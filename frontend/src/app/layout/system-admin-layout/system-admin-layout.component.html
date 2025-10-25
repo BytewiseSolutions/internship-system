@@ -1,0 +1,8 @@
+<div class="system-admin-layout" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-system-admin-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-system-admin-sidebar>
+    
+    <main class="main-content">
+        <app-system-admin-header [isSidebarCollapsed]="isSidebarCollapsed"></app-system-admin-header>
+        <router-outlet></router-outlet>
+    </main>
+</div>

@@ -1,0 +1,53 @@
+<div class="sidebar-backdrop" [class.mobile-visible]="isMobile && isMobileBackdropVisible"
+    (click)="closeMobileSidebar()"></div>
+
+<nav class="sidebar" [class.collapsed]="!isMobile && isCollapsed" [class.expanded]="isMobile && isMobileExpanded"
+    [class.mobile]="isMobile">
+
+    <div class="sidebar-header">
+        <h3 *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">
+            <i class="fas fa-cog"></i> System Admin
+        </h3>
+
+        <button class="toggle-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li routerLinkActive="active" [routerLink]="['/system-admin-dashboard']" (click)="onMenuItemClick()">
+            <i class="fas fa-tachometer-alt"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Dashboard</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/manage-schools']" (click)="onMenuItemClick()">
+            <i class="fas fa-university"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Manage Schools</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/manage-school-admins']" (click)="onMenuItemClick()">
+            <i class="fas fa-user-tie"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">School Admins</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/system-manage-companies']" (click)="onMenuItemClick()">
+            <i class="fas fa-building"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Manage Companies</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/manage-company-users']" (click)="onMenuItemClick()">
+            <i class="fas fa-users"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Company Users</span>
+        </li>
+
+        <li routerLinkActive="active" [routerLink]="['/system-overview']" (click)="onMenuItemClick()">
+            <i class="fas fa-chart-line"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">System Overview</span>
+        </li>
+
+        <li (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span *ngIf="(!isMobile && !isCollapsed) || (isMobile && isMobileExpanded)">Logout</span>
+        </li>
+    </ul>
+</nav>
