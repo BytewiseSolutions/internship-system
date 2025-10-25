@@ -1,7 +1,7 @@
 .student-dashboard {
     display: flex;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-color: #f8f9fa;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
     &.sidebar-collapsed {
@@ -38,12 +38,8 @@
     h1 {
         font-size: 2rem;
         font-weight: 700;
-        color: #2c3e50;
+        color: #2e7d32;
         margin: 0 0 0.5rem 0;
-        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
     }
 
     p {
@@ -93,21 +89,10 @@
         }
     }
 
-    .application-card .card-icon {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .review-card .card-icon {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-
-    .notification-card .card-icon {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-
-    .internship-card .card-icon {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    }
+    .application-card .card-icon { background: #2e7d32; }
+    .review-card .card-icon { background: #ff9800; }
+    .notification-card .card-icon { background: #2196f3; }
+    .internship-card .card-icon { background: #4caf50; }
 
     &:hover .card-icon {
         transform: scale(1.1);
@@ -143,10 +128,7 @@
             font-size: 1.8rem;
             font-weight: 800;
             margin: 0 0 0.3rem 0;
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #2c3e50;
             line-height: 1;
         }
 
@@ -179,7 +161,7 @@
     h2 {
         font-size: 1.3rem;
         font-weight: 700;
-        color: #2c3e50;
+        color: #2e7d32;
         margin: 0 0 1.5rem 0;
         text-align: center;
     }
@@ -206,33 +188,23 @@
             min-height: 54px;
 
             &.primary {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-
-                &:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-                }
+                background: #2e7d32;
+                &:hover { background: #1b5e20; }
             }
 
             &.secondary {
-                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
-
-                &:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
-                }
+                background: #ff9800;
+                &:hover { background: #f57c00; }
             }
 
             &.tertiary {
-                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-                box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+                background: #2196f3;
+                &:hover { background: #1976d2; }
+            }
 
-                &:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
-                }
+            &.quaternary {
+                background: #4caf50;
+                &:hover { background: #388e3c; }
             }
 
             i {

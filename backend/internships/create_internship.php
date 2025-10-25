@@ -21,7 +21,7 @@ if (!$input) {
     send_json(['success' => false, 'message' => 'Invalid JSON input'], 400);
 }
 
-$required_fields = ['internship_id', 'title', 'location', 'deadline'];
+$required_fields = ['title', 'location', 'deadline', 'company_id'];
 foreach ($required_fields as $field) {
     if (empty($input[$field])) {
         send_json(['success' => false, 'message' => "Field '$field' is required"], 400);
@@ -30,26 +30,25 @@ foreach ($required_fields as $field) {
 
 try {
     $stmt = $conn->prepare("
-        UPDATE internships 
-        SET title = ?, description = ?, location = ?, deadline = ?, status = ?
-        WHERE internship_id = ?
+        INSERT INTO internships (company_id, title, description, location, deadline, status) 
+        VALUES (?, ?, ?, ?, ?, ?)
     ");
     
     $description = $input['description'] ?? '';
     $status = $input['status'] ?? 'OPEN';
     
-    $stmt->bind_param('sssssi',
+    $stmt->bind_param('isssss', 
+        $input['company_id'],
         $input['title'],
         $description,
         $input['location'],
         $input['deadline'],
-        $status,
-        $input['internship_id']
+        $status
     );
     
     $stmt->execute();
     
-    send_json(['success' => true, 'message' => 'Internship updated successfully']);
+    send_json(['success' => true, 'message' => 'Internship created successfully']);
     
 } catch (Exception $e) {
     send_json(['success' => false, 'message' => 'Database error: ' . $e->getMessage()], 500);

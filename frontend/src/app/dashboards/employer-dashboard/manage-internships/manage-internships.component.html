@@ -1,0 +1,95 @@
+<div class="system-admin-dashboard" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-employer-sidebar (collapsedChange)="onSidebarCollapseChanged($event)"></app-employer-sidebar>
+
+    <main class="main-content">
+        <app-employer-header [isSidebarCollapsed]="isSidebarCollapsed"></app-employer-header>
+
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Manage Internships</h1>
+                <button class="btn btn-primary" (click)="openAddModal()">
+                    <i class="fas fa-plus"></i> Add Internship
+                </button>
+            </div>
+
+            <div class="internships-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Location</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                            <th>Applications</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let internship of internships">
+                            <td>{{ internship.title }}</td>
+                            <td>{{ internship.location }}</td>
+                            <td>{{ internship.deadline | date }}</td>
+                            <td>
+                                <span class="status" [class]="internship.status.toLowerCase()">
+                                    {{ internship.status }}
+                                </span>
+                            </td>
+                            <td>{{ internship.applications_count || 0 }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-secondary" (click)="editInternship(internship)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" (click)="deleteInternship(internship.internship_id)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>{{ isEditing ? 'Edit' : 'Add' }} Internship</h3>
+            <button class="close-btn" (click)="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="saveInternship()" #internshipForm="ngForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" [(ngModel)]="currentInternship.title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea [(ngModel)]="currentInternship.description" name="description" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" [(ngModel)]="currentInternship.location" name="location" required>
+                </div>
+                <div class="form-group">
+                    <label>Deadline</label>
+                    <input type="date" [(ngModel)]="currentInternship.deadline" name="deadline" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select [(ngModel)]="currentInternship.status" name="status">
+                        <option value="OPEN">Open</option>
+                        <option value="CLOSED">Closed</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!internshipForm.valid">
+                        {{ isEditing ? 'Update' : 'Add' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

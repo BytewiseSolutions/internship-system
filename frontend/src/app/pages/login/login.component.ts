@@ -85,6 +85,8 @@ export class LoginComponent {
               this.router.navigate(['/admin-dashboard']);
             } else if (response.role === 'COMPANY') {
               this.router.navigate(['/company-dashboard']);
+            } else if (response.role === 'EMPLOYER') {
+              this.router.navigate(['/employer-dashboard']);
             } else if (response.role === 'STUDENT') {
               this.router.navigate(['/student-dashboard']);
             } else if (response.role === 'LECTURER') {

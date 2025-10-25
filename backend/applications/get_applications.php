@@ -1,33 +1,50 @@
 <?php
-require_once __DIR__ . '/../cors.php';
-require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../utils.php';
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Content-Type: application/json');
 
-$student_id = isset($_GET['student_id']) ? intval($_GET['student_id']) : null;
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
+}
+
+require_once '../config.php';
+require_once '../utils.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    send_json(['success' => false, 'message' => 'Method not allowed'], 405);
+}
+
+if (!isset($_GET['company_id']) || empty($_GET['company_id'])) {
+    send_json(['success' => false, 'message' => 'Company ID is required'], 400);
+}
+
+$company_id = $_GET['company_id'];
 
 try {
-    if ($student_id) {
-        $stmt = $conn->prepare("SELECT * FROM applications WHERE student_id = ?");
-        $stmt->bind_param("i", $student_id);
-    } else {
-        $stmt = $conn->prepare("SELECT * FROM applications");
-    }
-
+    $stmt = $conn->prepare("
+        SELECT 
+            a.application_id,
+            a.status,
+            a.applied_at,
+            u.name as student_name,
+            i.title as internship_title
+        FROM applications a
+        JOIN internships i ON a.internship_id = i.internship_id
+        JOIN students s ON a.student_id = s.student_id
+        JOIN users u ON s.user_id = u.user_id
+        WHERE i.company_id = ?
+        ORDER BY a.applied_at DESC
+    ");
+    
+    $stmt->bind_param('i', $company_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $applications = $result->fetch_all(MYSQLI_ASSOC);
-
-    echo json_encode($applications);
-
-    $stmt->close();
-    $conn->close();
-
+    
+    send_json(['success' => true, 'applications' => $applications]);
+    
 } catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode([
-        'status' => 'error',
-        'message' => $e->getMessage()
-    ]);
+    send_json(['success' => false, 'message' => 'Database error: ' . $e->getMessage()], 500);
 }
-
 ?>

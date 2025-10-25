@@ -1,96 +1,53 @@
 <?php
-require_once __DIR__ . '/../cors.php';
-require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../utils.php';
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Content-Type: application/json');
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-// Get token from Authorization header
-$headers = getallheaders();
-$token = isset($headers['Authorization']) ? str_replace('Bearer ', '', $headers['Authorization']) : null;
-
-if (!$token) {
-    send_json(['error' => 'No token provided'], 401);
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
 }
 
-$payload = decodeToken($token);
-if (empty($payload) || !isset($payload['email'])) {
-    send_json(['error' => 'Invalid token'], 401);
+require_once '../config.php';
+require_once '../utils.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    send_json(['success' => false, 'message' => 'Method not allowed'], 405);
 }
 
-// Get user info
-$stmt = $conn->prepare("SELECT user_id, role FROM users WHERE email = ?");
-$stmt->bind_param("s", $payload['email']);
-$stmt->execute();
-$userResult = $stmt->get_result();
-$user = $userResult->fetch_assoc();
-
-if (!$user) {
-    send_json(['error' => 'User not found'], 404);
+// Check if company_id is provided
+if (!isset($_GET['company_id']) || empty($_GET['company_id'])) {
+    send_json(['success' => false, 'message' => 'Company ID is required'], 400);
 }
 
-// Build SQL based on user role
-if ($user['role'] === 'COMPANY') {
-    // For company users, only show their internships
-    $sql = "
+$company_id = $_GET['company_id'];
+
+try {
+    $stmt = $conn->prepare("
         SELECT 
-            i.internship_id as id, 
+            i.internship_id, 
             i.title, 
-            i.company_id, 
-            c.name AS company_name, 
-            i.location, 
-            i.deadline as postedDate, 
-            i.deadline, 
             i.description, 
-            i.status 
+            i.location, 
+            i.deadline, 
+            i.status,
+            COUNT(a.application_id) as applications_count
         FROM internships i
-        LEFT JOIN companies c ON i.company_id = c.company_id
-        WHERE c.created_by = ?
+        LEFT JOIN applications a ON i.internship_id = a.internship_id
+        WHERE i.company_id = ?
+        GROUP BY i.internship_id
         ORDER BY i.created_at DESC
-    ";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user['user_id']);
+    ");
+    
+    $stmt->bind_param('i', $company_id);
     $stmt->execute();
     $result = $stmt->get_result();
-} else {
-    // For admin users, show all internships
-    $sql = "
-        SELECT 
-            i.internship_id as id, 
-            i.title, 
-            i.company_id, 
-            c.name AS company_name, 
-            i.location, 
-            i.deadline as postedDate, 
-            i.deadline, 
-            i.description, 
-            i.status 
-        FROM internships i
-        LEFT JOIN companies c ON i.company_id = c.company_id
-        ORDER BY i.created_at DESC
-    ";
-    $result = $conn->query($sql);
+    $internships = $result->fetch_all(MYSQLI_ASSOC);
+    
+    send_json(['success' => true, 'internships' => $internships]);
+    
+} catch (Exception $e) {
+    send_json(['success' => false, 'message' => 'Database error: ' . $e->getMessage()], 500);
 }
 
-if (!$result) {
-    send_json(["error" => "SQL Error: " . $conn->error], 500);
-}
-
-$internships = [];
-while ($row = $result->fetch_assoc()) {
-    $internships[] = [
-        "id" => isset($row['id']) ? (int) $row['id'] : null,
-        "title" => $row['title'] ?? '',
-        "company_id" => isset($row['company_id']) ? (int) $row['company_id'] : null,
-        "company_name" => $row['company_name'] ?? null,
-        "location" => $row['location'] ?? '',
-        "postedDate" => $row['postedDate'] ?? null,
-        "deadline" => $row['deadline'] ?? null,
-        "description" => $row['description'] ?? '',
-        "status" => $row['status'] ?? 'ACTIVE'
-    ];
-}
-
-send_json($internships);
 ?>

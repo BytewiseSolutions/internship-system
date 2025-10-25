@@ -12,7 +12,7 @@ if (!$data || !isset($data['email'], $data['password'])) {
 $email = $data['email'];
 $password = $data['password'];
 
-$stmt = $conn->prepare("SELECT user_id, name, email, role, password, status, school_id FROM users WHERE email=?");
+$stmt = $conn->prepare("SELECT user_id, name, email, role, password, status, school_id, company_id FROM users WHERE email=?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -58,6 +58,10 @@ if ($row = $result->fetch_assoc()) {
             $response['school_id'] = (int) $row['school_id'];
         }
         error_log('SCHOOL_ADMIN login - school_id: ' . ($row['school_id'] ?? 'NULL'));
+    } elseif ($row['role'] === 'EMPLOYER' || $row['role'] === 'COMPANY') {
+        if ($row['company_id']) {
+            $response['companyId'] = (int) $row['company_id'];
+        }
     }
 
     $stmt->close();

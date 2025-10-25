@@ -59,7 +59,7 @@ export class ManageCompanyUsersComponent implements OnInit {
   addCompanyUser() {
     const userData = {
       ...this.newUser,
-      role: 'COMPANY'
+      role: 'EMPLOYER'
     };
 
     this.http.post(`${environment.apiUrl}/api/users/add_company_user.php`, userData)

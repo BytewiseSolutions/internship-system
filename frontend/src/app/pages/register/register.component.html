@@ -9,6 +9,17 @@
         <input type="text" placeholder="Full Name" [(ngModel)]="student.name" name="name" required />
         <input type="email" placeholder="Email" [(ngModel)]="student.email" name="email" required />
         <input type="text" placeholder="Contact Number" [(ngModel)]="student.contact" name="contact" required />
+        
+        <select [(ngModel)]="student.school_id" name="school_id" (change)="onSchoolChange()" required>
+            <option value="">Select School</option>
+            <option *ngFor="let school of schools" [value]="school.school_id">{{ school.name }}</option>
+        </select>
+        
+        <select [(ngModel)]="student.course_id" name="course_id" required [disabled]="!student.school_id">
+            <option value="">Select Course</option>
+            <option *ngFor="let course of courses" [value]="course.course_id">{{ course.course_name }}</option>
+        </select>
+        
         <input type="password" placeholder="Password" [(ngModel)]="student.password" name="password" required />
 
         <button type="submit" [disabled]="loading">

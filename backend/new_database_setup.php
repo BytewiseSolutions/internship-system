@@ -23,7 +23,7 @@ $tableQueries = [
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
-            role ENUM('SYSTEM_ADMIN','SCHOOL_ADMIN','LECTURER','STUDENT','COMPANY') NOT NULL,
+            role ENUM('SYSTEM_ADMIN','SCHOOL_ADMIN','LECTURER','STUDENT','COMPANY','EMPLOYER') NOT NULL,
             status VARCHAR(20) DEFAULT 'ACTIVE',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )",
@@ -133,6 +133,18 @@ $tableQueries = [
             FOREIGN KEY (lecturer_id) REFERENCES lecturers(lecturer_id) ON DELETE CASCADE,
             FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,
             UNIQUE KEY unique_assignment (lecturer_id, course_id)
+        )",
+
+    "reviews" => "
+        CREATE TABLE reviews (
+            review_id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT NOT NULL,
+            internship_id INT NOT NULL,
+            rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+            review_text TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+            FOREIGN KEY (internship_id) REFERENCES internships(internship_id) ON DELETE CASCADE
         )"
 ];
 

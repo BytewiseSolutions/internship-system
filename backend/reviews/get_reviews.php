@@ -1,81 +1,51 @@
 <?php
-require_once __DIR__ . '/../cors.php';
-require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../utils.php';
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Content-Type: application/json');
 
-$user_id = isset($_GET['user_id']) ? (int) $_GET['user_id'] : null;
-$role = isset($_GET['role']) ? $_GET['role'] : null;
-
-$sql = "
-    SELECT 
-        r.id, 
-        r.student_id, 
-        u.name AS student_name, 
-        r.internship_id, 
-        i.title AS internship_title, 
-        r.rating, 
-        r.comment, 
-        r.employer_reply, 
-        r.status, 
-        r.created_at
-    FROM reviews r
-    JOIN users u ON r.student_id = u.id
-    JOIN internships i ON r.internship_id = i.id
-";
-
-$params = [];
-$types = "";
-$where = [];
-
-if ($role === 'STUDENT' && $user_id) {
-    $where[] = "r.student_id = ?";
-    $types .= "i";
-    $params[] = $user_id;
-} elseif ($role === 'COMPANY' && $user_id) {
-    $company_sql = "SELECT id FROM internshipdb.companies WHERE id = ?";
-    $stmtCompany = $conn->prepare($company_sql);
-    $stmtCompany->bind_param("i", $user_id);
-    $stmtCompany->execute();
-    $resultCompany = $stmtCompany->get_result();
-    $company = $resultCompany->fetch_assoc();
-    $stmtCompany->close();
-
-    if ($company) {
-        $where[] = "i.company_id = ?";
-        $types .= "i";
-        $params[] = $company['id'];
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
 }
 
-if ($role !== 'ADMIN') {
-    $where[] = "r.status = 'ACCEPTED'";
+require_once '../config.php';
+require_once '../utils.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    send_json(['success' => false, 'message' => 'Method not allowed'], 405);
 }
 
-if (!empty($where)) {
-    $sql .= " WHERE " . implode(" AND ", $where);
+if (!isset($_GET['company_id']) || empty($_GET['company_id'])) {
+    send_json(['success' => false, 'message' => 'Company ID is required'], 400);
 }
 
-$sql .= " ORDER BY r.created_at DESC";
+$company_id = $_GET['company_id'];
 
-$stmt = $conn->prepare($sql);
-if (!$stmt) {
-    send_json(['status' => 'error', 'message' => $conn->error], 500);
+try {
+    $stmt = $conn->prepare("
+        SELECT 
+            r.review_id,
+            r.rating,
+            r.review_text,
+            r.created_at,
+            u.name as student_name,
+            i.title as internship_title
+        FROM reviews r
+        JOIN internships i ON r.internship_id = i.internship_id
+        JOIN students s ON r.student_id = s.student_id
+        JOIN users u ON s.user_id = u.user_id
+        WHERE i.company_id = ?
+        ORDER BY r.created_at DESC
+    ");
+    
+    $stmt->bind_param('i', $company_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $reviews = $result->fetch_all(MYSQLI_ASSOC);
+    
+    send_json(['success' => true, 'reviews' => $reviews]);
+    
+} catch (Exception $e) {
+    send_json(['success' => false, 'message' => 'Database error: ' . $e->getMessage()], 500);
 }
-
-if (!empty($params)) {
-    $stmt->bind_param($types, ...$params);
-}
-
-$stmt->execute();
-$result = $stmt->get_result();
-
-$reviews = [];
-while ($row = $result->fetch_assoc()) {
-    $reviews[] = $row;
-}
-
-send_json(['reviews' => $reviews]);
-
-$stmt->close();
-$conn->close();
 ?>

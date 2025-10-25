@@ -31,7 +31,7 @@ if ($result->fetch_assoc()) {
 }
 
 // Insert new company user
-$stmt = $conn->prepare("INSERT INTO users (name, email, password, role, company_id) VALUES (?, ?, ?, 'COMPANY', ?)");
+$stmt = $conn->prepare("INSERT INTO users (name, email, password, role, company_id) VALUES (?, ?, ?, 'EMPLOYER', ?)");
 $hashedPassword = password_hash($input['password'], PASSWORD_DEFAULT);
 $stmt->bind_param("sssi", $input['name'], $input['email'], $hashedPassword, $input['company_id']);
 
