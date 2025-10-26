@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/landing"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sign In</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="login-content">
+  <div class="login-container">
+    <div class="login-form">
+      <h1>Welcome Back</h1>
+      <p>Sign in to continue your internship journey</p>
+
+      <ion-item class="input-item">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-input 
+          type="email" 
+          placeholder="Email" 
+          [(ngModel)]="email"
+          fill="outline">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-input 
+          type="password" 
+          placeholder="Password" 
+          [(ngModel)]="password"
+          fill="outline">
+        </ion-input>
+      </ion-item>
+
+      <ion-button expand="block" size="large" (click)="login()" class="login-button">
+        Sign In
+      </ion-button>
+
+      <div class="register-link">
+        <p>Don't have an account? 
+          <span (click)="goToRegister()" class="link">Create one</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</ion-content>
