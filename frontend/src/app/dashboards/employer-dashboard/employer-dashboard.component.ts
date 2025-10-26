@@ -20,11 +20,13 @@ export class EmployerDashboardComponent implements OnInit {
   totalApplications = 0;
   approvedStudents = 0;
   totalReviews = 0;
+  analytics: any = {};
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.loadDashboardData();
+    this.loadAnalytics();
   }
 
   onSidebarCollapseChanged(collapsed: boolean): void {
@@ -59,6 +61,23 @@ export class EmployerDashboardComponent implements OnInit {
           this.totalApplications = 0;
           this.approvedStudents = 0;
           this.totalReviews = 0;
+        }
+      });
+  }
+
+  private loadAnalytics(): void {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const companyId = user.company_id;
+    
+    if (!companyId) return;
+    
+    this.http.get(`http://localhost:8000/api/analytics/basic_stats.php?company_id=${companyId}`)
+      .subscribe({
+        next: (response: any) => {
+          this.analytics = response.stats || {};
+        },
+        error: (error) => {
+          console.error('Error loading analytics:', error);
         }
       });
   }

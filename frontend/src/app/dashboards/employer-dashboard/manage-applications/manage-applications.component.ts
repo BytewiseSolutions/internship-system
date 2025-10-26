@@ -48,12 +48,33 @@ export class ManageApplicationsComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           if (response.success) {
+            this.showNotification(`Application status updated to ${status}. Email notification sent to student.`);
             this.loadApplications();
           }
         },
         error: (error) => {
           console.error('Error updating application status:', error);
+          this.showNotification('Error updating application status', 'error');
         }
       });
+  }
+
+  private showNotification(message: string, type: string = 'success'): void {
+    // Simple notification - you can enhance this with a proper notification service
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px;
+      background: ${type === 'success' ? '#2e7d32' : '#d32f2f'};
+      color: white;
+      border-radius: 4px;
+      z-index: 1000;
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
   }
 }

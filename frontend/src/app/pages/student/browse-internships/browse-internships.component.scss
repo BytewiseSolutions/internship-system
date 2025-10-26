@@ -214,7 +214,7 @@
           gap: 0.5rem;
 
           .view-btn {
-            background: #4caf50;
+            background: #2e7d32;
             color: white;
             border: none;
             padding: 0.75rem 1rem;
@@ -230,7 +230,7 @@
             text-decoration: none;
 
             &:hover {
-              background: #45a049;
+              background: #1b5e20;
             }
 
             i {
@@ -239,7 +239,7 @@
           }
 
           .apply-btn {
-            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            background: #388e3c;
             color: white;
             border: none;
             padding: 0.75rem 1rem;
@@ -255,6 +255,7 @@
             text-decoration: none;
 
             &:hover {
+              background: #2e7d32;
               transform: translateY(-1px);
               box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
             }

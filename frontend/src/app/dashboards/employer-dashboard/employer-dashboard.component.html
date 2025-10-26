@@ -56,6 +56,17 @@
                 </div>
             </div>
 
+            <!-- Analytics Section -->
+            <div class="analytics-section" *ngIf="analytics.applications_by_status">
+                <h2>Application Analytics</h2>
+                <div class="status-cards">
+                    <div class="status-card" *ngFor="let status of analytics.applications_by_status">
+                        <div class="status-count">{{ status.count }}</div>
+                        <div class="status-label">{{ status.status }}</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="quick-actions">
                 <h2>Employer Actions</h2>
                 <div class="action-buttons">
@@ -71,7 +82,10 @@
                         <i class="fas fa-star"></i>
                         View Reviews
                     </button>
-
+                    <button class="action-btn analytics" (click)="loadAnalytics()">
+                        <i class="fas fa-chart-bar"></i>
+                        Refresh Analytics
+                    </button>
                 </div>
             </div>
         </div>

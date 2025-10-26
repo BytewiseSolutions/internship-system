@@ -29,7 +29,6 @@ foreach ($required_fields as $field) {
 }
 
 try {
-    // Debug: Log the received data
     error_log('Received data: ' . json_encode($input));
     
     $stmt = $conn->prepare("
@@ -65,7 +64,6 @@ try {
     $valid_statuses = ['OPEN', 'CLOSED', 'DRAFT'];
     $status = in_array($status_input, $valid_statuses) ? $status_input : 'OPEN';
     
-    // Debug: Log the processed values
     error_log('Work type: ' . $work_type . ', Status: ' . $status);
     
     $stmt->bind_param('issssssisssisssssss', 
