@@ -1,0 +1,101 @@
+<div class="internship-details-container">
+  <div class="loading" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Loading internship details...</p>
+  </div>
+
+  <div class="error" *ngIf="error">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+  </div>
+
+  <div class="internship-details" *ngIf="internship && !loading">
+    <div class="header">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <h1>{{ internship.title }}</h1>
+      <p class="company">{{ internship.name }}</p>
+    </div>
+
+    <div class="content">
+      <div class="main-info">
+        <div class="info-section">
+          <h3>Job Description</h3>
+          <p>{{ internship.description }}</p>
+        </div>
+
+        <div class="info-section" *ngIf="internship.requirements">
+          <h3>Requirements</h3>
+          <p>{{ internship.requirements }}</p>
+        </div>
+
+        <div class="info-section" *ngIf="internship.responsibilities">
+          <h3>Responsibilities</h3>
+          <p>{{ internship.responsibilities }}</p>
+        </div>
+
+        <div class="info-section" *ngIf="internship.required_skills">
+          <h3>Required Skills</h3>
+          <p>{{ internship.required_skills }}</p>
+        </div>
+
+        <div class="info-section" *ngIf="internship.preferred_qualifications">
+          <h3>Preferred Qualifications</h3>
+          <p>{{ internship.preferred_qualifications }}</p>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="details-card">
+          <h3>Internship Details</h3>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ internship.location }}</span>
+          </div>
+          <div class="detail-item" *ngIf="internship.work_type">
+            <i class="fas fa-laptop"></i>
+            <span>{{ internship.work_type }}</span>
+          </div>
+          <div class="detail-item" *ngIf="internship.duration_months">
+            <i class="fas fa-clock"></i>
+            <span>{{ internship.duration_months }} months</span>
+          </div>
+          <div class="detail-item" *ngIf="internship.salary_range">
+            <i class="fas fa-money-bill"></i>
+            <span>{{ internship.salary_range }}</span>
+          </div>
+          <div class="detail-item" *ngIf="internship.positions_available">
+            <i class="fas fa-users"></i>
+            <span>{{ internship.positions_available }} position(s)</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-calendar"></i>
+            <span>Deadline: {{ internship.deadline | date }}</span>
+          </div>
+        </div>
+
+        <div class="contact-card" *ngIf="internship.contact_person || internship.contact_email">
+          <h3>Contact Information</h3>
+          <div class="detail-item" *ngIf="internship.contact_person">
+            <i class="fas fa-user"></i>
+            <span>{{ internship.contact_person }}</span>
+          </div>
+          <div class="detail-item" *ngIf="internship.contact_email">
+            <i class="fas fa-envelope"></i>
+            <span>{{ internship.contact_email }}</span>
+          </div>
+          <div class="detail-item" *ngIf="internship.contact_phone">
+            <i class="fas fa-phone"></i>
+            <span>{{ internship.contact_phone }}</span>
+          </div>
+        </div>
+
+        <button class="apply-btn" (click)="applyNow()">
+          <i class="fas fa-paper-plane"></i>
+          Apply Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

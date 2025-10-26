@@ -39,15 +39,15 @@ try {
             i.title as internship_title,
             c.company_id,
             c.name as company_name,
-            i.deadline
+            i.application_deadline as deadline
         FROM applications a
         JOIN internships i ON a.internship_id = i.internship_id
         JOIN companies c ON i.company_id = c.company_id
         LEFT JOIN reviews r ON r.student_id = ? AND r.internship_id = i.internship_id
         WHERE a.student_id = ? 
-        AND (a.status = 'accepted' OR a.status = 'approved')
+        AND a.status = 'ACCEPTED'
         AND r.review_id IS NULL
-        ORDER BY i.deadline DESC
+        ORDER BY i.application_deadline DESC
     ");
     
     $stmt->bind_param('ii', $student_id, $student_id);

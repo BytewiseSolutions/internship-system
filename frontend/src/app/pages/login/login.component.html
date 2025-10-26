@@ -1,4 +1,7 @@
 <div class="auth-container">
+    <div class="back-to-home">
+        <a routerLink="/" class="home-link">← Back to Home</a>
+    </div>
     <h2>Login</h2>
 
     <form (ngSubmit)="login()">
@@ -23,6 +26,10 @@
     <p class="register-link">
         Don't have an account?
         <a href="javascript:void(0)" (click)="openModal()">Register here</a>
+    </p>
+    
+    <p class="home-link-bottom">
+        <a routerLink="/">← Back to Home</a>
     </p>
 </div>
 

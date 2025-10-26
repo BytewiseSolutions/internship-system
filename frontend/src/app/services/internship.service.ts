@@ -18,6 +18,7 @@ export interface AvailableInternship {
     id: number;
     title: string;
     name: string;
+    company_name: string;
     location: string;
     postedDate: string;
     deadline: string;

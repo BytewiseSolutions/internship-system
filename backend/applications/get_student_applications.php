@@ -47,7 +47,7 @@ try {
             i.title as internship_title,
             i.description as internship_description,
             i.location,
-            i.deadline,
+            i.application_deadline as deadline,
             c.name as company_name,
             c.email as company_email,
             c.address as company_address

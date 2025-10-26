@@ -44,6 +44,7 @@ import { MyInternshipComponent } from './pages/student/my-internship/my-internsh
 import { LogbookComponent } from './pages/student/logbook/logbook.component';
 import { ReviewsComponent } from './pages/student/reviews/reviews.component';
 import { ProfileComponent } from './pages/student/profile/profile.component';
+import { InternshipDetailsComponent } from './pages/internship-details/internship-details.component';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -69,6 +70,7 @@ export const routes: Routes = [
     { path: 'reviews', component: ReviewsComponent },
     { path: 'profile', component: ProfileComponent },
     { path: 'apply/:id', component: ApplyComponent },
+    { path: 'internship-details/:id', component: InternshipDetailsComponent },
 
     {
         path: '',

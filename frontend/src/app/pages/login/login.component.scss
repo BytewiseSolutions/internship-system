@@ -68,6 +68,21 @@
         }
     }
 
+    .back-to-home {
+        text-align: left;
+        margin-bottom: 20px;
+        
+        .home-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            
+            &:hover {
+                color: #4CAF50;
+            }
+        }
+    }
+
     .register-link {
         margin-top: 15px;
         font-size: 14px;
@@ -78,6 +93,20 @@
 
             &:hover {
                 text-decoration: underline;
+            }
+        }
+    }
+    
+    .home-link-bottom {
+        margin-top: 20px;
+        font-size: 14px;
+        
+        a {
+            color: #666;
+            text-decoration: none;
+            
+            &:hover {
+                color: #4CAF50;
             }
         }
     }

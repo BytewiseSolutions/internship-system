@@ -45,7 +45,7 @@ try {
             i.title as internship_title,
             i.description as internship_description,
             i.location,
-            i.deadline,
+            i.application_deadline as deadline,
             c.company_id,
             c.name as company_name,
             c.email as company_email,
@@ -53,7 +53,7 @@ try {
         FROM applications a
         JOIN internships i ON a.internship_id = i.internship_id
         JOIN companies c ON i.company_id = c.company_id
-        WHERE a.student_id = ? AND (a.status = 'accepted' OR a.status = 'approved')
+        WHERE a.student_id = ? AND a.status = 'ACCEPTED'
         ORDER BY a.applied_at DESC
         LIMIT 1
     ");

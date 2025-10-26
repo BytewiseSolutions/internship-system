@@ -47,13 +47,13 @@ if ($checkStudentResult->num_rows == 0) {
 $checkStudentStmt->close();
 
 // Check if internship deadline has passed
-$deadlineStmt = $conn->prepare("SELECT deadline FROM internships WHERE internship_id = ?");
+$deadlineStmt = $conn->prepare("SELECT application_deadline FROM internships WHERE internship_id = ?");
 $deadlineStmt->bind_param("i", $internship_id);
 $deadlineStmt->execute();
 $deadlineResult = $deadlineStmt->get_result();
 $internship = $deadlineResult->fetch_assoc();
 
-if ($internship && $internship['deadline'] < date('Y-m-d')) {
+if ($internship && $internship['application_deadline'] < date('Y-m-d')) {
     die(json_encode(['status' => 'error', 'message' => 'Cannot apply for expired internship']));
 }
 $deadlineStmt->close();

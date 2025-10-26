@@ -6,6 +6,21 @@
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    
+    .back-to-home {
+        text-align: left;
+        margin-bottom: 20px;
+        
+        .home-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            
+            &:hover {
+                color: #4CAF50;
+            }
+        }
+    }
 
     h2 {
         margin-bottom: 20px;
@@ -78,6 +93,20 @@
 
             &:hover {
                 text-decoration: underline;
+            }
+        }
+    }
+    
+    .home-link-bottom {
+        margin-top: 20px;
+        font-size: 14px;
+        
+        a {
+            color: #666;
+            text-decoration: none;
+            
+            &:hover {
+                color: #4CAF50;
             }
         }
     }

@@ -49,7 +49,10 @@
                     Deadline: {{ internship.deadline | date: 'dd MMM yyyy' }}
                 </p>
                 <p class="description">{{ internship.description }}</p>
-                <button class="apply-btn" (click)="applyNow(internship.id)">Apply Now</button>
+                <div class="card-actions">
+                    <button class="view-btn" [routerLink]="['/internship-details', internship.id]">View Details</button>
+                    <button class="apply-btn" (click)="applyNow(internship.id)">Apply Now</button>
+                </div>
             </div>
         </div>
     </section>

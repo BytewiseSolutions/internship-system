@@ -1,4 +1,7 @@
 <div class="auth-container">
+    <div class="back-to-home">
+        <a routerLink="/" class="home-link">← Back to Home</a>
+    </div>
     <h2>Student Registration</h2>
 
     <div *ngIf="showMessage" [ngClass]="{ 'success-msg': isSuccess, 'error-msg': !isSuccess }">
@@ -31,5 +34,9 @@
     <p class="register-link">
         Already have an account?
         <a routerLink="/login">Login here</a>
+    </p>
+    
+    <p class="home-link-bottom">
+        <a routerLink="/">← Back to Home</a>
     </p>
 </div>

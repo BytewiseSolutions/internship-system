@@ -3,11 +3,14 @@ require_once __DIR__ . '/../cors.php';
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../utils.php';
 
-$sql = "SELECT i.internship_id as id, i.title, c.name AS company_name, i.location, DATE(i.created_at) as postedDate, i.deadline, i.description, 'General' as industry
+$sql = "SELECT i.internship_id as id, i.title, c.name, i.location, DATE(i.created_at) as postedDate, i.application_deadline as deadline, i.description, 'General' as industry
         FROM internships i
         JOIN companies c ON i.company_id = c.company_id
-        WHERE i.status = 'OPEN' AND i.deadline >= CURDATE()
+        WHERE i.status = 'OPEN' AND i.application_deadline >= CURDATE()
         ORDER BY i.created_at DESC";
+
+// Debug: Log the query
+error_log('Query: ' . $sql);
 
 $result = $conn->query($sql);
 
@@ -17,6 +20,10 @@ if ($result && $result->num_rows > 0) {
         $internships[] = $row;
     }
 }
+
+// Debug: Log the results
+error_log('Found internships: ' . count($internships));
+error_log('Internships data: ' . json_encode($internships));
 
 echo json_encode($internships);
 

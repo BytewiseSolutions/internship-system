@@ -20,8 +20,21 @@ export class ManageInternshipsComponent implements OnInit {
   currentInternship: any = {
     title: '',
     description: '',
+    requirements: '',
+    responsibilities: '',
     location: '',
-    deadline: '',
+    work_type: 'ON_SITE',
+    duration_months: 3,
+    start_date: '',
+    end_date: '',
+    application_deadline: '',
+    salary_range: '',
+    positions_available: 1,
+    required_skills: '',
+    preferred_qualifications: '',
+    contact_person: '',
+    contact_email: '',
+    contact_phone: '',
     status: 'OPEN'
   };
 
@@ -53,8 +66,21 @@ export class ManageInternshipsComponent implements OnInit {
     this.currentInternship = {
       title: '',
       description: '',
+      requirements: '',
+      responsibilities: '',
       location: '',
-      deadline: '',
+      work_type: 'ON_SITE',
+      duration_months: 3,
+      start_date: '',
+      end_date: '',
+      application_deadline: '',
+      salary_range: '',
+      positions_available: 1,
+      required_skills: '',
+      preferred_qualifications: '',
+      contact_person: '',
+      contact_email: '',
+      contact_phone: '',
       status: 'OPEN'
     };
     this.showModal = true;
