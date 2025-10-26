@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/my-internship"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Reviews</ion-title>
   </ion-toolbar>
@@ -54,7 +54,7 @@
     <ng-template>
       <ion-header>
         <ion-toolbar color="primary">
-          <ion-title>Add Review</ion-title>
+          <ion-title>{{ isEditing ? 'Edit Review' : 'Add Review' }}</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="closeModal()">
               <ion-icon name="close-outline"></ion-icon>
@@ -65,15 +65,20 @@
       
       <ion-content>
         <div class="modal-content">
-          <ion-item>
-            <ion-label position="stacked">Select Internship *</ion-label>
+          <ion-item *ngIf="!isEditing">
             <ion-select 
+              label="Select Internship *" 
+              label-placement="stacked"
               [(ngModel)]="selectedInternshipId" 
-              placeholder="Choose internship to review">
+              placeholder="Choose internship to review"
+              *ngIf="completedInternships.length > 0">
               <ion-select-option *ngFor="let internship of completedInternships" [value]="internship.internship_id">
                 {{ internship.internship_title }} - {{ internship.company_name }}
               </ion-select-option>
             </ion-select>
+            <p *ngIf="completedInternships.length === 0" style="color: #666; font-style: italic; margin-top: 10px;">
+              No completed internships available for review.
+            </p>
           </ion-item>
           
           <ion-item>
@@ -89,8 +94,9 @@
           </ion-item>
           
           <ion-item>
-            <ion-label position="stacked">Review *</ion-label>
             <ion-textarea 
+              label="Review *" 
+              label-placement="stacked"
               [(ngModel)]="reviewText" 
               placeholder="Share your internship experience..."
               rows="4">

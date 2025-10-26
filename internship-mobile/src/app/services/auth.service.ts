@@ -66,4 +66,19 @@ export class AuthService {
   getCurrentUser() {
     return this.currentUserSubject.value;
   }
+
+  updateProfile(userData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update_profile.php`, userData).pipe(
+      tap((response: any) => {
+        if (response.success) {
+          const currentUser = this.getCurrentUser();
+          if (currentUser) {
+            currentUser.name = userData.name;
+            currentUser.email = userData.email;
+            this.setCurrentUser(currentUser);
+          }
+        }
+      })
+    );
+  }
 }

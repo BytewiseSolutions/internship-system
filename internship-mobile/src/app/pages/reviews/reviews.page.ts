@@ -67,6 +67,8 @@ export class ReviewsPage implements OnInit {
     const user = this.authService.getCurrentUser();
     const userId = user?.id;
     
+    console.log('Loading completed internships for user ID:', userId);
+    
     if (userId) {
       this.reviewService.getCompletedInternships(userId).subscribe({
         next: (response) => {
@@ -81,6 +83,10 @@ export class ReviewsPage implements OnInit {
   }
 
   addReview() {
+    if (this.completedInternships.length === 0) {
+      this.showToastMessage('No completed internships available for review. You need to have accepted applications first.', 'warning');
+      return;
+    }
     this.resetForm();
     this.isEditing = false;
     this.isModalOpen = true;

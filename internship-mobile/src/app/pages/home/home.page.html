@@ -18,7 +18,7 @@
         <ion-col size="6">
           <ion-card class="action-card" (click)="navigateToInternships()">
             <ion-card-content>
-              <ion-icon name="search-outline" class="action-icon"></ion-icon>
+              <ion-icon name="list-outline" class="action-icon"></ion-icon>
               <h3>Browse Internships</h3>
               <p>Find opportunities</p>
             </ion-card-content>
@@ -50,7 +50,7 @@
         <ion-col size="6">
           <ion-card class="action-card" (click)="navigateToMyInternship()">
             <ion-card-content>
-              <ion-icon name="briefcase-outline" class="action-icon"></ion-icon>
+              <ion-icon name="business-outline" class="action-icon"></ion-icon>
               <h3>My Internship</h3>
               <p>Current placement</p>
             </ion-card-content>
@@ -70,16 +70,16 @@
         <ion-grid>
           <ion-row>
             <ion-col size="4" class="stat-item">
-              <h3>0</h3>
+              <h3>{{ stats.applications }}</h3>
               <p>Applications</p>
             </ion-col>
             <ion-col size="4" class="stat-item">
-              <h3>0</h3>
-              <p>Interviews</p>
+              <h3>{{ stats.accepted }}</h3>
+              <p>Accepted</p>
             </ion-col>
             <ion-col size="4" class="stat-item">
-              <h3>0</h3>
-              <p>Offers</p>
+              <h3>{{ stats.pending }}</h3>
+              <p>Pending</p>
             </ion-col>
           </ion-row>
         </ion-grid>

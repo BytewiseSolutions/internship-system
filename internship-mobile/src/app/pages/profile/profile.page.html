@@ -58,7 +58,7 @@
 
   <!-- Actions -->
   <div class="profile-actions">
-    <ion-button expand="block" fill="outline" color="primary">
+    <ion-button expand="block" fill="outline" color="primary" (click)="openEditModal()">
       Edit Profile
     </ion-button>
     
@@ -67,4 +67,60 @@
       Logout
     </ion-button>
   </div>
+
+  <!-- Edit Profile Modal -->
+  <ion-modal [isOpen]="isEditModalOpen" (didDismiss)="closeEditModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Edit Profile</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeEditModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content>
+        <div class="modal-content" style="padding: 1rem;">
+          <ion-item>
+            <ion-input 
+              label="Full Name *" 
+              label-placement="stacked"
+              [(ngModel)]="editForm.name" 
+              placeholder="Enter your full name">
+            </ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-input 
+              label="Email *" 
+              label-placement="stacked"
+              type="email"
+              [(ngModel)]="editForm.email" 
+              placeholder="Enter your email">
+            </ion-input>
+          </ion-item>
+          
+          <div style="margin-top: 2rem;">
+            <ion-button expand="block" color="primary" (click)="saveProfile()">
+              Save Changes
+            </ion-button>
+            <ion-button expand="block" fill="outline" (click)="closeEditModal()">
+              Cancel
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    (didDismiss)="showToast = false">
+  </ion-toast>
 </ion-content>

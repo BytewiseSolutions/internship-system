@@ -36,6 +36,8 @@
       <ion-item class="input-item">
         <ion-icon name="school-outline" slot="start"></ion-icon>
         <ion-select 
+          label="School"
+          label-placement="floating"
           placeholder="Select School" 
           [(ngModel)]="schoolId"
           (ionChange)="onSchoolChange()"
@@ -49,6 +51,8 @@
       <ion-item class="input-item">
         <ion-icon name="book-outline" slot="start"></ion-icon>
         <ion-select 
+          label="Course"
+          label-placement="floating"
           placeholder="Select Course" 
           [(ngModel)]="courseId"
           [disabled]="!schoolId"
