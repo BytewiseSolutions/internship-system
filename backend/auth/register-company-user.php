@@ -20,14 +20,8 @@ if (!$name || !$email || !$password) {
 
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-$stmt = $conn->prepare("INSERT INTO users (name, email, contact, password, role, status) VALUES (?, ?, ?, ?, 'COMPANY', 'PENDING')");
-if (!$stmt) {
-    send_json(["message" => "Failed to prepare query: " . $conn->error], 500);
-    exit;
-}
-
 // Check if email already exists
-$checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+$checkStmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
 $checkStmt->bind_param("s", $email);
 $checkStmt->execute();
 $checkResult = $checkStmt->get_result();
@@ -37,7 +31,13 @@ if ($checkResult->num_rows > 0) {
 }
 $checkStmt->close();
 
-$stmt->bind_param("ssss", $name, $email, $contact, $hashedPassword);
+$stmt = $conn->prepare("INSERT INTO users (name, email, password, role, status) VALUES (?, ?, ?, 'COMPANY', 'ACTIVE')");
+if (!$stmt) {
+    send_json(["message" => "Failed to prepare query: " . $conn->error], 500);
+    exit;
+}
+
+$stmt->bind_param("sss", $name, $email, $hashedPassword);
 
 if (!$stmt->execute()) {
     send_json(["message" => "User registration failed: " . $stmt->error], 500);

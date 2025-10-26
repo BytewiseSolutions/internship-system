@@ -33,7 +33,16 @@ export class EmployerDashboardComponent implements OnInit {
 
   private loadDashboardData(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const companyId = user.company_id || 1;
+    const companyId = user.company_id;
+    
+    if (!companyId) {
+      // New employer with no company_id - show zeros
+      this.totalInternships = 0;
+      this.totalApplications = 0;
+      this.approvedStudents = 0;
+      this.totalReviews = 0;
+      return;
+    }
     
     this.http.get(`${environment.apiUrl}/company/company_stats.php?company_id=${companyId}`)
       .subscribe({
@@ -45,6 +54,11 @@ export class EmployerDashboardComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error loading company stats:', error);
+          // Show zeros on error
+          this.totalInternships = 0;
+          this.totalApplications = 0;
+          this.approvedStudents = 0;
+          this.totalReviews = 0;
         }
       });
   }

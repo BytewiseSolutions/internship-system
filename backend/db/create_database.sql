@@ -1,8 +1,6 @@
--- Create database
 CREATE DATABASE IF NOT EXISTS internship_system;
 USE internship_system;
 
--- Users table
 CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -15,7 +13,6 @@ CREATE TABLE IF NOT EXISTS users (
     company_id INT DEFAULT NULL
 );
 
--- Schools table
 CREATE TABLE IF NOT EXISTS schools (
     school_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
@@ -23,7 +20,6 @@ CREATE TABLE IF NOT EXISTS schools (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Courses table
 CREATE TABLE IF NOT EXISTS courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
     school_id INT NOT NULL,
@@ -31,7 +27,6 @@ CREATE TABLE IF NOT EXISTS courses (
     FOREIGN KEY (school_id) REFERENCES schools(school_id) ON DELETE CASCADE
 );
 
--- Students table
 CREATE TABLE IF NOT EXISTS students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -42,7 +37,6 @@ CREATE TABLE IF NOT EXISTS students (
     FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE SET NULL
 );
 
--- Companies table
 CREATE TABLE IF NOT EXISTS companies (
     company_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
@@ -54,20 +48,31 @@ CREATE TABLE IF NOT EXISTS companies (
     FOREIGN KEY (created_by) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
--- Internships table
 CREATE TABLE IF NOT EXISTS internships (
     internship_id INT AUTO_INCREMENT PRIMARY KEY,
     company_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
+    requirements TEXT,
+    responsibilities TEXT,
     location VARCHAR(255) NOT NULL,
+    work_type ENUM('REMOTE','ON_SITE','HYBRID') DEFAULT 'ON_SITE',
+    duration_months INT DEFAULT 3,
+    start_date DATE,
     deadline DATE NOT NULL,
-    status ENUM('OPEN','CLOSED') DEFAULT 'OPEN',
+    salary_range VARCHAR(100),
+    positions_available INT DEFAULT 1,
+    required_skills TEXT,
+    preferred_qualifications TEXT,
+    contact_person VARCHAR(100),
+    contact_email VARCHAR(100),
+    contact_phone VARCHAR(20),
+    status ENUM('OPEN','CLOSED','DRAFT') DEFAULT 'OPEN',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
 );
 
--- Applications table
 CREATE TABLE IF NOT EXISTS applications (
     application_id INT AUTO_INCREMENT PRIMARY KEY,
     internship_id INT NOT NULL,
@@ -81,7 +86,6 @@ CREATE TABLE IF NOT EXISTS applications (
     FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
 );
 
--- Logbook table
 CREATE TABLE IF NOT EXISTS logbook (
     logbook_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
@@ -95,7 +99,6 @@ CREATE TABLE IF NOT EXISTS logbook (
     FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
 );
 
--- Reviews table
 CREATE TABLE IF NOT EXISTS reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
@@ -106,17 +109,24 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
     FOREIGN KEY (internship_id) REFERENCES internships(internship_id) ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS lecturer_courses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    lecturer_id INT NOT NULL,
+    course_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (lecturer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,
+    UNIQUE KEY unique_assignment (lecturer_id, course_id)
+);
 
--- Insert sample data
-INSERT INTO schools (name, address) VALUES 
-('National University of Lesotho', 'Roma, Lesotho'),
-('Limkokwing University', 'Maseru, Lesotho');
+CREATE TABLE notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    message TEXT NOT NULL,
+    is_read TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
 
-INSERT INTO courses (school_id, course_name) VALUES 
-(1, 'Computer Science'),
-(1, 'Information Technology'),
-(2, 'Software Engineering');
-
--- Insert sample admin user (password: admin123)
 INSERT INTO users (name, email, password, role, school_id) VALUES 
 ('System Admin', 'admin@system.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'SYSTEM_ADMIN', NULL);

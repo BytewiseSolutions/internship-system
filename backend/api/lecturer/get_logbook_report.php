@@ -18,14 +18,21 @@ $result = $stmt->get_result();
 
 $logbooks = [];
 while ($row = $result->fetch_assoc()) {
+    // Get student name
+    $nameStmt = $conn->prepare("SELECT u.name FROM users u JOIN students s ON u.user_id = s.user_id WHERE s.student_id = ?");
+    $nameStmt->bind_param("i", $row['student_id']);
+    $nameStmt->execute();
+    $nameResult = $nameStmt->get_result();
+    $studentName = $nameResult->fetch_assoc()['name'] ?? 'Unknown Student';
+    
     $logbooks[] = [
-        'student_name' => 'Student ' . ($row['student_id'] ?? 'Unknown'),
+        'student_name' => $studentName,
         'student_id' => $row['student_id'] ?? 0,
         'course_name' => 'Course',
         'week_number' => $row['week_number'] ?? 0,
-        'activities' => $row['activities'] ?? '',
-        'skills_learned' => $row['skills_learned'] ?? '',
-        'challenges' => $row['challenges'] ?? '',
+        'activities' => $row['activities_completed'] ?? 'No activities recorded',
+        'skills_learned' => $row['skills_learned'] ?? 'No skills recorded',
+        'challenges' => $row['challenges_faced'] ?? 'No challenges recorded',
         'created_at' => $row['created_at'] ?? ''
     ];
 }

@@ -18,24 +18,16 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./register-company.component.scss']
 })
 export class RegisterCompanyComponent {
-  step = 1;
   loading = false;
 
-  userData = {
-    name: '',
-    email: '',
-    contact: '',
+  registrationData = {
+    company_name: '',
+    company_email: '',
+    company_address: '',
+    employer_name: '',
+    employer_email: '',
     password: ''
   };
-
-  companyData = {
-    name: '',
-    email: '',
-    industry: '',
-    status: 'ACTIVE'
-  };
-
-  private baseUrl = `${environment.apiUrl}/backend`;
 
   constructor(
     private http: HttpClient,
@@ -43,53 +35,24 @@ export class RegisterCompanyComponent {
     private toast: ToastService
   ) { }
 
-  registerUser() {
-    if (!this.userData.name || !this.userData.email || !this.userData.password) {
+  registerCompany() {
+    if (!this.registrationData.company_name || !this.registrationData.company_email || 
+        !this.registrationData.company_address || !this.registrationData.employer_name || 
+        !this.registrationData.employer_email || !this.registrationData.password) {
       this.toast.show('All fields are required!', 'error');
       return;
     }
 
     this.loading = true;
-    this.http.post(`${this.baseUrl}/auth/register-company-user.php`, this.userData, { responseType: 'json' })
+    this.http.post(`${environment.apiUrl}/auth/register-company.php`, this.registrationData)
       .subscribe({
         next: (res: any) => {
-          this.toast.show(res.message || 'Account created. Now enter company details.', 'success');
+          this.toast.show('Company and employer registered successfully!', 'success');
           this.loading = false;
-
-          localStorage.setItem('newCompanyUserId', res.user_id);
-
-          this.step = 2;
-        },
-        error: (err) => {
-          const errorMsg = err.error?.message || 'User registration failed. Please try again.';
-          this.toast.show(errorMsg, 'error');
-          this.loading = false;
-        }
-      });
-  }
-  registerCompany() {
-    const userId = localStorage.getItem('newCompanyUserId');
-    if (!userId) {
-      this.toast.show('User not found. Please restart registration.', 'error');
-      return;
-    }
-
-    this.loading = true;
-    const payload = { ...this.companyData, user_id: userId };
-
-    this.http.post(`${this.baseUrl}/auth/register-company-details.php`, payload, { responseType: 'json' })
-      .subscribe({
-        next: (res: any) => {
-          this.toast.show(res.message || 'Company registered successfully.', 'success');
-          this.loading = false;
-          localStorage.removeItem('newCompanyUserId');
-
-          this.http.post(`${this.baseUrl}/auth/notify-admin.php`, { role: 'COMPANY' }).subscribe();
-
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          const errorMsg = err.error?.message || 'Company registration failed.';
+          const errorMsg = err.error?.message || 'Registration failed. Please try again.';
           this.toast.show(errorMsg, 'error');
           this.loading = false;
         }
