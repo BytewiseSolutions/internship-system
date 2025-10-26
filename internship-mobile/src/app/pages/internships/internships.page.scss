@@ -1,0 +1,70 @@
+.internships-content {
+  padding: 1rem;
+}
+
+.filters-section {
+  margin-bottom: 1rem;
+}
+
+.filter-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.filter-item {
+  flex: 1;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.loading-message, .no-internships, .no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.internship-card {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.internship-card ion-card-title {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.company-info, .location-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.company-info ion-icon, .location-info ion-icon {
+  margin-right: 0.5rem;
+  color: #2e7d32;
+}
+
+.work-type {
+  margin: 0.5rem 0;
+}
+
+.description {
+  color: #666;
+  line-height: 1.4;
+  margin: 1rem 0;
+}
+
+ion-button {
+  --border-radius: 8px;
+  margin-top: 1rem;
+}

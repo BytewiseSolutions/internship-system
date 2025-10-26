@@ -1,0 +1,97 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>
+      Internships
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Internships</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="internships-content">
+    <!-- Search and Filters -->
+    <div class="filters-section">
+      <ion-searchbar 
+        [(ngModel)]="searchTerm"
+        (ionInput)="onSearchChange($event)"
+        placeholder="Search internships..."
+        show-clear-button="focus">
+      </ion-searchbar>
+      
+      <div class="filter-row">
+        <ion-item class="filter-item">
+          <ion-select 
+            [(ngModel)]="locationFilter"
+            (ionChange)="onLocationChange()"
+            placeholder="Location"
+            interface="popover">
+            <ion-select-option value="">All Locations</ion-select-option>
+            <ion-select-option *ngFor="let location of getUniqueLocations()" [value]="location">
+              {{ location }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <ion-item class="filter-item">
+          <ion-select 
+            [(ngModel)]="workTypeFilter"
+            (ionChange)="onWorkTypeChange()"
+            placeholder="Work Type"
+            interface="popover">
+            <ion-select-option value="">All Types</ion-select-option>
+            <ion-select-option *ngFor="let type of getWorkTypes()" [value]="type">
+              {{ type.replace('_', ' ') }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-message">
+      <p>Loading internships...</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredInternships.length === 0 && internships.length > 0" class="no-results">
+      <p>No internships match your search criteria.</p>
+    </div>
+
+    <div *ngIf="!isLoading && internships.length === 0" class="no-internships">
+      <p>No internships available at the moment.</p>
+    </div>
+
+    <ion-card *ngFor="let internship of filteredInternships" class="internship-card">
+      <ion-card-header>
+        <ion-card-title>{{ internship.title }}</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <div class="company-info">
+          <ion-icon name="business-outline"></ion-icon>
+          <span>{{ internship.name }}</span>
+        </div>
+        
+        <div class="location-info">
+          <ion-icon name="location-outline"></ion-icon>
+          <span>{{ internship.location }}</span>
+        </div>
+        
+        <div class="work-type" *ngIf="internship.work_type">
+          <ion-chip color="primary">
+            <ion-label>{{ internship.work_type }}</ion-label>
+          </ion-chip>
+        </div>
+        
+        <p class="description">{{ internship.description | slice:0:100 }}...</p>
+        
+        <ion-button expand="block" color="primary" (click)="viewDetails(internship)">
+          View Details
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

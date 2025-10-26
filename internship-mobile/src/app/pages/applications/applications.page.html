@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>
+      My Applications
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">My Applications</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="applications-content">
+    <div *ngIf="isLoading" class="loading-message">
+      <p>Loading applications...</p>
+    </div>
+
+    <div *ngIf="!isLoading && applications.length === 0" class="no-applications">
+      <p>You haven't applied to any internships yet.</p>
+    </div>
+
+    <ion-card *ngFor="let application of applications" class="application-card">
+      <ion-card-header>
+        <ion-card-title>{{ application.internship_title || application.title }}</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <div class="company-name">{{ application.company_name || application.name }}</div>
+        <div class="application-status">
+          <ion-chip [color]="getStatusColor(application.status)">
+            <ion-label>{{ application.status }}</ion-label>
+          </ion-chip>
+        </div>
+        <div class="applied-date">Applied: {{ application.applied_at | date }}</div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

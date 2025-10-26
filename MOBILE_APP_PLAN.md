@@ -83,7 +83,6 @@ export class InternshipCardComponent {
 
 ### **Tab-Based Navigation:**
 ```typescript
-// app-routing.module.ts
 const routes: Routes = [
   {
     path: '',
@@ -123,7 +122,6 @@ const routes: Routes = [
 
 ### **Native Features Integration:**
 ```typescript
-// Camera for document upload
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Injectable()
@@ -140,7 +138,6 @@ export class DocumentService {
   }
 }
 
-// Push notifications
 import { PushNotifications } from '@capacitor/push-notifications';
 
 @Injectable()

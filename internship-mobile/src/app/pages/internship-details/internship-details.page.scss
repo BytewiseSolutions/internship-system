@@ -1,0 +1,85 @@
+.loading-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.details-content {
+  padding: 1rem;
+}
+
+.header-card {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-card ion-card-title {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.company-info, .location-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.company-info ion-icon, .location-info ion-icon {
+  margin-right: 0.5rem;
+  color: #2e7d32;
+}
+
+.work-type {
+  margin-top: 0.5rem;
+}
+
+.details-card, .info-card {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.details-card ion-card-title, .info-card ion-card-title {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.details-card p {
+  line-height: 1.5;
+  color: #333;
+}
+
+.info-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 0.5rem;
+}
+
+.info-item ion-icon {
+  color: #2e7d32;
+  margin-right: 1rem;
+}
+
+.info-item h3 {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.info-item p {
+  color: #666;
+  margin: 0.25rem 0 0 0;
+}
+
+.apply-section {
+  padding: 1rem 0;
+  margin-top: 1rem;
+}
+
+.apply-section ion-button {
+  --border-radius: 12px;
+  font-weight: 600;
+}

@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: PUT, OPTIONS');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Content-Type: application/json');
 
@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once '../config.php';
 require_once '../utils.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     send_json(['success' => false, 'message' => 'Method not allowed'], 405);
 }
 
@@ -19,12 +19,13 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 $logbook_id = $input['logbook_id'] ?? null;
 $user_id = $input['user_id'] ?? null;
+$week_number = $input['week_number'] ?? null;
 $week_ending = $input['week_ending'] ?? null;
 $activities_completed = $input['activities_completed'] ?? '';
 $skills_learned = $input['skills_learned'] ?? '';
 $challenges_faced = $input['challenges_faced'] ?? '';
 
-if (!$logbook_id || !$user_id || !$week_ending) {
+if (!$logbook_id || !$user_id || !$week_number || !$week_ending) {
     send_json(['success' => false, 'message' => 'Required fields missing'], 400);
 }
 
@@ -46,20 +47,20 @@ try {
     $stmt = $conn->prepare("SELECT logbook_id FROM logbook WHERE logbook_id = ? AND student_id = ?");
     $stmt->bind_param('ii', $logbook_id, $student_id);
     $stmt->execute();
-    $verify = $stmt->get_result();
+    $result = $stmt->get_result();
     
-    if ($verify->num_rows === 0) {
-        send_json(['success' => false, 'message' => 'Logbook entry not found or access denied'], 403);
+    if ($result->num_rows === 0) {
+        send_json(['success' => false, 'message' => 'Logbook entry not found or access denied'], 404);
     }
     
     // Update logbook entry
     $stmt = $conn->prepare("
         UPDATE logbook 
-        SET week_ending = ?, activities_completed = ?, skills_learned = ?, challenges_faced = ?
+        SET week_number = ?, week_ending = ?, activities_completed = ?, skills_learned = ?, challenges_faced = ?
         WHERE logbook_id = ? AND student_id = ?
     ");
     
-    $stmt->bind_param('ssssii', $week_ending, $activities_completed, $skills_learned, $challenges_faced, $logbook_id, $student_id);
+    $stmt->bind_param('issssii', $week_number, $week_ending, $activities_completed, $skills_learned, $challenges_faced, $logbook_id, $student_id);
     
     if ($stmt->execute()) {
         send_json(['success' => true, 'message' => 'Logbook entry updated successfully']);

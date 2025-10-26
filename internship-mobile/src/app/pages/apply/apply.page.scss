@@ -1,0 +1,78 @@
+.apply-content {
+  padding: 1rem;
+}
+
+.internship-info {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.internship-info ion-card-title {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.upload-card {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upload-card ion-card-title {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.upload-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.upload-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.upload-section ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 0.5rem;
+}
+
+.upload-section ion-icon {
+  color: #2e7d32;
+}
+
+.upload-section h3 {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.upload-section p {
+  color: #666;
+  margin: 0.25rem 0 0 0;
+  font-size: 0.9rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-section ion-button {
+  --border-radius: 8px;
+  --border-color: #2e7d32;
+  --color: #2e7d32;
+}
+
+.submit-section {
+  padding: 1rem 0;
+  margin-top: 1rem;
+}
+
+.submit-section ion-button {
+  --border-radius: 12px;
+  font-weight: 600;
+}

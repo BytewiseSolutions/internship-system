@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Welcome, {{ studentName }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="home-content">
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <h2>Your Internship Journey</h2>
+    <p>Find and apply to internships that match your career goals</p>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="actions-section">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-card class="action-card" (click)="navigateToInternships()">
+            <ion-card-content>
+              <ion-icon name="list-outline" class="action-icon"></ion-icon>
+              <h3>Browse Internships</h3>
+              <p>Find opportunities</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        
+        <ion-col size="6">
+          <ion-card class="action-card" (click)="navigateToApplications()">
+            <ion-card-content>
+              <ion-icon name="document-text-outline" class="action-icon"></ion-icon>
+              <h3>My Applications</h3>
+              <p>Track progress</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-col size="6">
+          <ion-card class="action-card" (click)="navigateToProfile()">
+            <ion-card-content>
+              <ion-icon name="person-outline" class="action-icon"></ion-icon>
+              <h3>My Profile</h3>
+              <p>Update details</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        
+        <ion-col size="6">
+          <ion-card class="action-card" (click)="navigateToMyInternship()">
+            <ion-card-content>
+              <ion-icon name="business-outline" class="action-icon"></ion-icon>
+              <h3>My Internship</h3>
+              <p>Current placement</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="stats-section">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Quick Stats</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6" class="stat-item">
+              <h3>{{ stats.applications }}</h3>
+              <p>Total Applications</p>
+            </ion-col>
+            <ion-col size="6" class="stat-item">
+              <h3>{{ stats.accepted }}</h3>
+              <p>Accepted</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6" class="stat-item">
+              <h3>{{ stats.pending }}</h3>
+              <p>Pending</p>
+            </ion-col>
+            <ion-col size="6" class="stat-item">
+              <h3>{{ stats.rejected }}</h3>
+              <p>Rejected</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>

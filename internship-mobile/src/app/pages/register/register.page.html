@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/landing"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create Account</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="register-content">
+  <div class="register-container">
+    <div class="register-form">
+      <h1>Join Us</h1>
+      <p>Create your student account to start finding internships</p>
+
+      <ion-item class="input-item">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-input 
+          type="text" 
+          placeholder="Full Name" 
+          [(ngModel)]="name"
+          fill="outline">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-input 
+          type="email" 
+          placeholder="Email" 
+          [(ngModel)]="email"
+          fill="outline">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-icon name="school-outline" slot="start"></ion-icon>
+        <ion-select 
+          label="School"
+          label-placement="floating"
+          placeholder="Select School" 
+          [(ngModel)]="schoolId"
+          (ionChange)="onSchoolChange()"
+          fill="outline">
+          <ion-select-option *ngFor="let school of schools" [value]="school.school_id">
+            {{ school.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-icon name="book-outline" slot="start"></ion-icon>
+        <ion-select 
+          label="Course"
+          label-placement="floating"
+          placeholder="Select Course" 
+          [(ngModel)]="courseId"
+          [disabled]="!schoolId"
+          fill="outline">
+          <ion-select-option *ngFor="let course of courses" [value]="course.course_id">
+            {{ course.course_name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-input 
+          type="password" 
+          placeholder="Password" 
+          [(ngModel)]="password"
+          fill="outline">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-input 
+          type="password" 
+          placeholder="Confirm Password" 
+          [(ngModel)]="confirmPassword"
+          fill="outline">
+        </ion-input>
+      </ion-item>
+
+      <ion-button expand="block" size="large" (click)="register()" class="register-button" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading">Creating Account...</span>
+      </ion-button>
+
+      <div class="login-link">
+        <p>Already have an account? 
+          <span (click)="goToLogin()" class="link">Sign in</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

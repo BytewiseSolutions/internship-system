@@ -1,0 +1,76 @@
+<ion-content class="landing-content">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Find Your Perfect Internship</h1>
+      <p class="hero-subtitle">Connect with top companies and kickstart your career journey</p>
+      
+      <div class="cta-buttons">
+        <ion-button expand="block" size="large" (click)="navigateToLogin()" class="login-btn">
+          Sign In
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+        <ion-button expand="block" size="large" fill="outline" (click)="navigateToRegister()" class="register-btn">
+          Create Account
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section">
+    <h2 class="section-title">Why Choose Our Platform?</h2>
+    
+    <div class="features-grid">
+      <ion-card class="feature-card">
+        <ion-card-content>
+          <ion-icon name="briefcase-outline" class="feature-icon"></ion-icon>
+          <h3>Quality Internships</h3>
+          <p>Access to verified internship opportunities from leading companies</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="feature-card">
+        <ion-card-content>
+          <ion-icon name="people-outline" class="feature-icon"></ion-icon>
+          <h3>Easy Application</h3>
+          <p>Streamlined application process with document management</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="feature-card">
+        <ion-card-content>
+          <ion-icon name="trending-up-outline" class="feature-icon"></ion-icon>
+          <h3>Track Progress</h3>
+          <p>Monitor your applications and internship progress in real-time</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="feature-card">
+        <ion-card-content>
+          <ion-icon name="checkmark-circle-outline" class="feature-icon"></ion-icon>
+          <h3>Verified Companies</h3>
+          <p>All partner companies are verified and trusted employers</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <h3>500+</h3>
+        <p>Active Internships</p>
+      </div>
+      <div class="stat-item">
+        <h3>200+</h3>
+        <p>Partner Companies</p>
+      </div>
+      <div class="stat-item">
+        <h3>95%</h3>
+        <p>Success Rate</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

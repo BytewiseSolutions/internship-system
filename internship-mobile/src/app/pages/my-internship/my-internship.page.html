@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Internship</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="internship-content">
+    <div *ngIf="isLoading" class="loading-message">
+      <p>Loading your internship...</p>
+    </div>
+
+    <div *ngIf="!isLoading && !internship" class="no-internship">
+      <p>You don't have an active internship yet.</p>
+      <p>Apply for internships to get started!</p>
+    </div>
+
+    <div *ngIf="!isLoading && internship" class="active-internship">
+      <!-- Internship Details -->
+      <ion-card class="internship-card">
+        <ion-card-header>
+          <ion-card-title>{{ internship.internship_title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="company-info">
+            <ion-icon name="business-outline"></ion-icon>
+            <span>{{ internship.company_name }}</span>
+          </div>
+          <div class="location-info">
+            <ion-icon name="location-outline"></ion-icon>
+            <span>{{ internship.location }}</span>
+          </div>
+          <div class="status-info">
+            <ion-chip color="success">
+              <ion-label>{{ internship.status }}</ion-label>
+            </ion-chip>
+          </div>
+          <div class="applied-date">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span>Started: {{ internship.applied_at | date }}</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Action Buttons -->
+      <div class="actions-section">
+        <ion-card class="action-card" (click)="openLogbook()">
+          <ion-card-content>
+            <ion-icon name="book-outline" class="action-icon"></ion-icon>
+            <h3>Logbook</h3>
+            <p>Record your weekly activities and progress</p>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="action-card" (click)="openReviews()">
+          <ion-card-content>
+            <ion-icon name="star-outline" class="action-icon"></ion-icon>
+            <h3>Reviews</h3>
+            <p>Rate and review your internship experience</p>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Contact Information -->
+      <ion-card class="contact-card" *ngIf="internship.company_email">
+        <ion-card-header>
+          <ion-card-title>Contact Information</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Company Email:</strong> {{ internship.company_email }}</p>
+          <p *ngIf="internship.company_address"><strong>Address:</strong> {{ internship.company_address }}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

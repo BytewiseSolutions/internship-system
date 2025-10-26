@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/internship-details"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Apply for Internship</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="apply-content">
+    <!-- Internship Info -->
+    <ion-card class="internship-info" *ngIf="internship">
+      <ion-card-header>
+        <ion-card-title>{{ internship.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Company:</strong> {{ internship.name }}</p>
+        <p><strong>Location:</strong> {{ internship.location }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Document Upload -->
+    <ion-card class="upload-card">
+      <ion-card-header>
+        <ion-card-title>Required Documents</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- CV Upload -->
+        <div class="upload-section">
+          <ion-item>
+            <ion-icon name="document-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>CV/Resume *</h3>
+              <p>{{ cvFile ? cvFile.name : 'No file selected' }}</p>
+            </ion-label>
+          </ion-item>
+          <input 
+            type="file" 
+            accept=".pdf,.doc,.docx" 
+            (change)="onFileSelected($event, 'cv')"
+            class="file-input"
+            #cvInput>
+          <ion-button 
+            fill="outline" 
+            size="small" 
+            (click)="cvInput.click()">
+            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+            Choose File
+          </ion-button>
+        </div>
+
+        <!-- Transcript Upload -->
+        <div class="upload-section">
+          <ion-item>
+            <ion-icon name="document-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Academic Transcript *</h3>
+              <p>{{ transcriptFile ? transcriptFile.name : 'No file selected' }}</p>
+            </ion-label>
+          </ion-item>
+          <input 
+            type="file" 
+            accept=".pdf,.doc,.docx" 
+            (change)="onFileSelected($event, 'transcript')"
+            class="file-input"
+            #transcriptInput>
+          <ion-button 
+            fill="outline" 
+            size="small" 
+            (click)="transcriptInput.click()">
+            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+            Choose File
+          </ion-button>
+        </div>
+
+        <!-- Application Letter Upload -->
+        <div class="upload-section">
+          <ion-item>
+            <ion-icon name="document-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h3>Application Letter *</h3>
+              <p>{{ applicationLetterFile ? applicationLetterFile.name : 'No file selected' }}</p>
+            </ion-label>
+          </ion-item>
+          <input 
+            type="file" 
+            accept=".pdf,.doc,.docx" 
+            (change)="onFileSelected($event, 'applicationLetter')"
+            class="file-input"
+            #letterInput>
+          <ion-button 
+            fill="outline" 
+            size="small" 
+            (click)="letterInput.click()">
+            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+            Choose File
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Submit Button -->
+    <div class="submit-section">
+      <ion-button 
+        expand="block" 
+        size="large" 
+        color="primary" 
+        (click)="submitApplication()"
+        [disabled]="isLoading">
+        <span *ngIf="!isLoading">Submit Application</span>
+        <span *ngIf="isLoading">Submitting...</span>
+      </ion-button>
+    </div>
+  </div>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

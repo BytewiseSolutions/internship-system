@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="profile-content">
+  <!-- Profile Info -->
+  <div class="profile-header">
+    <div class="avatar">
+      <ion-icon name="person-outline"></ion-icon>
+    </div>
+    <h2>{{ user.name || 'Student' }}</h2>
+    <p>{{ user.email || 'student@example.com' }}</p>
+  </div>
+
+  <!-- Profile Details -->
+  <div class="profile-details">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Personal Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Full Name</h3>
+            <p>{{ user.name || 'Not provided' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Email</h3>
+            <p>{{ user.email || 'Not provided' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="school-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>School</h3>
+            <p>{{ user.school_name || 'Not provided' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="school-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Course</h3>
+            <p>{{ user.course_name || 'Not provided' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Actions -->
+  <div class="profile-actions">
+    <ion-button expand="block" fill="outline" color="primary" (click)="openEditModal()">
+      Edit Profile
+    </ion-button>
+    
+    <ion-button expand="block" fill="solid" color="danger" (click)="logout()">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      Logout
+    </ion-button>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <ion-modal [isOpen]="isEditModalOpen" (didDismiss)="closeEditModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Edit Profile</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeEditModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content>
+        <div class="modal-content" style="padding: 1rem;">
+          <ion-item>
+            <ion-input 
+              label="Full Name *" 
+              label-placement="stacked"
+              [(ngModel)]="editForm.name" 
+              placeholder="Enter your full name">
+            </ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-input 
+              label="Email *" 
+              label-placement="stacked"
+              type="email"
+              [(ngModel)]="editForm.email" 
+              placeholder="Enter your email">
+            </ion-input>
+          </ion-item>
+          
+          <div style="margin-top: 2rem;">
+            <ion-button expand="block" color="primary" (click)="saveProfile()">
+              Save Changes
+            </ion-button>
+            <ion-button expand="block" fill="outline" (click)="closeEditModal()">
+              Cancel
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

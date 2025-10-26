@@ -46,10 +46,17 @@ try {
     $stmt->bind_param('si', $status, $application_id);
     $stmt->execute();
     
+    // Get user_id from student_id
+    $userStmt = $conn->prepare("SELECT user_id FROM students WHERE student_id = ?");
+    $userStmt->bind_param('i', $application['student_id']);
+    $userStmt->execute();
+    $userResult = $userStmt->get_result();
+    $userData = $userResult->fetch_assoc();
+    $user_id = $userData['user_id'];
+    
     // Add notification
     $message = "Your application for {$application['internship_title']} has been {$status}";
     $stmt = $conn->prepare("INSERT INTO notifications (user_id, message) VALUES (?, ?)");
-    $user_id = $application['user_id'] ?? 1; // Get from students table join
     $stmt->bind_param('is', $user_id, $message);
     $stmt->execute();
     

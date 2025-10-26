@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reviews</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="reviews-content">
+    <div *ngIf="isLoading" class="loading-message">
+      <p>Loading reviews...</p>
+    </div>
+
+    <div *ngIf="!isLoading && reviews.length === 0" class="no-reviews">
+      <p>No reviews yet.</p>
+      <p>Share your internship experience!</p>
+    </div>
+
+    <!-- Add Review Button -->
+    <div class="add-section">
+      <ion-button expand="block" color="primary" (click)="addReview()">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Add Review
+      </ion-button>
+    </div>
+
+    <!-- Reviews -->
+    <ion-card *ngFor="let review of reviews" class="review-card">
+      <ion-card-header>
+        <ion-card-title>{{ review.internship_title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="rating">
+          <ion-icon *ngFor="let star of [1,2,3,4,5]" 
+                    [name]="star <= review.rating ? 'star' : 'star-outline'"
+                    [class.filled]="star <= review.rating">
+          </ion-icon>
+        </div>
+        <p>{{ review.review_text }}</p>
+        <div class="review-footer">
+          <small>{{ review.created_at | date }}</small>
+          <ion-button fill="clear" size="small" (click)="editReview(review)">
+            Edit
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Add Review Modal -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>{{ isEditing ? 'Edit Review' : 'Add Review' }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content>
+        <div class="modal-content">
+          <ion-item *ngIf="!isEditing">
+            <ion-select 
+              label="Select Internship *" 
+              label-placement="stacked"
+              [(ngModel)]="selectedInternshipId" 
+              placeholder="Choose internship to review"
+              *ngIf="completedInternships.length > 0">
+              <ion-select-option *ngFor="let internship of completedInternships" [value]="internship.internship_id">
+                {{ internship.internship_title }} - {{ internship.company_name }}
+              </ion-select-option>
+            </ion-select>
+            <p *ngIf="completedInternships.length === 0" style="color: #666; font-style: italic; margin-top: 10px;">
+              No completed internships available for review.
+            </p>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label position="stacked">Rating *</ion-label>
+            <div class="rating-selector">
+              <ion-icon 
+                *ngFor="let star of getStarArray(5)" 
+                [name]="star <= rating ? 'star' : 'star-outline'"
+                [class.filled]="star <= rating"
+                (click)="setRating(star)">
+              </ion-icon>
+            </div>
+          </ion-item>
+          
+          <ion-item>
+            <ion-textarea 
+              label="Review *" 
+              label-placement="stacked"
+              [(ngModel)]="reviewText" 
+              placeholder="Share your internship experience..."
+              rows="4">
+            </ion-textarea>
+          </ion-item>
+          
+          <div class="modal-buttons">
+            <ion-button expand="block" color="primary" (click)="saveReview()">
+              Save Review
+            </ion-button>
+            <ion-button expand="block" fill="outline" (click)="closeModal()">
+              Cancel
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

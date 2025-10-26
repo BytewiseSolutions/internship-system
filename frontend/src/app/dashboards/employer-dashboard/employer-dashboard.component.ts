@@ -35,9 +35,12 @@ export class EmployerDashboardComponent implements OnInit {
 
   private loadDashboardData(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const companyId = user.company_id;
+    console.log('User data:', user);
+    const companyId = user.companyId || user.company_id;
+    console.log('Company ID:', companyId);
     
     if (!companyId) {
+      console.log('No company ID found - showing zeros');
       // New employer with no company_id - show zeros
       this.totalInternships = 0;
       this.totalApplications = 0;
@@ -67,7 +70,7 @@ export class EmployerDashboardComponent implements OnInit {
 
   loadAnalytics(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const companyId = user.company_id;
+    const companyId = user.companyId || user.company_id;
     
     if (!companyId) return;
     

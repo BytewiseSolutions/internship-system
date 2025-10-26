@@ -7,7 +7,6 @@ This document outlines potential improvements and new features for the Lesotho I
 
 ### 1.1 WebSocket Integration
 ```javascript
-// WebSocket service for real-time notifications
 class WebSocketService {
   connect(userId) {
     this.socket = new WebSocket(`ws://localhost:8080/ws/${userId}`);
