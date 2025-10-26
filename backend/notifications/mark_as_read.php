@@ -19,7 +19,7 @@ if (!$notification_id) {
 }
 
 try {
-    $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE notification_id = ?");
+    $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?");
     $stmt->bind_param('i', $notification_id);
     
     if ($stmt->execute()) {
