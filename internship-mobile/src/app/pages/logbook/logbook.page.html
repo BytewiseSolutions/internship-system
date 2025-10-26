@@ -39,6 +39,10 @@
         <p><strong>Activities:</strong> {{ entry.activities_completed }}</p>
         <p><strong>Skills Learned:</strong> {{ entry.skills_learned }}</p>
         <p><strong>Challenges:</strong> {{ entry.challenges_faced }}</p>
+        <div *ngIf="entry.supervisor_feedback" class="supervisor-feedback">
+          <p><strong>Supervisor Feedback:</strong></p>
+          <p class="feedback-text">{{ entry.supervisor_feedback }}</p>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

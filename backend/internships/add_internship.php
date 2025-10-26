@@ -23,6 +23,27 @@ $sql = "INSERT INTO internships (title, company_id, location, postedDate, deadli
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sisssss", $title, $company_id, $location, $postedDate, $deadline, $description, $status);
 if ($stmt->execute()) {
+    // Get company name for notification
+    $companyStmt = $conn->prepare("SELECT name FROM companies WHERE company_id = ?");
+    $companyStmt->bind_param('i', $company_id);
+    $companyStmt->execute();
+    $companyResult = $companyStmt->get_result();
+    $company = $companyResult->fetch_assoc();
+    $companyName = $company['name'] ?? 'Unknown Company';
+    
+    // Create notifications for all students
+    $studentStmt = $conn->prepare("SELECT user_id FROM students");
+    $studentStmt->execute();
+    $studentResult = $studentStmt->get_result();
+    
+    $message = "New internship opportunity: {$title} at {$companyName}";
+    $notificationStmt = $conn->prepare("INSERT INTO notifications (user_id, message) VALUES (?, ?)");
+    
+    while ($student = $studentResult->fetch_assoc()) {
+        $notificationStmt->bind_param('is', $student['user_id'], $message);
+        $notificationStmt->execute();
+    }
+    
     echo json_encode([
         'id' => $stmt->insert_id,
         'title' => $title,

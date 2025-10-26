@@ -75,7 +75,7 @@ export class ApplyPage implements OnInit {
     formData.append('student_id', user.student_id || user.id);
     formData.append('cv', this.cvFile);
     formData.append('transcript', this.transcriptFile);
-    formData.append('application_letter', this.applicationLetterFile);
+    formData.append('letter', this.applicationLetterFile);
 
     this.applicationService.submitApplication(formData).subscribe({
       next: (response) => {

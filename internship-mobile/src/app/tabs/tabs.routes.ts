@@ -22,6 +22,11 @@ export const routes: Routes = [
           import('../pages/applications/applications.page').then((m) => m.ApplicationsPage),
       },
       {
+        path: 'notifications',
+        loadComponent: () =>
+          import('../pages/notifications/notifications.page').then((m) => m.NotificationsPage),
+      },
+      {
         path: 'profile',
         loadComponent: () =>
           import('../pages/profile/profile.page').then((m) => m.ProfilePage),

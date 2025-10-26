@@ -1,0 +1,57 @@
+.notifications-content {
+  padding: 1rem;
+}
+
+.loading-message, .no-notifications {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+.notification-card {
+  margin-bottom: 0.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.notification-card:hover {
+  transform: translateY(-1px);
+}
+
+.notification-card.unread {
+  border-left: 4px solid #2e7d32;
+  background-color: #f8fff8;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.notification-time {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.notification-time ion-icon {
+  font-size: 0.9rem;
+}
+
+.notification-message {
+  margin: 0;
+  line-height: 1.4;
+  color: #333;
+}

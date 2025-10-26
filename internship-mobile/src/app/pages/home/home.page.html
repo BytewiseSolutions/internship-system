@@ -69,17 +69,23 @@
       <ion-card-content>
         <ion-grid>
           <ion-row>
-            <ion-col size="4" class="stat-item">
+            <ion-col size="6" class="stat-item">
               <h3>{{ stats.applications }}</h3>
-              <p>Applications</p>
+              <p>Total Applications</p>
             </ion-col>
-            <ion-col size="4" class="stat-item">
+            <ion-col size="6" class="stat-item">
               <h3>{{ stats.accepted }}</h3>
               <p>Accepted</p>
             </ion-col>
-            <ion-col size="4" class="stat-item">
+          </ion-row>
+          <ion-row>
+            <ion-col size="6" class="stat-item">
               <h3>{{ stats.pending }}</h3>
               <p>Pending</p>
+            </ion-col>
+            <ion-col size="6" class="stat-item">
+              <h3>{{ stats.rejected }}</h3>
+              <p>Rejected</p>
             </ion-col>
           </ion-row>
         </ion-grid>

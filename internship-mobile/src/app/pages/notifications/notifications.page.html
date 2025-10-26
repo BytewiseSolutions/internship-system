@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Notifications</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="notifications-content">
+    <div *ngIf="isLoading" class="loading-message">
+      <p>Loading notifications...</p>
+    </div>
+
+    <div *ngIf="!isLoading && notifications.length === 0" class="no-notifications">
+      <ion-icon name="notifications-outline" class="empty-icon"></ion-icon>
+      <h3>No notifications</h3>
+      <p>You're all caught up!</p>
+    </div>
+
+    <ion-card *ngFor="let notification of notifications" 
+             class="notification-card" 
+             [class.unread]="!notification.is_read"
+             (click)="markAsRead(notification)">
+      <ion-card-content>
+        <div class="notification-header">
+          <ion-badge *ngIf="!notification.is_read" color="primary">New</ion-badge>
+          <span class="notification-time">
+            <ion-icon name="time-outline"></ion-icon>
+            {{ notification.created_at | date:'short' }}
+          </span>
+        </div>
+        <p class="notification-message">{{ notification.message }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

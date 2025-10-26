@@ -103,6 +103,13 @@ $stmt = $conn->prepare("INSERT INTO applications (student_id, internship_id, cv_
 $stmt->bind_param("iisss", $student_id, $internship_id, $cvPath, $transcriptPath, $letterPath);
 
 if ($stmt->execute()) {
+    // Create notification for successful application
+    $notificationStmt = $conn->prepare("INSERT INTO notifications (user_id, message) VALUES (?, ?)");
+    $message = "Your application has been submitted successfully and is under review.";
+    $notificationStmt->bind_param('is', $user_id, $message);
+    $notificationStmt->execute();
+    $notificationStmt->close();
+    
     echo json_encode(['status' => 'success', 'message' => 'Application submitted']);
 } else {
     echo json_encode(['status' => 'error', 'message' => $stmt->error]);

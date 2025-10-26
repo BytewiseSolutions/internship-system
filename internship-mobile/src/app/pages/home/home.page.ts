@@ -19,7 +19,10 @@ export class HomePage implements OnInit {
   stats = {
     applications: 0,
     accepted: 0,
-    pending: 0
+    pending: 0,
+    rejected: 0,
+    interviews: 0,
+    logbookEntries: 0
   };
 
   constructor(private router: Router, private authService: AuthService, private applicationService: ApplicationService) {
@@ -41,6 +44,8 @@ export class HomePage implements OnInit {
             this.stats.applications = response.applications.length;
             this.stats.accepted = response.applications.filter((app: any) => app.status === 'ACCEPTED').length;
             this.stats.pending = response.applications.filter((app: any) => app.status === 'PENDING').length;
+            this.stats.rejected = response.applications.filter((app: any) => app.status === 'REJECTED').length;
+            this.stats.interviews = response.applications.filter((app: any) => app.interview_scheduled).length;
           }
         },
         error: (error) => {

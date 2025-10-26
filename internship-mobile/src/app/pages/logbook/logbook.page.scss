@@ -61,3 +61,17 @@
   --border-radius: 12px;
   font-weight: 600;
 }
+
+.supervisor-feedback {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-left: 4px solid #2e7d32;
+  border-radius: 4px;
+}
+
+.feedback-text {
+  font-style: italic;
+  color: #555;
+  margin: 0.5rem 0 0 0;
+}
