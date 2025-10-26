@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/my-internship"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Logbook</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="logbook-content">
+    <div *ngIf="isLoading" class="loading-message">
+      <p>Loading logbook entries...</p>
+    </div>
+
+    <div *ngIf="!isLoading && logbookEntries.length === 0" class="no-entries">
+      <p>No logbook entries yet.</p>
+      <p>Start recording your weekly activities!</p>
+    </div>
+
+    <!-- Add Entry Button -->
+    <div class="add-section">
+      <ion-button expand="block" color="primary" (click)="addEntry()">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Add New Entry
+      </ion-button>
+    </div>
+
+    <!-- Logbook Entries -->
+    <ion-card *ngFor="let entry of logbookEntries" class="entry-card">
+      <ion-card-header>
+        <ion-card-title>Week {{ entry.week_number }}</ion-card-title>
+        <ion-button fill="clear" size="small" (click)="editEntry(entry)" class="edit-button">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Week Ending:</strong> {{ entry.week_ending | date }}</p>
+        <p><strong>Activities:</strong> {{ entry.activities_completed }}</p>
+        <p><strong>Skills Learned:</strong> {{ entry.skills_learned }}</p>
+        <p><strong>Challenges:</strong> {{ entry.challenges_faced }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Add Entry Modal -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>{{ isEditing ? 'Edit' : 'Add' }} Logbook Entry</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content>
+        <div class="modal-content">
+          <ion-item>
+            <ion-label position="stacked">Week Number *</ion-label>
+            <ion-input type="number" [(ngModel)]="weekNumber" placeholder="1"></ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label position="stacked">Week Ending *</ion-label>
+            <ion-input type="date" [(ngModel)]="weekEnding"></ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label position="stacked">Activities Completed *</ion-label>
+            <ion-textarea 
+              [(ngModel)]="activitiesCompleted" 
+              placeholder="Describe what you accomplished this week..."
+              rows="3">
+            </ion-textarea>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label position="stacked">Skills Learned *</ion-label>
+            <ion-textarea 
+              [(ngModel)]="skillsLearned" 
+              placeholder="What new skills did you develop?"
+              rows="3">
+            </ion-textarea>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label position="stacked">Challenges Faced</ion-label>
+            <ion-textarea 
+              [(ngModel)]="challengesFaced" 
+              placeholder="Any difficulties or obstacles encountered?"
+              rows="3">
+            </ion-textarea>
+          </ion-item>
+          
+          <div class="modal-buttons">
+            <ion-button expand="block" color="primary" (click)="saveEntry()">
+              {{ isEditing ? 'Update' : 'Save' }} Entry
+            </ion-button>
+            <ion-button expand="block" fill="outline" (click)="closeModal()">
+              Cancel
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

@@ -1,0 +1,157 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/internships"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Internship Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="isLoading" class="loading-message">
+    <p>Loading details...</p>
+  </div>
+
+  <div *ngIf="!isLoading && internship" class="details-content">
+    <!-- Header Card -->
+    <ion-card class="header-card">
+      <ion-card-header>
+        <ion-card-title>{{ internship.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="company-info">
+          <ion-icon name="business-outline"></ion-icon>
+          <span>{{ internship.name }}</span>
+        </div>
+        <div class="location-info">
+          <ion-icon name="location-outline"></ion-icon>
+          <span>{{ internship.location }}</span>
+        </div>
+        <div class="work-type" *ngIf="internship.work_type">
+          <ion-chip color="primary">
+            <ion-label>{{ internship.work_type.replace('_', ' ') }}</ion-label>
+          </ion-chip>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Details Card -->
+    <ion-card class="details-card">
+      <ion-card-header>
+        <ion-card-title>Description</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ internship.description }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Requirements Card -->
+    <ion-card class="details-card" *ngIf="internship.requirements">
+      <ion-card-header>
+        <ion-card-title>Requirements</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ internship.requirements }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Responsibilities Card -->
+    <ion-card class="details-card" *ngIf="internship.responsibilities">
+      <ion-card-header>
+        <ion-card-title>Responsibilities</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ internship.responsibilities }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Skills Card -->
+    <ion-card class="details-card" *ngIf="internship.required_skills">
+      <ion-card-header>
+        <ion-card-title>Required Skills</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ internship.required_skills }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Application Info -->
+    <ion-card class="info-card">
+      <ion-card-header>
+        <ion-card-title>Application Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="info-item" *ngIf="internship.deadline">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Application Deadline</h3>
+            <p>{{ internship.deadline | date }}</p>
+          </ion-label>
+        </ion-item>
+        
+        <ion-item class="info-item" *ngIf="internship.duration_months">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Duration</h3>
+            <p>{{ internship.duration_months }} months</p>
+          </ion-label>
+        </ion-item>
+        
+        <ion-item class="info-item" *ngIf="internship.salary_range">
+          <ion-icon name="cash-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Salary Range</h3>
+            <p>{{ internship.salary_range }}</p>
+          </ion-label>
+        </ion-item>
+        
+        <ion-item class="info-item" *ngIf="internship.positions_available">
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Positions Available</h3>
+            <p>{{ internship.positions_available }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Contact Info -->
+    <ion-card class="info-card" *ngIf="internship.contact_person">
+      <ion-card-header>
+        <ion-card-title>Contact Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="info-item">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Contact Person</h3>
+            <p>{{ internship.contact_person }}</p>
+          </ion-label>
+        </ion-item>
+        
+        <ion-item class="info-item" *ngIf="internship.contact_email">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Email</h3>
+            <p>{{ internship.contact_email }}</p>
+          </ion-label>
+        </ion-item>
+        
+        <ion-item class="info-item" *ngIf="internship.contact_phone">
+          <ion-icon name="call-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h3>Phone</h3>
+            <p>{{ internship.contact_phone }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Apply Button -->
+    <div class="apply-section">
+      <ion-button expand="block" size="large" color="primary" (click)="applyNow()">
+        Apply Now
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

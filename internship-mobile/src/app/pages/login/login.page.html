@@ -33,8 +33,9 @@
         </ion-input>
       </ion-item>
 
-      <ion-button expand="block" size="large" (click)="login()" class="login-button">
-        Sign In
+      <ion-button expand="block" size="large" (click)="login()" class="login-button" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading">Signing In...</span>
       </ion-button>
 
       <div class="register-link">
@@ -44,4 +45,12 @@
       </div>
     </div>
   </div>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    (didDismiss)="showToast = false">
+  </ion-toast>
 </ion-content>

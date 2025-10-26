@@ -1,0 +1,36 @@
+.applications-content {
+  padding: 1rem;
+}
+
+.loading-message, .no-applications {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.application-card {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.application-card ion-card-title {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.company-name {
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.application-status {
+  margin: 0.5rem 0;
+}
+
+.applied-date {
+  color: #999;
+  font-size: 0.9rem;
+}

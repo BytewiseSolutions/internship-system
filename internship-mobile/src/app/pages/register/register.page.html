@@ -11,7 +11,7 @@
   <div class="register-container">
     <div class="register-form">
       <h1>Join Us</h1>
-      <p>Create your account to start finding internships</p>
+      <p>Create your student account to start finding internships</p>
 
       <ion-item class="input-item">
         <ion-icon name="person-outline" slot="start"></ion-icon>
@@ -34,6 +34,32 @@
       </ion-item>
 
       <ion-item class="input-item">
+        <ion-icon name="school-outline" slot="start"></ion-icon>
+        <ion-select 
+          placeholder="Select School" 
+          [(ngModel)]="schoolId"
+          (ionChange)="onSchoolChange()"
+          fill="outline">
+          <ion-select-option *ngFor="let school of schools" [value]="school.school_id">
+            {{ school.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-icon name="book-outline" slot="start"></ion-icon>
+        <ion-select 
+          placeholder="Select Course" 
+          [(ngModel)]="courseId"
+          [disabled]="!schoolId"
+          fill="outline">
+          <ion-select-option *ngFor="let course of courses" [value]="course.course_id">
+            {{ course.course_name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="input-item">
         <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
         <ion-input 
           type="password" 
@@ -53,8 +79,9 @@
         </ion-input>
       </ion-item>
 
-      <ion-button expand="block" size="large" (click)="register()" class="register-button">
-        Create Account
+      <ion-button expand="block" size="large" (click)="register()" class="register-button" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading">Creating Account...</span>
       </ion-button>
 
       <div class="login-link">
@@ -64,4 +91,12 @@
       </div>
     </div>
   </div>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    (didDismiss)="showToast = false">
+  </ion-toast>
 </ion-content>

@@ -1,0 +1,113 @@
+.home-content {
+  --background: #f5f5f5;
+}
+
+.welcome-section {
+  padding: 2rem 1rem;
+  text-align: center;
+  background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+  color: white;
+}
+
+.welcome-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-section p {
+  opacity: 0.9;
+  margin: 0;
+}
+
+.actions-section {
+  padding: 1rem;
+}
+
+.action-card {
+  margin: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  height: 120px;
+}
+
+.action-card:hover {
+  transform: translateY(-2px);
+}
+
+.action-card ion-card-content {
+  text-align: center;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.action-icon {
+  font-size: 2rem;
+  color: #2e7d32;
+  margin-bottom: 0.5rem;
+}
+
+.action-card h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.25rem 0;
+  color: #333;
+}
+
+.action-card p {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+}
+
+.stats-section {
+  padding: 0 1rem 1rem 1rem;
+}
+
+.stats-section ion-card {
+  margin: 0;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-item h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin: 0;
+}
+
+.stat-item p {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0.25rem 0 0 0;
+}
+
+.logout-section {
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .welcome-section {
+    padding: 1.5rem 1rem;
+  }
+  
+  .welcome-section h2 {
+    font-size: 1.3rem;
+  }
+  
+  .action-card {
+    height: 100px;
+  }
+  
+  .action-icon {
+    font-size: 1.5rem;
+  }
+}
