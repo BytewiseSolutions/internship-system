@@ -65,7 +65,7 @@ export class EmployerDashboardComponent implements OnInit {
       });
   }
 
-  private loadAnalytics(): void {
+  loadAnalytics(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const companyId = user.company_id;
     
