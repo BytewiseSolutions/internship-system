@@ -14,6 +14,7 @@ export class InternshipDetailsComponent implements OnInit {
   internship: any = null;
   loading = true;
   error = '';
+  hasAcceptedInternship = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +26,24 @@ export class InternshipDetailsComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadInternshipDetails(id);
+    }
+    this.checkAcceptedStatus();
+  }
+
+  checkAcceptedStatus() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user?.id && user.role === 'STUDENT') {
+      this.http.get(`http://localhost:8000/students/get_student_id.php?user_id=${user.id}`).subscribe({
+        next: (response: any) => {
+          if (response.student_id) {
+            this.http.get(`http://localhost:8000/applications/check_accepted_status.php?student_id=${response.student_id}`).subscribe({
+              next: (result: any) => {
+                this.hasAcceptedInternship = result.hasAcceptedInternship;
+              }
+            });
+          }
+        }
+      });
     }
   }
 
@@ -49,6 +68,12 @@ export class InternshipDetailsComponent implements OnInit {
     } else {
       this.router.navigate(['/login'], { queryParams: { redirect: `/apply/${this.internship.id}` } });
     }
+  }
+
+  isDeadlinePassed(): boolean {
+    if (!this.internship?.deadline) return false;
+    const today = new Date().toISOString().split('T')[0];
+    return this.internship.deadline < today;
   }
 
   goBack() {

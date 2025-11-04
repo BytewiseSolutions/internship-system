@@ -20,6 +20,7 @@ export class BrowseInternshipsComponent implements OnInit {
   filteredInternships: any[] = [];
   loading = true;
   error = '';
+  hasAcceptedInternship = false;
   
   filters = {
     search: '',
@@ -31,6 +32,24 @@ export class BrowseInternshipsComponent implements OnInit {
 
   ngOnInit() {
     this.loadInternships();
+    this.checkAcceptedStatus();
+  }
+
+  checkAcceptedStatus() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user?.id && user.role === 'STUDENT') {
+      this.http.get(`${environment.apiUrl}/students/get_student_id.php?user_id=${user.id}`).subscribe({
+        next: (response: any) => {
+          if (response.student_id) {
+            this.http.get(`${environment.apiUrl}/applications/check_accepted_status.php?student_id=${response.student_id}`).subscribe({
+              next: (result: any) => {
+                this.hasAcceptedInternship = result.hasAcceptedInternship;
+              }
+            });
+          }
+        }
+      });
+    }
   }
 
   loadInternships() {
@@ -62,6 +81,11 @@ export class BrowseInternshipsComponent implements OnInit {
     const diffTime = deadlineDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays <= 7;
+  }
+
+  isDeadlinePassed(deadline: string): boolean {
+    const today = new Date().toISOString().split('T')[0];
+    return deadline < today;
   }
 
   applyFilters() {

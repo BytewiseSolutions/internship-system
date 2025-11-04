@@ -69,9 +69,10 @@
             <i class="fas fa-users"></i>
             <span>{{ internship.positions_available }} position(s)</span>
           </div>
-          <div class="detail-item">
+          <div class="detail-item" [class.expired]="isDeadlinePassed()">
             <i class="fas fa-calendar"></i>
             <span>Deadline: {{ internship.deadline | date }}</span>
+            <span class="status-badge" *ngIf="isDeadlinePassed()">CLOSED</span>
           </div>
         </div>
 
@@ -91,9 +92,13 @@
           </div>
         </div>
 
-        <button class="apply-btn" (click)="applyNow()">
-          <i class="fas fa-paper-plane"></i>
-          Apply Now
+        <button class="apply-btn" 
+                (click)="applyNow()" 
+                [disabled]="isDeadlinePassed() || hasAcceptedInternship"
+                [class.disabled]="isDeadlinePassed() || hasAcceptedInternship">
+          <i class="fas fa-paper-plane" *ngIf="!isDeadlinePassed() && !hasAcceptedInternship"></i>
+          <i class="fas fa-times-circle" *ngIf="isDeadlinePassed() || hasAcceptedInternship"></i>
+          {{ isDeadlinePassed() ? 'Application Closed' : (hasAcceptedInternship ? 'Already Accepted' : 'Apply Now') }}
         </button>
       </div>
     </div>

@@ -27,7 +27,11 @@ try {
             a.application_id,
             a.status,
             a.applied_at,
+            a.cv_path,
+            a.transcript_path,
+            a.application_letter_path,
             u.name as student_name,
+            u.email as student_email,
             i.title as internship_title
         FROM applications a
         JOIN internships i ON a.internship_id = i.internship_id

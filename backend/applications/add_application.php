@@ -53,10 +53,32 @@ $deadlineStmt->execute();
 $deadlineResult = $deadlineStmt->get_result();
 $internship = $deadlineResult->fetch_assoc();
 
-if ($internship && $internship['application_deadline'] < date('Y-m-d')) {
+if (!$internship) {
+    error_log('Internship not found for ID: ' . $internship_id);
+    die(json_encode(['status' => 'error', 'message' => 'Internship not found']));
+}
+
+$today = date('Y-m-d');
+error_log('Today: ' . $today . ', Deadline: ' . $internship['application_deadline']);
+
+if ($internship['application_deadline'] < $today) {
+    error_log('Deadline passed for internship: ' . $internship_id);
     die(json_encode(['status' => 'error', 'message' => 'Cannot apply for expired internship']));
 }
 $deadlineStmt->close();
+
+// Check if student already has an accepted internship
+$acceptedStmt = $conn->prepare("SELECT application_id FROM applications WHERE student_id = ? AND status = 'ACCEPTED'");
+$acceptedStmt->bind_param("i", $student_id);
+$acceptedStmt->execute();
+$acceptedStmt->store_result();
+
+if ($acceptedStmt->num_rows > 0) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'You already have an accepted internship and cannot apply for others']);
+    exit;
+}
+$acceptedStmt->close();
 
 $checkStmt = $conn->prepare("SELECT application_id FROM applications WHERE student_id = ? AND internship_id = ?");
 $checkStmt->bind_param("ii", $student_id, $internship_id);
@@ -65,7 +87,7 @@ $checkStmt->store_result();
 
 if ($checkStmt->num_rows > 0) {
     http_response_code(400);
-    echo json_encode(['message' => 'You have already applied for this internship']);
+    echo json_encode(['status' => 'error', 'message' => 'You have already applied for this internship']);
     exit;
 }
 $checkStmt->close();
@@ -103,12 +125,27 @@ $stmt = $conn->prepare("INSERT INTO applications (student_id, internship_id, cv_
 $stmt->bind_param("iisss", $student_id, $internship_id, $cvPath, $transcriptPath, $letterPath);
 
 if ($stmt->execute()) {
-    // Create notification for successful application
-    $notificationStmt = $conn->prepare("INSERT INTO notifications (user_id, message) VALUES (?, ?)");
-    $message = "Your application has been submitted successfully and is under review.";
-    $notificationStmt->bind_param('is', $user_id, $message);
-    $notificationStmt->execute();
-    $notificationStmt->close();
+    // Try to create notification, but don't let it break the success response
+    try {
+        $userStmt = $conn->prepare("SELECT user_id FROM students WHERE student_id = ?");
+        $userStmt->bind_param("i", $student_id);
+        $userStmt->execute();
+        $userResult = $userStmt->get_result();
+        
+        if ($userResult->num_rows > 0) {
+            $userData = $userResult->fetch_assoc();
+            $user_id = $userData['user_id'];
+            
+            $notificationStmt = $conn->prepare("INSERT INTO notifications (user_id, message) VALUES (?, ?)");
+            $message = "Your application has been submitted successfully and is under review.";
+            $notificationStmt->bind_param('is', $user_id, $message);
+            $notificationStmt->execute();
+            $notificationStmt->close();
+        }
+        $userStmt->close();
+    } catch (Exception $e) {
+        error_log('Notification error: ' . $e->getMessage());
+    }
     
     echo json_encode(['status' => 'success', 'message' => 'Application submitted']);
 } else {

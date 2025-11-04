@@ -129,7 +129,76 @@
         .internship-grid {
             display: grid;
             gap: 1.5rem;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .internship-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .internship-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .no-internships-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            padding: 2rem;
+
+            .message-content {
+                text-align: center;
+                background: #ffffff;
+                padding: 3rem 2rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                max-width: 500px;
+                border: 2px solid #e8f5e8;
+
+                i {
+                    font-size: 4rem;
+                    color: #2e7d32;
+                    margin-bottom: 1.5rem;
+                    opacity: 0.7;
+                }
+
+                h3 {
+                    color: #2e7d32;
+                    font-size: 1.5rem;
+                    margin-bottom: 1rem;
+                    font-weight: 600;
+                }
+
+                p {
+                    color: #666;
+                    font-size: 1rem;
+                    line-height: 1.6;
+                    margin-bottom: 1.5rem;
+                }
+
+                .btn {
+                    background-color: #2e7d32;
+                    color: #fff;
+                    padding: 0.8rem 2rem;
+                    border: none;
+                    border-radius: 6px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    text-decoration: none;
+                    display: inline-block;
+
+                    &:hover {
+                        background-color: #1b5e20;
+                        transform: translateY(-2px);
+                    }
+                }
+            }
         }
 
         .internship-card {
@@ -167,6 +236,25 @@
             .deadline {
                 color: #ff6a00;
                 font-style: italic;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                &.expired {
+                    color: #d32f2f;
+                }
+
+                .status-badge {
+                    background-color: #d32f2f;
+                    color: #ffffff;
+                    padding: 0.3rem 0.8rem;
+                    border-radius: 15px;
+                    font-size: 0.75rem;
+                    font-weight: 900;
+                    text-transform: uppercase;
+                    box-shadow: 0 2px 4px rgba(211, 47, 47, 0.4);
+                    border: 1px solid #ffffff;
+                }
             }
 
             .description {
@@ -207,8 +295,20 @@
                 cursor: pointer;
                 transition: background-color 0.3s ease;
 
-                &:hover {
+                &:hover:not(:disabled) {
                     background-color: #2e7d32;
+                }
+
+                &:disabled,
+                &.disabled {
+                    background-color: #bdbdbd;
+                    color: #757575;
+                    cursor: not-allowed;
+                    opacity: 0.6;
+
+                    &:hover {
+                        background-color: #bdbdbd;
+                    }
                 }
             }
         }

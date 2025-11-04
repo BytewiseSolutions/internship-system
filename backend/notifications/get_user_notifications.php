@@ -19,7 +19,7 @@ if (!$user_id) {
 
 try {
     $stmt = $conn->prepare("
-        SELECT notification_id, message, created_at, is_read 
+        SELECT id as notification_id, message, created_at, is_read 
         FROM notifications 
         WHERE user_id = ? 
         ORDER BY created_at DESC 
