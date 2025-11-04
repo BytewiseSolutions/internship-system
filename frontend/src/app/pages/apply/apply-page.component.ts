@@ -106,7 +106,15 @@ export class ApplyComponent implements OnInit {
                 this.router.navigate(['/my-applications']);
             },
             error: (err: any) => {
-                const msg = err.error?.message || 'Failed to submit application';
+                console.error('Application submission error:', err);
+                let msg = 'Failed to submit application';
+                if (err.error?.message) {
+                    msg = err.error.message;
+                } else if (typeof err.error === 'string') {
+                    msg = err.error;
+                } else if (err.message) {
+                    msg = err.message;
+                }
                 this.toast.show(msg, 'error');
                 this.loading = false;
             }

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../components/common/footer/footer.component';
 import { NavbarComponent } from '../../components/common/navbar/navbar.component';
 import { AvailableInternship, InternshipService } from '../../services/internship.service';
@@ -23,6 +24,7 @@ export class LandingComponent implements OnInit {
   internships: AvailableInternship[] = [];
   companies: string[] = [];
   mobileMenuOpen = false;
+  hasAcceptedInternship = false;
 
   selectedCompany: string = '';
   locationFilter: string = '';
@@ -30,7 +32,8 @@ export class LandingComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private internshipService: InternshipService
+    private internshipService: InternshipService,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -41,6 +44,24 @@ export class LandingComponent implements OnInit {
       },
       error: (err) => console.error('Error fetching internships', err)
     });
+    this.checkAcceptedStatus();
+  }
+
+  checkAcceptedStatus() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user?.id && user.role === 'STUDENT') {
+      this.http.get(`http://localhost:8000/students/get_student_id.php?user_id=${user.id}`).subscribe({
+        next: (response: any) => {
+          if (response.student_id) {
+            this.http.get(`http://localhost:8000/applications/check_accepted_status.php?student_id=${response.student_id}`).subscribe({
+              next: (result: any) => {
+                this.hasAcceptedInternship = result.hasAcceptedInternship;
+              }
+            });
+          }
+        }
+      });
+    }
   }
   filteredInternships(): AvailableInternship[] {
     return this.internships.filter(i => {
@@ -68,10 +89,19 @@ export class LandingComponent implements OnInit {
       this.router.navigate(['/login'], { queryParams: { redirect: `/apply/${internshipId}` } });
     }
   }
+
+  isDeadlinePassed(deadline: string): boolean {
+    const today = new Date().toISOString().split('T')[0];
+    return deadline < today;
+  }
   clearFilters() {
     this.selectedCompany = '';
     this.locationFilter = '';
     this.deadlineFilter = '';
+  }
+
+  hasActiveFilters(): boolean {
+    return !!(this.selectedCompany || this.locationFilter || this.deadlineFilter);
   }
 
 }

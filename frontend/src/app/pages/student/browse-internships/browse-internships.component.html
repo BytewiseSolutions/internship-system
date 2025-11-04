@@ -76,9 +76,10 @@
                             <span>Posted: {{ formatDate(internship.postedDate) }}</span>
                         </div>
                         
-                        <div class="info-row" [class.deadline-near]="isDeadlineNear(internship.deadline)">
+                        <div class="info-row" [class.deadline-near]="isDeadlineNear(internship.deadline)" [class.expired]="isDeadlinePassed(internship.deadline)">
                             <i class="fas fa-clock"></i>
                             <span>Deadline: {{ formatDate(internship.deadline) }}</span>
+                            <span class="status-badge" *ngIf="isDeadlinePassed(internship.deadline)">CLOSED</span>
                         </div>
                         
                         <p class="description">{{ internship.description }}</p>
@@ -89,9 +90,13 @@
                             <i class="fas fa-eye"></i>
                             View Details
                         </button>
-                        <button class="apply-btn" [routerLink]="['/apply', internship.id]">
-                            <i class="fas fa-paper-plane"></i>
-                            Apply Now
+                        <button class="apply-btn" 
+                                [routerLink]="(isDeadlinePassed(internship.deadline) || hasAcceptedInternship) ? null : ['/apply', internship.id]"
+                                [disabled]="isDeadlinePassed(internship.deadline) || hasAcceptedInternship"
+                                [class.disabled]="isDeadlinePassed(internship.deadline) || hasAcceptedInternship">
+                            <i class="fas fa-paper-plane" *ngIf="!isDeadlinePassed(internship.deadline) && !hasAcceptedInternship"></i>
+                            <i class="fas fa-times-circle" *ngIf="isDeadlinePassed(internship.deadline) || hasAcceptedInternship"></i>
+                            {{ isDeadlinePassed(internship.deadline) ? 'Closed' : (hasAcceptedInternship ? 'Already Accepted' : 'Apply Now') }}
                         </button>
                     </div>
                 </div>

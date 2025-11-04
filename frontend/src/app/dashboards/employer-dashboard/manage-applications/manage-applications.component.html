@@ -10,7 +10,18 @@
             </div>
 
             <div class="applications-table">
-                <table>
+                <div *ngIf="loading" class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading applications...</p>
+                </div>
+                
+                <div *ngIf="!loading && applications.length === 0" class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Applications Yet</h3>
+                    <p>Applications for your internships will appear here.</p>
+                </div>
+                
+                <table *ngIf="!loading && applications.length > 0">
                     <thead>
                         <tr>
                             <th>Student Name</th>
@@ -31,19 +42,24 @@
                                 </span>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-success" 
-                                        *ngIf="application.status === 'PENDING'"
-                                        (click)="updateStatus(application.application_id, 'ACCEPTED')">
-                                    Accept
-                                </button>
-                                <button class="btn btn-sm btn-danger" 
-                                        *ngIf="application.status === 'PENDING'"
-                                        (click)="updateStatus(application.application_id, 'REJECTED')">
-                                    Reject
-                                </button>
-                                <span *ngIf="application.status !== 'PENDING'" class="text-muted">
-                                    {{ application.status }}
-                                </span>
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-info" (click)="viewDocuments(application)">
+                                        <i class="fas fa-eye"></i> View Docs
+                                    </button>
+                                    <button class="btn btn-sm btn-success" 
+                                            *ngIf="application.status === 'PENDING'"
+                                            (click)="updateStatus(application.application_id, 'ACCEPTED')">
+                                        Accept
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" 
+                                            *ngIf="application.status === 'PENDING'"
+                                            (click)="updateStatus(application.application_id, 'REJECTED')">
+                                        Reject
+                                    </button>
+                                    <span *ngIf="application.status !== 'PENDING'" class="text-muted">
+                                        {{ application.status }}
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
