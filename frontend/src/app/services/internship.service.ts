@@ -64,4 +64,8 @@ export class InternshipService {
         return this.http.post(`${this.apiUrl}/apply_internship.php`, formData);
     }
 
+    getInternshipDetails(id: string): Observable<any> {
+        return this.http.get(`${this.apiUrl}/get_internship_details.php?id=${id}`);
+    }
+
 }

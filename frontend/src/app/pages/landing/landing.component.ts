@@ -6,6 +6,7 @@ import { FooterComponent } from '../../components/common/footer/footer.component
 import { NavbarComponent } from '../../components/common/navbar/navbar.component';
 import { AvailableInternship, InternshipService } from '../../services/internship.service';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-landing',
@@ -50,10 +51,10 @@ export class LandingComponent implements OnInit {
   checkAcceptedStatus() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (user?.id && user.role === 'STUDENT') {
-      this.http.get(`http://localhost:8000/students/get_student_id.php?user_id=${user.id}`).subscribe({
+      this.http.get(`${environment.apiUrl}/students/get_student_id.php?user_id=${user.id}`).subscribe({
         next: (response: any) => {
           if (response.student_id) {
-            this.http.get(`http://localhost:8000/applications/check_accepted_status.php?student_id=${response.student_id}`).subscribe({
+            this.http.get(`${environment.apiUrl}/applications/check_accepted_status.php?student_id=${response.student_id}`).subscribe({
               next: (result: any) => {
                 this.hasAcceptedInternship = result.hasAcceptedInternship;
               }

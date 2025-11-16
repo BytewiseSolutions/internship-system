@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { InternshipService } from '../../services/internship.service';
 
 @Component({
   selector: 'app-internship-details',
@@ -19,7 +21,8 @@ export class InternshipDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private internshipService: InternshipService
   ) {}
 
   ngOnInit() {
@@ -33,10 +36,10 @@ export class InternshipDetailsComponent implements OnInit {
   checkAcceptedStatus() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (user?.id && user.role === 'STUDENT') {
-      this.http.get(`http://localhost:8000/students/get_student_id.php?user_id=${user.id}`).subscribe({
+      this.http.get(`${environment.apiUrl}/students/get_student_id.php?user_id=${user.id}`).subscribe({
         next: (response: any) => {
           if (response.student_id) {
-            this.http.get(`http://localhost:8000/applications/check_accepted_status.php?student_id=${response.student_id}`).subscribe({
+            this.http.get(`${environment.apiUrl}/applications/check_accepted_status.php?student_id=${response.student_id}`).subscribe({
               next: (result: any) => {
                 this.hasAcceptedInternship = result.hasAcceptedInternship;
               }
@@ -48,7 +51,7 @@ export class InternshipDetailsComponent implements OnInit {
   }
 
   loadInternshipDetails(id: string) {
-    this.http.get(`http://localhost:8000/internships/get_internship_details.php?id=${id}`)
+    this.internshipService.getInternshipDetails(id)
       .subscribe({
         next: (response: any) => {
           this.internship = response;
