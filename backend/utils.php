@@ -34,26 +34,90 @@ function send_json($data, $status = 200)
     exit();
 }
 
-function generateToken($email, $role)
-{
+// Enhanced JWT Token Functions
+function generateToken($email, $role, $userId = null) {
+    $secret = $_ENV['JWT_SECRET'] ?? 'default-secret-change-this';
+    $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
+    
     $payload = [
         "email" => $email,
         "role" => $role,
+        "user_id" => $userId,
         "iat" => time(),
-        "exp" => time() + (60 * 60 * 24)
+        "exp" => time() + (int)($_ENV['SESSION_TIMEOUT'] ?? 86400),
+        "jti" => bin2hex(random_bytes(16)) // Unique token ID
     ];
-    return base64_encode(json_encode($payload));
+    
+    $headerEncoded = base64url_encode($header);
+    $payloadEncoded = base64url_encode(json_encode($payload));
+    
+    $signature = hash_hmac('sha256', $headerEncoded . "." . $payloadEncoded, $secret, true);
+    $signatureEncoded = base64url_encode($signature);
+    
+    return $headerEncoded . "." . $payloadEncoded . "." . $signatureEncoded;
 }
-function decodeToken($token)
-{
-    if (!$token)
+
+function decodeToken($token) {
+    if (!$token) return [];
+    
+    $parts = explode('.', $token);
+    if (count($parts) !== 3) return [];
+    
+    $secret = $_ENV['JWT_SECRET'] ?? 'default-secret-change-this';
+    $header = base64url_decode($parts[0]);
+    $payload = base64url_decode($parts[1]);
+    $signature = base64url_decode($parts[2]);
+    
+    // Verify signature
+    $expectedSignature = hash_hmac('sha256', $parts[0] . "." . $parts[1], $secret, true);
+    if (!hash_equals($signature, $expectedSignature)) {
         return [];
-    $decoded = base64_decode($token, true);
-    if (!$decoded)
+    }
+    
+    $payloadData = json_decode($payload, true);
+    if (!is_array($payloadData)) return [];
+    
+    // Check expiration
+    if (isset($payloadData['exp']) && $payloadData['exp'] < time()) {
         return [];
-    $payload = json_decode($decoded, true);
-    if (!is_array($payload))
-        return [];
+    }
+    
+    return $payloadData;
+}
+
+function base64url_encode($data) {
+    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
+function base64url_decode($data) {
+    return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
+}
+
+// Token validation middleware
+function validateToken($requiredRole = null) {
+    $headers = getallheaders();
+    $token = null;
+    
+    if (isset($headers['Authorization'])) {
+        $authHeader = $headers['Authorization'];
+        if (preg_match('/Bearer\s+(\S+)/', $authHeader, $matches)) {
+            $token = $matches[1];
+        }
+    }
+    
+    if (!$token) {
+        send_json(['error' => 'No token provided'], 401);
+    }
+    
+    $payload = decodeToken($token);
+    if (empty($payload)) {
+        send_json(['error' => 'Invalid or expired token'], 401);
+    }
+    
+    if ($requiredRole && $payload['role'] !== $requiredRole) {
+        send_json(['error' => 'Insufficient permissions'], 403);
+    }
+    
     return $payload;
 }
 function sendMail($to, $subject, $body)
