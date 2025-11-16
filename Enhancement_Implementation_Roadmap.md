@@ -1,503 +1,444 @@
 # Internship Management System - Enhancement Implementation Roadmap
 
-## Document Overview
-This document provides a prioritized, step-by-step implementation roadmap for enhancing the Internship Management System. Each enhancement maps to specific user stories and is ordered by priority, impact, and dependencies.
+## Implementation Order Guide
+This document provides the exact order for implementing enhancements. Follow this sequence to ensure proper dependencies and smooth development flow.
 
 ---
 
-# IMMEDIATE PRIORITY (Start Here - Week 1-4)
+# IMPLEMENTATION SEQUENCE
 
-## 1. System Performance & Security Foundation
-**Why Start Here:** Essential foundation for all user stories
-**Estimated Time:** 3-4 weeks
-**Impact:** Critical
-**Difficulty:** Medium
-**Related User Stories:** All stories depend on this foundation
+## STEP 1: Foundation Setup (Week 1-4)
+**Priority:** CRITICAL - Must complete before any other development
+**Platform:** Backend & Infrastructure
 
-### Technical Tasks:
+### System Performance & Security Foundation
+**Estimated Time:** 4 weeks
+**Team:** Backend developers, DevOps
+
+#### Week 1-2: Security & Performance
 - Database performance optimization
 - Security hardening and vulnerability fixes
 - HTTPS enforcement and data encryption
 - Input validation and SQL injection protection
-- File upload security improvements
 
-### Success Criteria:
+#### Week 3-4: Infrastructure
+- File upload security improvements
+- API rate limiting
+- Error logging and monitoring setup
+- Backup and recovery procedures
+
+**Success Criteria:**
 - Query response time improved by 50%
 - Security vulnerability scan passes
 - All data transmission encrypted
 
 ---
 
-# PHASE 1: CORE USER EXPERIENCE (Week 5-16)
-
-## 2. Story 1.1 & 1.2: Modern Dashboard Experience + Accessibility
-**User Story:** "As a Student, I want a modern, intuitive dashboard on both web and mobile"
-**Estimated Time:** 4-6 weeks
-**Impact:** High
-**Difficulty:** High
+## STEP 2: Design System & Authentication (Week 5-8)
+**Priority:** HIGH - Required for all UI development
 **Platform:** Web & Mobile
 
-### Implementation Tasks:
-- Design system creation (colors, typography, components)
+### Design System Creation
+**Estimated Time:** 4 weeks
+**Team:** UI/UX Designer, Frontend developers
+
+#### Week 5-6: Design Foundation
+- Color palette and typography system
+- Component library creation
+- Accessibility guidelines (WCAG 2.1 AA)
+- Dark/light theme implementation
+
+#### Week 7-8: Authentication Enhancement
+- Modern login/signup UI
+- Password reset flow
+- Multi-factor authentication setup
+- Session management improvements
+
+**Success Criteria:**
+- Complete design system documented
+- Authentication system tested and secure
+- Accessibility compliance verified
+
+---
+
+## STEP 3: Modern Dashboard (Week 9-14)
+**Priority:** HIGH - Core user interface
+**Platform:** Web & Mobile
+
+### Story 1.1 & 1.2: Modern Dashboard Experience + Accessibility
+**Estimated Time:** 6 weeks
+**Team:** Frontend developers, UI/UX Designer
+
+#### Week 9-10: Web Dashboard
 - Responsive layout implementation
-- Dark/light theme toggle
-- WCAG 2.1 AA accessibility compliance
+- Dashboard components development
 - Loading states and error handling
 - Cross-browser compatibility testing
 
-### Acceptance Criteria:
+#### Week 11-12: Mobile Dashboard
+- Mobile-specific UI components
+- Touch interactions and gestures
+- Mobile performance optimization
+- Device-specific testing
+
+#### Week 13-14: Integration & Testing
+- Web-mobile consistency checks
+- Accessibility testing
+- Performance optimization
+- User acceptance testing
+
+**Success Criteria:**
 - Dashboard loads in under 3 seconds
-- Dark/light theme toggle available
 - Responsive design works on all screen sizes
-- Quick action buttons for common tasks
 - Screen reader compatibility
-- Keyboard navigation support
+- Quick action buttons functional
 
 ---
 
-## 3. Story 2.1: Smart Internship Search
-**User Story:** "As a Student, I want advanced search and filtering options"
-**Estimated Time:** 3-4 weeks
-**Impact:** High
-**Difficulty:** Medium
+## STEP 4: Smart Search System (Week 15-18)
+**Priority:** HIGH - Core functionality
 **Platform:** Web & Mobile
 
-### Implementation Tasks:
-- Advanced filter implementation (location, skills, salary, etc.)
-- Search autocomplete and suggestions
-- Saved search functionality
-- Search result sorting options
-- Geolocation-based search on mobile
+### Story 2.1: Smart Internship Search
+**Estimated Time:** 4 weeks
+**Team:** Backend & Frontend developers
+
+#### Week 15-16: Backend Search Engine
+- Advanced filter implementation
+- Search indexing optimization
+- Autocomplete API development
 - Search analytics tracking
 
-### Acceptance Criteria:
-- Filter by location, company size, industry, duration
-- Salary range filtering
-- Skills-based matching
-- Save search preferences
-- Search history and suggestions
-- Geolocation-based results on mobile
+#### Week 17-18: Frontend Implementation
+- Search UI components
+- Filter interface development
+- Saved search functionality
+- Mobile geolocation integration
+
+**Success Criteria:**
+- Filter by location, company, skills, salary
+- Search autocomplete working
+- Saved search preferences
+- Mobile geolocation-based results
 
 ---
 
-## 4. Story 6.1 & 6.2: Mobile Offline Functionality + Push Notifications
-**User Story:** "As a Student using mobile, I want to access key features offline"
-**Estimated Time:** 4-5 weeks
-**Impact:** High
-**Difficulty:** High
+## STEP 5: Mobile Offline & Notifications (Week 19-23)
+**Priority:** HIGH - Mobile core functionality
 **Platform:** Mobile Only
 
-### Implementation Tasks:
+### Story 6.1 & 6.2: Mobile Offline Functionality + Push Notifications
+**Estimated Time:** 5 weeks
+**Team:** Mobile developers, Backend developers
+
+#### Week 19-20: Offline Infrastructure
 - Local database implementation (SQLite)
 - Data synchronization logic
-- Push notification system (Firebase/OneSignal)
 - Offline queue management
-- Background sync processes
-- Notification preferences system
 
-### Acceptance Criteria:
-- Offline access to saved internships
-- Offline logbook entry creation
-- Push notifications for application status updates
-- Customizable notification preferences
-- Sync when connection restored
+#### Week 21-22: Push Notifications
+- Firebase/OneSignal integration
+- Notification preferences system
 - Rich notification content
+
+#### Week 23: Testing & Optimization
+- Offline functionality testing
+- Sync conflict resolution
+- Battery usage optimization
+
+**Success Criteria:**
+- Offline access to saved internships
+- Push notifications for status updates
+- Seamless sync when online
+- Customizable notification preferences
 
 ---
 
-# PHASE 2: ENHANCED FUNCTIONALITY (Week 17-32)
-
-## 5. Story 5.1: Enhanced Logbook System
-**User Story:** "As a Student, I want an improved digital logbook with rich features"
-**Estimated Time:** 3-4 weeks
-**Impact:** High
-**Difficulty:** Medium
+## STEP 6: Enhanced Logbook (Week 24-27)
+**Priority:** HIGH - Student core feature
 **Platform:** Web & Mobile
 
-### Implementation Tasks:
+### Story 5.1: Enhanced Logbook System
+**Estimated Time:** 4 weeks
+**Team:** Full-stack developers
+
+#### Week 24-25: Rich Editor & Media
 - Rich text editor implementation
 - Photo/video attachment support
+- File upload and storage
+
+#### Week 26-27: Analytics & Export
 - Progress visualization charts
 - Export to PDF functionality
 - Supervisor feedback integration
-- Offline entry creation on mobile
+- Mobile offline entry creation
 
-### Acceptance Criteria:
-- Rich text editor for entries
-- Photo/video attachments
-- Weekly progress visualization
-- Skills development tracking
-- Supervisor feedback integration
-- Export to PDF functionality
+**Success Criteria:**
+- Rich text editor functional
+- Media attachments working
+- Progress visualization charts
+- PDF export capability
 
 ---
 
-## 6. Story 3.1 & 8.1: In-App Messaging System
-**User Story:** "As a Student, I want to communicate directly with employers and lecturers"
-**Estimated Time:** 5-6 weeks
-**Impact:** High
-**Difficulty:** High
+## STEP 7: Real-time Messaging (Week 28-33)
+**Priority:** HIGH - Communication feature
 **Platform:** Web & Mobile
 
-### Implementation Tasks:
-- Real-time messaging infrastructure
+### Story 3.1 & 8.1: In-App Messaging System
+**Estimated Time:** 6 weeks
+**Team:** Backend & Frontend developers
+
+#### Week 28-29: Messaging Infrastructure
+- Real-time messaging setup (Socket.io)
 - Message encryption and security
+- Database schema for messages
+
+#### Week 30-31: Chat Features
 - File sharing capabilities
 - Group chat functionality
 - Message history and search
-- Push notifications for messages
 
-### Acceptance Criteria:
-- Real-time messaging with employers
-- Group chats with fellow students
+#### Week 32-33: Mobile Integration
+- Push notifications for messages
+- Offline message sync
+- Mobile-specific UI optimizations
+
+**Success Criteria:**
+- Real-time messaging working
 - File sharing in conversations
-- Message read receipts
-- Offline message sync on mobile
-- Push notifications for new messages
+- Group chats functional
+- Mobile push notifications
 
 ---
 
-## 7. Story 12.1: Seamless Web-Mobile Sync
-**User Story:** "As a Student, I want seamless synchronization between web and mobile"
-**Estimated Time:** 4-5 weeks
-**Impact:** High
-**Difficulty:** High
+## STEP 8: Web-Mobile Sync (Week 34-38)
+**Priority:** HIGH - Cross-platform consistency
 **Platform:** Web & Mobile
 
-### Implementation Tasks:
+### Story 12.1: Seamless Web-Mobile Sync
+**Estimated Time:** 5 weeks
+**Team:** Full-stack developers
+
+#### Week 34-35: Sync Infrastructure
 - Real-time data synchronization
 - Conflict resolution system
 - Session continuity between devices
-- Cross-platform notification consistency
-- Offline changes sync when online
 
-### Acceptance Criteria:
+#### Week 36-37: Cross-platform Features
+- Notification consistency
+- Data consistency checks
+- Performance optimization
+
+#### Week 38: Testing & Refinement
+- Sync testing across devices
+- Conflict resolution testing
+- Performance monitoring
+
+**Success Criteria:**
 - Real-time data synchronization
-- Consistent user experience across platforms
 - Session continuity between devices
-- Cross-platform notification consistency
 - Conflict resolution for simultaneous edits
+- Cross-platform notification consistency
 
 ---
 
-## 8. Story 7.1 & 9.1: Advanced Analytics & Candidate Filtering
-**User Story:** "As an Employer, I want advanced filtering tools for applications"
-**Estimated Time:** 4-5 weeks
-**Impact:** High
-**Difficulty:** Medium
+## STEP 9: Analytics & Filtering (Week 39-43)
+**Priority:** MEDIUM - Employer features
 **Platform:** Web
 
-### Implementation Tasks:
-- Advanced candidate filtering system
+### Story 7.1 & 9.1: Advanced Analytics & Candidate Filtering
+**Estimated Time:** 5 weeks
+**Team:** Backend & Frontend developers
+
+#### Week 39-40: Analytics Backend
 - Data visualization library integration
-- Custom report builder
+- Analytics data processing
+- Report generation system
+
+#### Week 41-42: Filtering System
+- Advanced candidate filtering
 - Real-time analytics dashboard
 - Export functionality (PDF, Excel, CSV)
-- Performance metrics tracking
 
-### Acceptance Criteria:
+#### Week 43: Testing & Optimization
+- Performance testing with large datasets
+- User interface refinements
+- Export functionality testing
+
+**Success Criteria:**
 - Filter by GPA, skills, experience, location
-- Live dashboard of all assigned students
 - Interactive charts and graphs
 - Custom report generation
 - Bulk application processing
-- Export candidate lists
 
 ---
 
-# PHASE 3: ADVANCED FEATURES (Week 33-48)
-
-## 9. Story 4.1: Digital Portfolio System
-**User Story:** "As a Student, I want to create and maintain a digital portfolio"
-**Estimated Time:** 4-5 weeks
-**Impact:** Medium
-**Difficulty:** Medium
+## STEP 10: Digital Portfolio (Week 44-48)
+**Priority:** MEDIUM - Student enhancement
 **Platform:** Web & Mobile
 
-### Implementation Tasks:
+### Story 4.1: Digital Portfolio System
+**Estimated Time:** 5 weeks
+**Team:** Frontend & Backend developers
+
+#### Week 44-45: Portfolio Builder
 - Drag-and-drop portfolio builder
-- Multiple template system creation
+- Multiple template system
 - Media upload and management
+
+#### Week 46-47: Sharing & Analytics
 - Public/private sharing options
 - Portfolio analytics and tracking
 - Mobile-optimized viewing
 
-### Acceptance Criteria:
-- Drag-and-drop portfolio builder
+#### Week 48: Testing & Polish
+- Cross-browser testing
+- Mobile responsiveness
+- Performance optimization
+
+**Success Criteria:**
+- Drag-and-drop builder functional
 - Multiple template options
-- Support for images, videos, documents
 - Public/private portfolio settings
-- Portfolio sharing via link
 - Mobile-optimized viewing
 
 ---
 
-## 10. Story 2.2: AI-Powered Recommendations
-**User Story:** "As a Student, I want personalized internship recommendations"
-**Estimated Time:** 6-8 weeks
-**Impact:** Medium
-**Difficulty:** High
+## STEP 11: Personal Analytics (Week 49-52)
+**Priority:** MEDIUM - Student insights
 **Platform:** Web & Mobile
 
-### Implementation Tasks:
-- Machine learning model development
-- Recommendation algorithm implementation
-- A/B testing framework
-- Feedback collection system
-- Model training and optimization
-- Weekly recommendation emails
+### Story 5.2: Personal Analytics Dashboard
+**Estimated Time:** 4 weeks
+**Team:** Backend & Frontend developers
 
-### Acceptance Criteria:
-- Recommendations based on profile, skills, and preferences
-- Machine learning improves suggestions over time
-- "Why recommended" explanations
-- Ability to like/dislike recommendations
-- Weekly recommendation emails
-- Push notifications for new matches on mobile
-
----
-
-## 11. Story 5.2: Personal Analytics Dashboard
-**User Story:** "As a Student, I want detailed analytics about my internship journey"
-**Estimated Time:** 3-4 weeks
-**Impact:** Medium
-**Difficulty:** Medium
-**Platform:** Web & Mobile
-
-### Implementation Tasks:
+#### Week 49-50: Analytics Engine
 - Application success rate tracking
 - Skills gap analysis tools
 - Interview performance metrics
+
+#### Week 51-52: Dashboard & Goals
 - Time-to-placement analytics
 - Goal setting and tracking system
 - Progress sharing with lecturers
 
-### Acceptance Criteria:
+**Success Criteria:**
 - Application success rate tracking
 - Skills gap analysis
-- Interview performance metrics
-- Time-to-placement analytics
-- Comparison with peer averages
 - Goal setting and tracking
+- Comparison with peer averages
 
 ---
 
-# PHASE 4: INTEGRATION & OPTIMIZATION (Week 49-64)
-
-## 12. Story 3.2 & 7.2: Video Interview System
-**User Story:** "As a Student, I want to schedule and conduct video interviews"
-**Estimated Time:** 6-7 weeks
-**Impact:** Medium
-**Difficulty:** High
+## STEP 12: AI Recommendations (Week 53-60)
+**Priority:** MEDIUM - Advanced feature
 **Platform:** Web & Mobile
 
-### Implementation Tasks:
+### Story 2.2: AI-Powered Recommendations
+**Estimated Time:** 8 weeks
+**Team:** ML Engineer, Backend & Frontend developers
+
+#### Week 53-55: ML Model Development
+- Machine learning model development
+- Recommendation algorithm implementation
+- Model training and optimization
+
+#### Week 56-58: Integration & Testing
+- A/B testing framework
+- Feedback collection system
+- Performance optimization
+
+#### Week 59-60: Deployment & Monitoring
+- Weekly recommendation emails
+- Push notifications for matches
+- Model performance monitoring
+
+**Success Criteria:**
+- Personalized recommendations working
+- "Why recommended" explanations
+- Weekly recommendation emails
+- Push notifications for new matches
+
+---
+
+## STEP 13: Video Interview System (Week 61-67)
+**Priority:** LOW - Advanced feature
+**Platform:** Web & Mobile
+
+### Story 3.2 & 7.2: Video Interview System
+**Estimated Time:** 7 weeks
+**Team:** Full-stack developers
+
+#### Week 61-63: Video Infrastructure
 - Video calling infrastructure (WebRTC)
 - Calendar integration for scheduling
 - Recording functionality
+
+#### Week 64-66: Advanced Features
 - Screen sharing capabilities
 - Interview feedback forms
 - Mobile camera/microphone optimization
 
-### Acceptance Criteria:
-- Calendar integration for scheduling
+#### Week 67: Testing & Optimization
+- Cross-platform video testing
+- Performance optimization
+- User experience refinements
+
+**Success Criteria:**
+- Calendar integration working
 - Video call functionality
-- Interview reminders
-- Recording capability (with consent)
-- Screen sharing options
-- Mobile camera/microphone optimization
+- Recording capability
+- Mobile optimization complete
 
 ---
 
-## 13. Story 4.2: Document Scanner (Mobile)
-**User Story:** "As a Student using mobile, I want to scan and upload documents using my phone camera"
-**Estimated Time:** 3-4 weeks
-**Impact:** Medium
-**Difficulty:** Medium
+## STEP 14: Document Scanner (Week 68-71)
+**Priority:** LOW - Mobile enhancement
 **Platform:** Mobile Only
 
-### Implementation Tasks:
-- Camera integration for document scanning
-- OCR text recognition
-- Auto-crop and enhancement
-- Batch scanning capability
-- Cloud sync with web version
-- Multiple file format support
+### Story 4.2: Document Scanner (Mobile)
+**Estimated Time:** 4 weeks
+**Team:** Mobile developers
 
-### Acceptance Criteria:
-- Camera integration for document scanning
-- Auto-crop and enhance scanned documents
-- OCR text recognition
-- Multiple file format support
-- Cloud sync with web version
-- Batch scanning capability
+#### Week 68-69: Camera Integration
+- Camera integration and document detection
+- Image enhancement and cropping
+- OCR functionality implementation
 
----
+#### Week 70-71: Processing & Export
+- Multi-format export (PDF, JPEG, PNG)
+- Cloud storage integration
+- Batch scanning capabilities
 
-## 14. Story 12.2: Universal Search + Third-Party Integrations
-**User Story:** "As any User, I want consistent search functionality across all platforms"
-**Estimated Time:** 4-6 weeks
-**Impact:** Medium
-**Difficulty:** Medium
-**Platform:** Web & Mobile
-
-### Implementation Tasks:
-- Unified search across all content types
-- Calendar integration (Google, Outlook)
-- LinkedIn profile import
-- Voice search on mobile
-- Social media sharing
-- Search history synchronization
-
-### Acceptance Criteria:
-- Unified search across all content types
-- Search history synchronization
-- Voice search on mobile
-- Advanced search operators
-- Search result ranking consistency
-- Saved searches across platforms
-
----
-
-# PHASE 5: ADVANCED AUTOMATION (Week 65-78)
-
-## 15. Story 10.2 & 11.1: Workflow Automation + Advanced Security
-**User Story:** "As a School Admin, I want automated workflows for common processes"
-**Estimated Time:** 6-8 weeks
-**Impact:** Medium
-**Difficulty:** High
-**Platform:** Web
-
-### Implementation Tasks:
-- Workflow builder interface
-- Automated matching algorithms
-- Two-factor authentication system
-- Advanced audit logging
-- Bulk operation tools
-- GDPR compliance features
-
-### Acceptance Criteria:
-- Customizable approval workflows
-- Automated student notifications
-- Two-factor authentication enforcement
-- Advanced audit logging
-- Bulk operations for student management
-- Compliance tracking and reporting
-
----
-
-## 16. Story 11.2: Performance Monitoring Dashboard
-**User Story:** "As a System Admin, I want real-time system performance monitoring"
-**Estimated Time:** 3-4 weeks
-**Impact:** Medium
-**Difficulty:** Medium
-**Platform:** Web
-
-### Implementation Tasks:
-- Performance monitoring tools
-- Caching implementation (Redis)
-- CDN integration
-- Load balancing setup
-- Error tracking system
-- Automated alert system
-
-### Acceptance Criteria:
-- Real-time performance metrics
-- Automated alert system
-- Resource usage tracking
-- Error monitoring and reporting
-- Performance trend analysis
-- Capacity planning tools
-
----
-
-## 17. Story 10.1: Comprehensive Analytics Dashboard
-**User Story:** "As a School Admin, I want detailed analytics about our internship program"
-**Estimated Time:** 4-5 weeks
-**Impact:** Medium
-**Difficulty:** Medium
-**Platform:** Web
-
-### Implementation Tasks:
-- Placement rate analytics
-- Company partnership metrics
-- Student satisfaction tracking
-- Lecturer performance indicators
-- Trend analysis and forecasting
-- Benchmarking tools
-
-### Acceptance Criteria:
-- Placement rate analytics
-- Company partnership metrics
-- Student satisfaction scores
-- Lecturer performance indicators
-- Trend analysis and forecasting
-- Benchmarking against other institutions
-
----
-
-# IMPLEMENTATION GUIDELINES
-
-## Development Approach
-1. **Agile Methodology**: 2-week sprints with regular reviews
-2. **Testing Strategy**: Unit tests, integration tests, user acceptance testing
-3. **Deployment Strategy**: Staged rollouts with feature flags
-4. **Quality Assurance**: Code reviews, automated testing, security scans
-
-## Resource Requirements
-- **Frontend Developers**: 2-3 developers
-- **Backend Developers**: 2-3 developers
-- **Mobile Developers**: 1-2 developers
-- **UI/UX Designer**: 1 designer
-- **DevOps Engineer**: 1 engineer
-- **QA Tester**: 1-2 testers
-
-## Risk Mitigation
-- **Technical Risks**: Proof of concepts for complex features
-- **Timeline Risks**: Buffer time built into estimates
-- **Quality Risks**: Comprehensive testing at each phase
-- **User Adoption Risks**: User feedback collection and iteration
-
-## Success Metrics by Phase
-- **Phase 1**: Performance improvements, security compliance
-- **Phase 2**: User engagement increase, feature adoption
-- **Phase 3**: User satisfaction scores, platform differentiation
-- **Phase 4**: Workflow efficiency, integration success
-- **Phase 5**: Automation effectiveness, system scalability
+**Success Criteria:**
+- Auto-detect document edges
+- OCR text extraction
+- Multi-page document scanning
+- Export to multiple formats
 
 ---
 
 # QUICK START CHECKLIST
 
-## Week 1 Tasks (Start Immediately):
-- [ ] Set up development environment
-- [ ] Conduct security audit
-- [ ] Analyze current database performance
-- [ ] Create project timeline and milestones
-- [ ] Assemble development team
+## Before You Begin:
+1. ✅ Complete security foundation (Step 1)
+2. ✅ Set up design system (Step 2)
+3. ✅ Ensure team has required skills
+4. ✅ Set up development environment
+5. ✅ Establish testing procedures
 
-## Week 2 Tasks:
-- [ ] Implement database optimizations
-- [ ] Begin security hardening
-- [ ] Start UI/UX design process
-- [ ] Set up testing frameworks
-- [ ] Create development standards document
+## Implementation Tips:
+- Complete each step fully before moving to the next
+- Test thoroughly at each step
+- Maintain consistent code quality
+- Regular stakeholder reviews after each step
+- Document all changes and decisions
 
-## Week 3-4 Tasks:
-- [ ] Complete security improvements
-- [ ] Finalize design system
-- [ ] Begin frontend development
-- [ ] Set up CI/CD pipeline
-- [ ] Conduct user research sessions
+## Dependencies Summary:
+- Steps 1-2: Must complete before any UI work
+- Steps 3-5: Core functionality, complete in order
+- Steps 6-8: Can overlap with careful coordination
+- Steps 9-14: Can be prioritized based on business needs
 
----
-
-*This roadmap provides a structured approach to enhancing your internship system. Start with the immediate priorities to build a solid foundation, then progress through each phase systematically.*
-
-**Next Action:** Begin with database optimization and security hardening as these form the foundation for all subsequent enhancements.
-
----
-
-*Document prepared by: Technical Implementation Team*  
-*Date: January 2025*  
-*Version: 1.0*
+This sequence ensures proper foundation, minimizes rework, and delivers value incrementally.
