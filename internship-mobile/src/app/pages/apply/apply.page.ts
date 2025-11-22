@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonIcon, IonBackButton, IonButtons, IonItem, IonLabel, IonInput, IonToast } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { documentOutline, cloudUploadOutline } from 'ionicons/icons';
+import { documentOutline, cloudUploadOutline, warning } from 'ionicons/icons';
 import { AuthService } from '../../services/auth.service';
 import { ApplicationService } from '../../services/application.service';
 
@@ -33,7 +33,7 @@ export class ApplyPage implements OnInit {
     private authService: AuthService,
     private applicationService: ApplicationService
   ) {
-    addIcons({ documentOutline, cloudUploadOutline });
+    addIcons({ documentOutline, cloudUploadOutline, warning });
   }
 
   ngOnInit() {
@@ -63,6 +63,12 @@ export class ApplyPage implements OnInit {
   submitApplication() {
     if (!this.cvFile || !this.transcriptFile || !this.applicationLetterFile) {
       this.showToastMessage('Please upload all required documents', 'warning');
+      return;
+    }
+
+    // Check if deadline has passed
+    if (this.isDeadlinePassed()) {
+      this.showToastMessage('Internship applications are closed', 'danger');
       return;
     }
 
@@ -101,5 +107,14 @@ export class ApplyPage implements OnInit {
     this.toastMessage = message;
     this.toastColor = color;
     this.showToast = true;
+  }
+
+  isDeadlinePassed(): boolean {
+    if (!this.internship?.application_deadline) {
+      return false;
+    }
+    const today = new Date();
+    const deadline = new Date(this.internship.application_deadline);
+    return today > deadline;
   }
 }

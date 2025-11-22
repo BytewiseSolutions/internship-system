@@ -26,34 +26,38 @@
 
       .dashboard-cards {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 280px));
+        gap: 1.25rem;
         margin-bottom: 2rem;
+        justify-content: start;
 
         .card {
           background: white;
           border-radius: 12px;
-          padding: 1.5rem;
+          padding: 1.25rem;
           box-shadow: 0 2px 10px rgba(0,0,0,0.1);
           display: flex;
           align-items: center;
           gap: 1rem;
+          max-width: 280px;
+          min-height: 100px;
 
           .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             color: white;
-          }
+            flex-shrink: 0;
 
-          .schools-card .card-icon { background: #2e7d32; }
-          .companies-card .card-icon { background: #ff9800; }
-          .users-card .card-icon { background: #2196f3; }
-          .applications-card .card-icon { background: #4caf50; }
+            i {
+              font-family: 'Font Awesome 6 Free';
+              font-weight: 900;
+            }
+          }
 
           .card-content {
             h3 {
@@ -63,10 +67,11 @@
             }
 
             .card-number {
-              font-size: 2rem;
+              font-size: 1.75rem;
               font-weight: bold;
               margin: 0;
               color: #2c3e50;
+              line-height: 1.2;
             }
 
             .card-subtitle {
@@ -75,6 +80,11 @@
             }
           }
         }
+
+        .schools-card .card-icon { background: #2e7d32; }
+        .companies-card .card-icon { background: #ff9800; }
+        .users-card .card-icon { background: #2196f3; }
+        .applications-card .card-icon { background: #4caf50; }
       }
 
       .quick-actions {

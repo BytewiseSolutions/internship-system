@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class InternshipService {
-  private apiUrl = 'http://localhost:8000';
+  private apiUrl = 'http://127.0.0.1:8001';
 
   constructor(private http: HttpClient) {}
 

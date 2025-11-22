@@ -5,78 +5,114 @@
         <app-student-header [isSidebarCollapsed]="isSidebarCollapsed"></app-student-header>
         
         <div class="dashboard-content">
-            <div class="welcome-section">
-                <h1>Welcome back, {{ userName }}!</h1>
-                <p>Here's your internship journey overview</p>
-            </div>
-
-            <div class="stats-grid" *ngIf="!loading">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-file-alt"></i>
+            <!-- Welcome Section -->
+            <app-dashboard-card 
+                title="Welcome back, {{ userName }}!" 
+                subtitle="Here's your internship journey overview"
+                cardClass="welcome-card"
+                ariaLabel="Welcome section with user greeting">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <p class="last-login" *ngIf="lastLogin">Last login: {{ lastLogin | date:'medium' }}</p>
                     </div>
-                    <div class="stat-info">
-                        <h3>{{ studentStats.applications }}</h3>
-                        <p>Applications Submitted</p>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ studentStats.interviews }}</h3>
-                        <p>Interviews Scheduled</p>
+                    <div class="welcome-actions">
+                        <button class="btn-primary" routerLink="/browse-internships">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                            Find Internships
+                        </button>
                     </div>
                 </div>
+            </app-dashboard-card>
 
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ studentStats.internships }}</h3>
-                        <p>Active Internships</p>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ studentStats.logbookEntries }}</h3>
-                        <p>Logbook Entries</p>
-                    </div>
+            <!-- Loading State -->
+            <div class="loading-container" *ngIf="loading" role="status" aria-live="polite">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                    <p>Loading your dashboard...</p>
                 </div>
             </div>
 
-            <div class="loading-spinner" *ngIf="loading">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Loading your dashboard...</p>
+            <!-- Stats Grid -->
+            <div class="stats-section" *ngIf="!loading">
+                <h2 class="section-title">Your Progress</h2>
+                <div class="stats-grid">
+                    <app-stat-card
+                        [value]="studentStats.applications"
+                        label="Applications Submitted"
+                        icon="fas fa-file-alt"
+                        iconColor="primary"
+                        [change]="getChangeText('applications')"
+                        [changeType]="getChangeType('applications')"
+                        ariaLabel="Total applications submitted">
+                    </app-stat-card>
+
+                    <app-stat-card
+                        [value]="studentStats.interviews"
+                        label="Interviews Scheduled"
+                        icon="fas fa-calendar-check"
+                        iconColor="info"
+                        [change]="getChangeText('interviews')"
+                        [changeType]="getChangeType('interviews')"
+                        ariaLabel="Interviews scheduled">
+                    </app-stat-card>
+
+                    <app-stat-card
+                        [value]="studentStats.internships"
+                        label="Active Internships"
+                        icon="fas fa-briefcase"
+                        iconColor="success"
+                        [change]="getChangeText('internships')"
+                        [changeType]="getChangeType('internships')"
+                        ariaLabel="Active internships">
+                    </app-stat-card>
+
+                    <app-stat-card
+                        [value]="studentStats.logbookEntries"
+                        label="Logbook Entries"
+                        icon="fas fa-book"
+                        iconColor="warning"
+                        [change]="getChangeText('logbookEntries')"
+                        [changeType]="getChangeType('logbookEntries')"
+                        ariaLabel="Logbook entries completed">
+                    </app-stat-card>
+                </div>
             </div>
 
-            <div class="quick-actions">
-                <h2>Quick Actions</h2>
-                <div class="action-buttons">
-                    <button class="action-btn" routerLink="/browse-internships">
-                        <i class="fas fa-search"></i>
-                        Browse Internships
-                    </button>
-                    <button class="action-btn" routerLink="/my-applications">
-                        <i class="fas fa-file-alt"></i>
-                        View Applications
-                    </button>
-                    <button class="action-btn" routerLink="/logbook">
-                        <i class="fas fa-book"></i>
-                        Update Logbook
-                    </button>
-                    <button class="action-btn" routerLink="/profile">
-                        <i class="fas fa-user"></i>
-                        Edit Profile
-                    </button>
-                </div>
+            <!-- Quick Actions -->
+            <div class="actions-section" *ngIf="!loading">
+                <app-quick-actions
+                    title="Quick Actions"
+                    [actions]="quickActions"
+                    [columns]="4"
+                    layout="grid">
+                </app-quick-actions>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-section" *ngIf="!loading">
+                <app-dashboard-card 
+                    title="Recent Activity" 
+                    subtitle="Your latest internship activities"
+                    ariaLabel="Recent activity feed">
+                    <div class="activity-list" *ngIf="recentActivity.length > 0; else noActivity">
+                        <div class="activity-item" *ngFor="let activity of recentActivity; trackBy: trackActivity">
+                            <div class="activity-icon" [class]="activity.type">
+                                <i [class]="activity.icon" aria-hidden="true"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="activity-text">{{ activity.text }}</p>
+                                <span class="activity-time">{{ activity.timestamp | date:'short' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #noActivity>
+                        <div class="empty-state">
+                            <i class="fas fa-clock" aria-hidden="true"></i>
+                            <p>No recent activity</p>
+                            <small>Your internship activities will appear here</small>
+                        </div>
+                    </ng-template>
+                </app-dashboard-card>
             </div>
         </div>
     </main>

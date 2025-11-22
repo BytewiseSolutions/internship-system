@@ -1,0 +1,31 @@
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ion-color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.empty-state, .loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--ion-color-medium);
+  
+  h3 {
+    margin-bottom: 8px;
+    color: var(--ion-color-dark);
+  }
+  
+  ion-spinner {
+    margin-bottom: 16px;
+  }
+}

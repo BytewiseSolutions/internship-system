@@ -63,7 +63,7 @@ error_log('Today: ' . $today . ', Deadline: ' . $internship['application_deadlin
 
 if ($internship['application_deadline'] < $today) {
     error_log('Deadline passed for internship: ' . $internship_id);
-    die(json_encode(['status' => 'error', 'message' => 'Cannot apply for expired internship']));
+    die(json_encode(['status' => 'error', 'message' => 'Cannot apply for closed internship']));
 }
 $deadlineStmt->close();
 

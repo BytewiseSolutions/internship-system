@@ -1,6 +1,4 @@
 <?php
-// Database Performance Optimizer
-// Step 1: Foundation Setup - Database Optimization
 
 require_once 'config.php';
 
@@ -10,10 +8,7 @@ class DatabaseOptimizer {
     public function __construct($connection) {
         $this->conn = $connection;
     }
-    
-    // Add database indexes for performance
     public function addPerformanceIndexes() {
-        // Check and create indexes only if they don't exist
         $indexes = [
             'idx_users_email' => "CREATE INDEX idx_users_email ON users(email)",
             'idx_users_role' => "CREATE INDEX idx_users_role ON users(role)",
@@ -29,12 +24,10 @@ class DatabaseOptimizer {
         $results = [];
         foreach ($indexes as $indexName => $indexQuery) {
             try {
-                // Extract table name from query
                 preg_match('/ON\s+(\w+)\s*\(/', $indexQuery, $matches);
                 $tableName = $matches[1] ?? '';
                 
                 if ($tableName) {
-                    // Check if index exists
                     $checkQuery = "SHOW INDEX FROM `$tableName` WHERE Key_name = '$indexName'";
                     $result = $this->conn->query($checkQuery);
                     
@@ -48,7 +41,6 @@ class DatabaseOptimizer {
                     $results[] = "✗ Could not parse table name from: $indexQuery";
                 }
             } catch (Exception $e) {
-                // Try to create anyway, might just be duplicate key error
                 try {
                     $this->conn->query($indexQuery);
                     $results[] = "✓ Created index: $indexName";
@@ -64,8 +56,6 @@ class DatabaseOptimizer {
         
         return $results;
     }
-    
-    // Optimize database configuration
     public function optimizeConfiguration() {
         $optimizations = [
             "SET SESSION wait_timeout = 28800",
@@ -85,8 +75,6 @@ class DatabaseOptimizer {
         
         return $results;
     }
-    
-    // Analyze slow queries
     public function analyzeSlowQueries() {
         $queries = [
             "SHOW VARIABLES LIKE 'slow_query_log'",
@@ -108,17 +96,12 @@ class DatabaseOptimizer {
         
         return $results;
     }
-    
-    // Clean up old data
     public function cleanupOldData() {
         $cleanupQueries = [
-            // Remove old notifications (older than 30 days)
             "DELETE FROM notifications WHERE created_at < DATE_SUB(NOW(), INTERVAL 30 DAY) AND is_read = 1",
-            
-            // Remove expired internships (closed for more than 90 days)
+
             "DELETE FROM internships WHERE status = 'CLOSED' AND updated_at < DATE_SUB(NOW(), INTERVAL 90 DAY)",
             
-            // Clean up orphaned records
             "DELETE FROM applications WHERE internship_id NOT IN (SELECT internship_id FROM internships)",
             "DELETE FROM logbook WHERE student_id NOT IN (SELECT student_id FROM students)"
         ];
@@ -136,12 +119,9 @@ class DatabaseOptimizer {
         
         return $results;
     }
-    
-    // Get database statistics
     public function getDatabaseStats() {
         $stats = [];
-        
-        // Table sizes
+
         $tables = ['users', 'students', 'companies', 'internships', 'applications', 'logbook', 'notifications'];
         foreach ($tables as $table) {
             try {
@@ -153,7 +133,6 @@ class DatabaseOptimizer {
             }
         }
         
-        // Database size
         try {
             $result = $this->conn->query("
                 SELECT 
@@ -169,8 +148,6 @@ class DatabaseOptimizer {
         
         return $stats;
     }
-    
-    // Run full optimization
     public function runFullOptimization() {
         $results = [
             'indexes' => $this->addPerformanceIndexes(),
@@ -183,8 +160,6 @@ class DatabaseOptimizer {
         return $results;
     }
 }
-
-// Run optimization if called directly
 if (basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"])) {
     $optimizer = new DatabaseOptimizer($conn);
     $results = $optimizer->runFullOptimization();

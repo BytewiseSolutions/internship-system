@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Messages</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="startNewChat()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-searchbar 
+    placeholder="Search conversations"
+    (ionInput)="filterConversations($event)">
+  </ion-searchbar>
+
+  <ion-list *ngIf="!loading">
+    <ion-item 
+      *ngFor="let conversation of filteredConversations" 
+      button 
+      (click)="openChat(conversation)">
+      <ion-avatar slot="start">
+        <div class="avatar-placeholder">
+          {{ conversation.other_user_name.charAt(0).toUpperCase() }}
+        </div>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ conversation.other_user_name }}</h2>
+        <p>{{ conversation.last_message }}</p>
+      </ion-label>
+      <ion-note slot="end">
+        {{ getTimeAgo(conversation.last_message_time) }}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="!loading && filteredConversations.length === 0" class="empty-state">
+    <h3>No conversations yet</h3>
+    <p>Start a conversation with someone!</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <ion-spinner></ion-spinner>
+    <p>Loading conversations...</p>
+  </div>
+</ion-content>

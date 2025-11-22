@@ -17,6 +17,11 @@
       <ion-card-content>
         <p><strong>Company:</strong> {{ internship.name }}</p>
         <p><strong>Location:</strong> {{ internship.location }}</p>
+        <p><strong>Deadline:</strong> {{ internship.application_deadline | date:'mediumDate' }}</p>
+        <div *ngIf="isDeadlinePassed()" class="deadline-warning">
+          <ion-icon name="warning" color="danger"></ion-icon>
+          <span>Applications are closed</span>
+        </div>
       </ion-card-content>
     </ion-card>
 
@@ -107,9 +112,10 @@
         size="large" 
         color="primary" 
         (click)="submitApplication()"
-        [disabled]="isLoading">
-        <span *ngIf="!isLoading">Submit Application</span>
+        [disabled]="isLoading || isDeadlinePassed()">
+        <span *ngIf="!isLoading && !isDeadlinePassed()">Submit Application</span>
         <span *ngIf="isLoading">Submitting...</span>
+        <span *ngIf="isDeadlinePassed()">Applications Closed</span>
       </ion-button>
     </div>
   </div>

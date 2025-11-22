@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/messages"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Start New Chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar 
+    placeholder="Search users..." 
+    (ionInput)="filterUsers($event)"
+    debounce="300">
+  </ion-searchbar>
+
+  <div class="loading-container" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Loading users...</p>
+  </div>
+
+  <ion-list *ngIf="!loading">
+    <ion-item 
+      button 
+      *ngFor="let user of filteredUsers" 
+      (click)="startChat(user)">
+      <ion-avatar slot="start">
+        <div class="avatar-placeholder">{{ getUserInitials(user.name) }}</div>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ user.name }}</h2>
+        <p>{{ user.role }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="empty-state" *ngIf="!loading && filteredUsers.length === 0">
+    <p>No users found</p>
+  </div>
+</ion-content>

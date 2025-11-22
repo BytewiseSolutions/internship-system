@@ -1,58 +1,97 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Welcome, {{ studentName }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-badge [color]="isOnline ? 'success' : 'danger'" class="network-badge">
+        <ion-icon [name]="isOnline ? 'wifi-outline' : 'cloud-offline-outline'" [attr.aria-hidden]="true"></ion-icon>
+        {{ isOnline ? 'Online' : 'Offline' }}
+      </ion-badge>
+      <ion-badge [color]="getSyncColor()" class="sync-badge" *ngIf="syncStatus">
+        <ion-icon [name]="getSyncIcon()" [attr.aria-hidden]="true"></ion-icon>
+        {{ getSyncText() }}
+      </ion-badge>
+      <ion-button fill="clear" (click)="refreshDashboard()" [attr.aria-label]="'Refresh dashboard'">
+        <ion-icon name="refresh-outline" [attr.aria-hidden]="true"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="home-content">
   <!-- Welcome Section -->
-  <div class="welcome-section">
-    <h2>Your Internship Journey</h2>
-    <p>Find and apply to internships that match your career goals</p>
+  <app-dashboard-card 
+    title="Your Internship Journey" 
+    subtitle="Find and apply to internships that match your career goals"
+    cardClass="welcome-card"
+    ariaLabel="Welcome section with internship journey overview">
+    <div class="welcome-content">
+      <div class="welcome-stats">
+        <div class="quick-stat">
+          <span class="stat-number">{{ stats.applications }}</span>
+          <span class="stat-label">Applications</span>
+        </div>
+        <div class="quick-stat">
+          <span class="stat-number">{{ stats.accepted }}</span>
+          <span class="stat-label">Accepted</span>
+        </div>
+      </div>
+      <ion-button 
+        expand="block" 
+        fill="outline" 
+        color="primary" 
+        (click)="navigateToInternships()"
+        class="cta-button">
+        <ion-icon name="search-outline" slot="start" [attr.aria-hidden]="true"></ion-icon>
+        Find Internships
+      </ion-button>
+    </div>
+  </app-dashboard-card>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Loading your dashboard...</p>
   </div>
 
-  <!-- Quick Actions -->
-  <div class="actions-section">
-    <ion-grid>
+  <!-- Stats Grid -->
+  <div class="stats-section" *ngIf="!loading">
+    <ion-grid class="stats-grid">
       <ion-row>
         <ion-col size="6">
-          <ion-card class="action-card" (click)="navigateToInternships()">
+          <ion-card class="stat-card" (click)="navigateToInternships()">
             <ion-card-content>
-              <ion-icon name="list-outline" class="action-icon"></ion-icon>
-              <h3>Browse Internships</h3>
-              <p>Find opportunities</p>
+              <ion-icon name="briefcase-outline" class="stat-icon"></ion-icon>
+              <h3>{{ availableInternships }}</h3>
+              <p>Available Internships</p>
             </ion-card-content>
           </ion-card>
         </ion-col>
-        
         <ion-col size="6">
-          <ion-card class="action-card" (click)="navigateToApplications()">
+          <ion-card class="stat-card accepted" (click)="navigateToApplications('accepted')">
             <ion-card-content>
-              <ion-icon name="document-text-outline" class="action-icon"></ion-icon>
-              <h3>My Applications</h3>
-              <p>Track progress</p>
+              <ion-icon name="checkmark-circle-outline" class="stat-icon"></ion-icon>
+              <h3>{{ stats.accepted }}</h3>
+              <p>Accepted Internships</p>
             </ion-card-content>
           </ion-card>
         </ion-col>
       </ion-row>
-      
       <ion-row>
         <ion-col size="6">
-          <ion-card class="action-card" (click)="navigateToProfile()">
+          <ion-card class="stat-card rejected" (click)="navigateToApplications('rejected')">
             <ion-card-content>
-              <ion-icon name="person-outline" class="action-icon"></ion-icon>
-              <h3>My Profile</h3>
-              <p>Update details</p>
+              <ion-icon name="close-circle-outline" class="stat-icon"></ion-icon>
+              <h3>{{ stats.rejected }}</h3>
+              <p>Rejected Internships</p>
             </ion-card-content>
           </ion-card>
         </ion-col>
-        
         <ion-col size="6">
-          <ion-card class="action-card" (click)="navigateToMyInternship()">
+          <ion-card class="stat-card" (click)="navigateToApplications()">
             <ion-card-content>
-              <ion-icon name="business-outline" class="action-icon"></ion-icon>
-              <h3>My Internship</h3>
-              <p>Current placement</p>
+              <ion-icon name="document-text-outline" class="stat-icon"></ion-icon>
+              <h3>{{ stats.applications }}</h3>
+              <p>Applications</p>
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -60,37 +99,38 @@
     </ion-grid>
   </div>
 
-  <!-- Quick Stats -->
-  <div class="stats-section">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Quick Stats</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="6" class="stat-item">
-              <h3>{{ stats.applications }}</h3>
-              <p>Total Applications</p>
-            </ion-col>
-            <ion-col size="6" class="stat-item">
-              <h3>{{ stats.accepted }}</h3>
-              <p>Accepted</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="6" class="stat-item">
-              <h3>{{ stats.pending }}</h3>
-              <p>Pending</p>
-            </ion-col>
-            <ion-col size="6" class="stat-item">
-              <h3>{{ stats.rejected }}</h3>
-              <p>Rejected</p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
+  <!-- Quick Actions -->
+  <div class="actions-section" *ngIf="!loading">
+    <h2 class="section-title">Quick Actions</h2>
+    <ion-button expand="block" fill="outline" color="primary" (click)="navigateToNotifications()" class="notification-button">
+      <ion-icon name="notifications-outline" slot="start"></ion-icon>
+      Notifications
+      <ion-badge *ngIf="unreadCount > 0" color="danger" class="notification-count">{{ unreadCount }}</ion-badge>
+    </ion-button>
+    <ion-button expand="block" fill="outline" color="secondary" (click)="navigateToMessages()" class="messages-button">
+      <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
+      Messages
+    </ion-button>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="activity-section" *ngIf="!loading && recentActivity.length > 0">
+    <app-dashboard-card 
+      title="Recent Activity" 
+      subtitle="Your latest internship activities"
+      ariaLabel="Recent activity feed">
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of recentActivity; trackBy: trackActivity">
+          <div class="activity-icon" [class]="activity.type">
+            <ion-icon [name]="activity.icon" [attr.aria-hidden]="true"></ion-icon>
+          </div>
+          <div class="activity-content">
+            <p class="activity-text">{{ activity.text }}</p>
+            <span class="activity-time">{{ activity.timestamp | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+    </app-dashboard-card>
   </div>
 
 </ion-content>

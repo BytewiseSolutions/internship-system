@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/messages"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ otherUserName }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="messages-container" *ngIf="!loading">
+    <div 
+      *ngFor="let message of messages" 
+      class="message-wrapper"
+      [class.my-message]="isMyMessage(message)"
+      [class.other-message]="!isMyMessage(message)">
+      <div class="message-bubble" (click)="showMessageOptions(message)" (contextmenu)="showDeleteOption(message, $event)" *ngIf="!message.editing">
+        <p>{{ message.message }}</p>
+        <span class="message-time">{{ formatTime(message.created_at) }}</span>
+      </div>
+      <div class="message-bubble" *ngIf="message.editing">
+        <ion-input [(ngModel)]="message.editText" (keyup.enter)="saveEdit(message)"></ion-input>
+        <div class="edit-actions">
+          <ion-button size="small" (click)="saveEdit(message)">Save</ion-button>
+          <ion-button size="small" fill="clear" (click)="cancelEdit(message)">Cancel</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <ion-spinner></ion-spinner>
+    <p>Loading messages...</p>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-item>
+    <ion-input 
+      [(ngModel)]="newMessage" 
+      placeholder="Type a message..."
+      (keyup.enter)="sendMessage()">
+    </ion-input>
+    <ion-button 
+      slot="end" 
+      fill="clear" 
+      (click)="sendMessage()"
+      [disabled]="!newMessage.trim()">
+      <ion-icon name="send"></ion-icon>
+    </ion-button>
+  </ion-item>
+</ion-footer>

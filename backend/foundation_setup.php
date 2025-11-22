@@ -1,6 +1,4 @@
 <?php
-// Foundation Setup Script
-// Step 1: Complete Foundation Setup Implementation
 
 require_once 'config.php';
 require_once 'database_optimizer.php';

@@ -42,4 +42,20 @@ export const routes: Routes = [
     path: 'reviews',
     loadComponent: () => import('./pages/reviews/reviews.page').then(m => m.ReviewsPage)
   },
+  {
+    path: 'notifications',
+    loadComponent: () => import('./pages/notifications/notifications.page').then(m => m.NotificationsPage)
+  },
+  {
+    path: 'messages',
+    loadComponent: () => import('./pages/messages/messages.page').then(m => m.MessagesPage)
+  },
+  {
+    path: 'chat',
+    loadComponent: () => import('./pages/chat/chat.page').then(m => m.ChatPage)
+  },
+  {
+    path: 'start-chat',
+    loadComponent: () => import('./pages/start-chat/start-chat.page').then(m => m.StartChatPage)
+  },
 ];
